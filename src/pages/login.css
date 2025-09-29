@@ -1,0 +1,48 @@
+
+:root{
+  background-color: rgb(148, 102, 234);
+}
+.forms_login{
+
+  margin: 0 auto;
+  margin-top: 5rem;
+  background-color: #FFFFFF;
+  width: 35rem;
+  border: 2px solid #4A376c;
+  border-radius: 30px;
+  shape-margin: 30px;
+ 
+  padding-bottom: 5rem;
+  font-family: 'inter',sans-serif;
+  font-weight: 600;
+  color: #785AB0;
+}
+h1.loginh1{
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+    font-family: 'Jura', sans-serif;
+    font-size: 58px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: #4A376c;
+}
+.form_login{
+    margin-left: 5rem;
+}
+.description{
+    color: #785AB0;
+}
+p.foot{
+    display: inline;
+}
+.register_link{
+    font-family: 'Jura',sans-serif;
+    font-size: 14px;
+}
+input[type="submit" i]{
+        margin-left: -90px;
+}
+p.foot{
+    margin-left: 9rem;
+}
