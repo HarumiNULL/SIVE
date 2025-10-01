@@ -98,10 +98,14 @@ label{
   padding-bottom: 10rem;
   font-size: 12px;
 }
-input[type="submit" i]{
+
+button[type="submit" i]{
   font-family: 'jura',sans-serif;
-  letter-spacing: 3px;
+  font-weight: 400;
+  letter-spacing: 2px;
   font-weight: 700;
+  border-radius: 15px;
+  border: none;
   background-color: #4A376c;
   color: #FFFFFF;
   width: 179px;

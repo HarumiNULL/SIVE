@@ -1,0 +1,40 @@
+import axios from "axios";
+
+// Configura la URL de tu backend (puede estar en otro servidor)
+const API = axios.create({
+  baseURL: "http://127.0.0.1:8000/api/"
+});
+export interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: User;
+}
+
+// Función para registrar usuario
+export const registerUser = async (data: any): Promise<AuthResponse> => {
+  try {
+    const res = await API.post<AuthResponse>("register/", data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.non_field_errors || JSON.stringify(error.response?.data) || error.message);
+  }
+};
+
+export const loginUser = async (data: any): Promise<AuthResponse> => {
+  try {
+    const res = await API.post<AuthResponse>("login/", data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || JSON.stringify(error.response?.data) || error.message);
+  }
+};
+
+export const logoutUser = async (token: string) => {
+  await API.post<AuthResponse>("logout/", null, { headers: { Authorization: `Token ${token}` } });
+};
