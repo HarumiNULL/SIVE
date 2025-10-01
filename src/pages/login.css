@@ -43,6 +43,10 @@ p.foot{
 input[type="submit" i]{
         margin-left: -90px;
 }
+
+button[type="submit" i]{
+    margin-left: -90px;
+}
 p.foot{
     margin-left: 9rem;
 }
