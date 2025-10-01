@@ -37,6 +37,7 @@ export default function Register() {
       alert("Error al registrar ❌");
     }
   };
+
     return(
         <div id="form_register" className="forms" >
             <div className="img_register ">
@@ -58,7 +59,6 @@ export default function Register() {
                 <input type="password" name="confirm_password" id="confirm_password_input" placeholder="Confirma tu contraseña" onChange={handleChange} />
                 <br />
                 <div className="container_submit"><button type="submit">Registrar</button></div>
-
             </form>
             <p className="foot">¿Ya tienes una cuenta?</p> <Link to ="/login" className="login_link">Inicia sesion</Link>
         </div> 

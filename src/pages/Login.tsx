@@ -1,7 +1,7 @@
 import { Link }  from "react-router-dom";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser} from "../services/api"; // ajusta la ruta si es diferente
+import { loginUser} from "../services/api"; 
 import "./login.css";
 
 export default function Login() {
@@ -58,6 +58,7 @@ const [formData, setFormData] = useState({
                 <input type="password" name="password" id="password_input" placeholder="Contraseña" value={formData.password} onChange={handleChange}/><br />
                 <div className="container_submit">
                 <button type="submit">Iniciar Sesión</button></div>
+
             </form>
             <p className="foot">¿No tienes una cuenta?</p><Link to='/register' className="register_link"> Registrate</Link>
        </div>
