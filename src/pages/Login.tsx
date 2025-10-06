@@ -36,7 +36,7 @@ const [formData, setFormData] = useState({
       }
 
       // Redirigir después de login
-      navigate("/home"); 
+      navigate("/"); 
     } catch (err: any) {
       console.error("Error en login:", err);
       alert("Error al iniciar sesión ❌");
@@ -50,6 +50,7 @@ const [formData, setFormData] = useState({
                 <h5>SIVE</h5>
             </div>
             <h1 className="loginh1">Inicia sesion</h1>
+            <p className="description">Empieza con nuestra web, solo crea tu cuenta y disfruta la experiencia </p>
             <form onSubmit={handleSubmit} className="form_login">
                 <label htmlFor="email">Ingresa tu correo</label><br />
                 <input type="email" name="email" id="email_input" placeholder=" Ingresa tu correo"  value={formData.email} onChange={handleChange} /><br />
