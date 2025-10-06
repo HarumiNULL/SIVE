@@ -1,8 +1,11 @@
+import Navbar from "./Navbar"
 export default function Home() {
     return(
+        <>
+        <Navbar/>
         <div>
-            <h1>bienvenido a SIVE</h1>
+            <h1>Bienvenido a SIVE</h1>
         </div>
+        </>
     )
-  
 }

@@ -36,7 +36,7 @@ const [formData, setFormData] = useState({
       }
 
       // Redirigir después de login
-      navigate("/home"); 
+      navigate("/"); 
     } catch (err: any) {
       console.error("Error en login:", err);
       alert("Error al iniciar sesión ❌");
