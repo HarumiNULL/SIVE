@@ -18,9 +18,10 @@ export default function View_opical() {
 
 
                 <div className="home-buttons">
-                    {/*<Link to="/mi-optica" className="btn ver">
-                        Ver mi Óptica
-                    </Link>*/}
+                    <Link to="/" className="btn ver">inicio</Link>
+                    <Link to="/editO" className="btn ver">
+                        Editar optica
+                    </Link>
                     <Link to="/login" className="btn cerrar">
                         Cerrar Sesión
                     </Link>
