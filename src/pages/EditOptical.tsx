@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"
 import "./editOptical.css";
 
 export default function EditOptical() {
@@ -36,8 +37,9 @@ export default function EditOptical() {
         </div>
 
         <div className="edit-buttons">
-          <button className="btn">Ver estadísticas</button>
-          <button className="btn cerrar">Cerrar sesión</button>
+          <button className="btn"> <Link to="/" className="btn">inicio</Link></button>
+        <button className="btn"><Link to="/viewO"  className="btn"> optica </Link></button>
+          <button className="btn "><Link to="/login"  className="btn"> logout</Link></button>
         </div>
       </header>
 

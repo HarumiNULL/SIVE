@@ -6,7 +6,9 @@ import "./App.css";
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
-import View_optical from './pages/ViewOptical';
+import ViewOptical from './pages/ViewOptical';
+import EditOptical from './pages/EditOptical';
+
 function App() {
 
   return (
@@ -16,7 +18,9 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/viewO" element={<View_optical/>}/>/* vista de opticas para dueño optica */
+        <Route path="/viewO" element={<ViewOptical/>}/>/* vista de opticas para dueño optica */
+        <Route path="/editO" element={<EditOptical/>}/>
+      
       </Routes>
     </Router>
     </>
