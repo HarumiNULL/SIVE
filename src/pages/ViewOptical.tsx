@@ -1,10 +1,53 @@
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getOneOptical, deleteOptical } from "../services/api";
 import { Link } from "react-router-dom";
 import "./viewOptical.css";
 
 export default function View_optical() {
+    // 👈 para obtener el id desde la URL
+    const navigate = useNavigate();
+    interface Optical {
+        id_optical: number;
+        nameOp: string;
+        address: string;
+        tel: string;
+        city: number;
+        email: string;
+        logo: string;
+        user: number;
+        certCadecuacion: string;
+        certDispensacion: string;
+        latitud: number;
+        longitud: number;
+    }
+    const [optic, setOptic] = useState<Optical | null>(null);
+
+    useEffect(() => {
+        getOneOptical(1)
+            .then((res) => setOptic(res.data))
+            .catch((err) => console.error("Error al obtener la óptica:", err));
+    }, []);
+    const id=optic?.id_optical;
+    const handleDelete = async () => {
+        if (!id) return;
+        const confirmDelete = window.confirm("¿Estás seguro de eliminar esta óptica?");
+        if (confirmDelete) {
+            try {
+                await deleteOptical(Number(id)); // llama al servicio
+                alert("Óptica eliminada correctamente ✅");
+                navigate("/"); // redirige a la página principal
+            } catch (error) {
+                console.error(error);
+                alert("Error al eliminar la óptica ❌");
+            }
+        }
+    };
 
     return (
+
         <div className="home-container">
+
             {/* Encabezado */}
             <header className="home-header">
                 <div className="home-logo">
@@ -29,15 +72,13 @@ export default function View_optical() {
             </header>
 
             {/* Contenido principal */}
-            <div>
-                <img src="src\assets\banner-eye.jpg" className="banner" alt="" />
-                <h1  className="text-banner">Optica eye care</h1>
+            <div >
+                <img src={optic?.logo} className="banner" alt="" />
+                <h1 className="text-banner">{optic?.nameOp}</h1>
             </div>
-
-            
             <div className="grid-container">
                 <div className="grid-item1">
-                    <h1 className="optic-title">Lorem ipsum dolor sit amet</h1>
+                    <h1 className="optic-title">{optic?.nameOp}</h1>
                     <p className="optic-description">
                         consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
@@ -56,8 +97,8 @@ export default function View_optical() {
                 </div>
                 <div className="grid-item3">
                     <div className="button-div">
-                        <button className="edit_optic">Editar optica</button>
-                        <button className="delete">Eliminar</button>
+                        <Link to="/editO"> <button className="edit_optic" >Editar optica</button></Link>
+                        <button className="delete" onClick={handleDelete}>Eliminar</button>
                     </div>
 
                 </div>
@@ -68,6 +109,9 @@ export default function View_optical() {
                     </div>
                 </div>
             </div>
+
+
+
         </div>
     );
 }

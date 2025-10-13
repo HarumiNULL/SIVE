@@ -38,3 +38,18 @@ export const loginUser = async (data: any): Promise<AuthResponse> => {
 export const logoutUser = async (token: string) => {
   await API.post<AuthResponse>("logout/", null, { headers: { Authorization: `Token ${token}` } });
 };
+
+export const getOneOptical = async(id:number) => {
+ return axios.get(`http://127.0.0.1:8000/api/optical/${id}/`);
+}
+
+export const deleteOptical = async (id: number) => {
+  try {
+    const res = await axios.delete(`http://127.0.0.1:8000/api/optical/${id}/`);
+    return res.data;
+  } catch (error: any) {
+    console.error("Error eliminando óptica:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
+};
+
