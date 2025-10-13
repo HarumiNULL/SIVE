@@ -35,6 +35,14 @@ export const loginUser = async (data: any): Promise<AuthResponse> => {
   }
 };
 
+export const questionary = async (data: any): Promise<AuthResponse> => {
+  try {
+    const res = await API.post<AuthResponse>("questionary/", data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || JSON.stringify(error.response?.data) || error.message);
+  }
+};
 export const logoutUser = async (token: string) => {
   await API.post<AuthResponse>("logout/", null, { headers: { Authorization: `Token ${token}` } });
 };
