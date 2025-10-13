@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import ViewOptical from './pages/ViewOptical';
+import EditOptical from './pages/EditOptical';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/viewO" element={<ViewOptical/>}/>/* vista de opticas para dueño optica */
+        <Route path="/editO" element={<EditOptical/>}/>
       
       </Routes>
     </Router>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./viewOptical.css";
 
-export default function View_opical() {
+export default function View_optical() {
 
     return (
         <div className="home-container">
