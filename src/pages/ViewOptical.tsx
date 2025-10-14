@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getOneOptical, deleteOptical } from "../services/api";
 import { Link } from "react-router-dom";
+import LoadingView from "./LoadingView";
 import "./viewOptical.css";
 
 export default function View_optical() {
@@ -28,13 +29,12 @@ export default function View_optical() {
             .then((res) => setOptic(res.data))
             .catch((err) => console.error("Error al obtener la óptica:", err));
     }, []);
-    const id=optic?.id_optical;
     const handleDelete = async () => {
-        if (!id) return;
+        if (!optic?.id_optical) return;
         const confirmDelete = window.confirm("¿Estás seguro de eliminar esta óptica?");
         if (confirmDelete) {
             try {
-                await deleteOptical(Number(id)); // llama al servicio
+                await deleteOptical(Number(optic?.id_optical)); // llama al servicio
                 alert("Óptica eliminada correctamente ✅");
                 navigate("/"); // redirige a la página principal
             } catch (error) {
@@ -43,7 +43,7 @@ export default function View_optical() {
             }
         }
     };
-
+    if (!optic) return <LoadingView/>;
     return (
 
         <div className="home-container">
@@ -109,9 +109,6 @@ export default function View_optical() {
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     );
 }
