@@ -1,0 +1,229 @@
+.home-container {
+  height: 100%;
+    width: 100%;
+  background-color: white;
+  display: grid;
+  flex-direction: column;
+}
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a884f7;
+  padding: 1rem 2rem;
+  height: 80px;
+  position: relative;
+}
+
+.home-logo {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.3rem;
+  font-family: "Poppins", sans-serif;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 70px; 
+  height: 50px;
+  object-fit: contain;
+  margin-right: 3px;
+}
+.logo-text {
+  font-size: 30px;   
+  font-weight: 700;
+  letter-spacing: 12px;
+  color: #fff;
+}
+.home-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  background-color: #7d5cc6;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #9a74e0;
+}
+
+.btn.cerrar {
+  background-color: #8b5cf6;
+}
+
+.btn.cerrar:hover {
+  background-color: #a17ff0;
+}
+
+.home-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #444;
+}
+.banner-container {
+    width: 100%;
+    height: 200px;
+    background-color: #c7affd;
+    display: flex;
+    justify-content: center; /* centra horizontalmente */
+    align-items: center;     /* centra verticalmente */
+    position: relative;
+}
+
+.banner {
+    width: 100%;
+    height: 400px;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    top: -50px; /* mueve el banner 50px hacia arriba */
+}
+.test-title{
+    text-align: center;
+    font-family: 'Jura', sans-serif;
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #333;
+    padding-left: 1rem;
+
+}
+
+.test-description {
+  text-align: start;
+  max-width: 800px;
+  margin: 20px auto;
+  padding-left: 5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+
+}
+.question-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 5rem; /* mismo padding que .test-description */
+  font-size: 1rem;
+  color: #333;
+}
+
+.question-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.question-option input[type="radio"] {
+  accent-color: #8b5cf6; /* mismo color violeta que tus botones */
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.question-option label {
+  cursor: pointer;
+}
+
+.question-form .home-buttons {
+  margin-top: 10px;
+}
+
+.grid-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 3 columnas iguales */    
+    gap: 10px; /* espacio entre filas y columnas */
+    padding: 10px;
+
+}
+.snellen{
+    width: 90%;
+    height: 90%;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.subtitle{
+     text-align: left;
+    font-family: 'Jura', sans-serif;
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #333;
+    padding-left: 9rem;
+}
+.h2-title{
+    text-align: left;
+    font-family: 'Jura', sans-serif;
+    margin-top: 20px;
+    font-size: 700;
+    color: #333;
+    padding-left: 1rem;
+
+}
+.services-list{
+    font-family: 'Jura', sans-serif;
+    font-size: 600;
+    text-align: start;
+    max-width: 800px;
+    margin: 20px auto;
+    padding-left: 5rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+}
+.comments-p{
+    padding-left: 1rem;
+    padding-top: 6rem;
+    font-size: 1.1rem;
+    color: #555;
+}
+.button-div{
+    padding: 10rem;
+    
+}
+button{
+    border-radius: 20px;
+    height: 3rem;
+    width: 8rem;
+    margin: 30px;
+}
+.delete{
+    background-color: #f56565;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.edit_optic{
+    background-color: #785AB0;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.text-banner{
+    position: absolute;
+    top: 1px; /* Ajusta este valor para mover el texto verticalmente */
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FFFF;
+    font-family: 'Jura', sans-serif;
+    font-size: 5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    background-color: rgba(56, 21, 84, 0.4);
+    
+}
