@@ -25,7 +25,7 @@ export default function View_optical() {
     const [optic, setOptic] = useState<Optical | null>(null);
 
     useEffect(() => {
-        getOneOptical(1)
+        getOneOptical(5)
             .then((res) => setOptic(res.data))
             .catch((err) => console.error("Error al obtener la óptica:", err));
     }, []);
@@ -93,7 +93,14 @@ export default function View_optical() {
                     </ul>
                 </div>
                 <div className="grid-item2">
-                    <img src="src\assets\Captura de pantalla 2025-10-05 230702.png" className="map" alt="" />
+                    <iframe
+                        width="600"
+                        height="450"
+                        loading="lazy"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCvAD4HEt7SQKaYIYEMD-duj7OCvCSQ0AU
+                            &q=3.54%2C%203.45">
+                    </iframe>
+                    
                 </div>
                 <div className="grid-item3">
                     <div className="button-div">
