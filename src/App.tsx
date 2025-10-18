@@ -24,10 +24,10 @@ function App() {
             <Route path="/register" element={<ProtectedRoute>
               <Register />
             </ProtectedRoute>} />
-            <Route path="/viewO" element={<ProtectedRoute>
+            <Route path="/viewO/:id" element={<ProtectedRoute>
               <ViewOptical />
             </ProtectedRoute>} />
-            <Route path="/editO" element={<ProtectedRoute>
+            <Route path="/editO/:id" element={<ProtectedRoute>
               <EditOptical />
             </ProtectedRoute>} />
             <Route path="/prueba" element={<ProtectedRoute>
