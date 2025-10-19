@@ -1,0 +1,113 @@
+.optical-list-container {
+  padding: 2rem;
+  background: #f7f4fc;
+  min-height: 100vh;
+}
+
+.optical-list-container h2 {
+  text-align: center;
+  color: #3b2a66;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.optical-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.optical-card {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 900px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.optical-card:hover {
+  transform: scale(1.02);
+}
+
+.optical-info {
+  flex: 1;
+  padding: 1.5rem 2rem;
+}
+
+.optical-subtitle {
+  font-size: 0.8rem;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.optical-info h3 {
+  color: #3b2a66;
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.optical-stars {
+  margin-bottom: 1rem;
+}
+
+.star {
+  color: #ccc;
+  font-size: 1.2rem;
+  margin-right: 3px;
+}
+
+.star.filled {
+  color: #f6b93b;
+}
+
+.optical-info p {
+  color: #555;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.optical-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.visit-btn {
+  background: #7d5efc;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.visit-btn:hover {
+  background: #5a3de8;
+}
+
+.optical-buttons a {
+  color: #7d5efc;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.optical-buttons a:hover {
+  text-decoration: underline;
+}
+
+.optical-image {
+  flex-basis: 35%;
+}
+
+.optical-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-left: 1px solid #ddd;
+}

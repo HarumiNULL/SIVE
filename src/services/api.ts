@@ -1,4 +1,5 @@
 import axios from "axios";
+/*import { Axios } from "axios";*/
 
 // Configura la URL de tu backend (puede estar en otro servidor)
 const API = axios.create({
@@ -60,4 +61,20 @@ export const deleteOptical = async (id: number) => {
     throw new Error(error.response?.data?.error || error.message);
   }
 };
+
+export const getAllOpticals = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const res = await axios.get("http://127.0.0.1:8000/api/optical/", {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    return res.data; 
+  } catch (error: any) {
+    console.error("Error al obtener ópticas:", error);
+    throw new Error(error.response?.data?.detail || "Error al obtener ópticas");
+  }
+};
+
 

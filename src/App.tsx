@@ -9,11 +9,11 @@ import ViewOptical from './pages/user/ViewOptical';
 import EditOptical from './pages/opticalOwner/EditOptical';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from "./components/AuthContext";
-import ListTest from "./pages/user/listTest";
+import ListTest from "./pages/user/ListTest";
 import Test from "./pages/user/Test";
 import TestIshihara from "./pages/TestIshihara";
-import ListOptical from "./pages/user/listOptical";
-import ListProbability from "./pages/user/listProbability";
+import ListOptical from "./pages/user/ListOptical";
+import ListProbability from "./pages/user/ListProbability";
 function App() {
 
   return (
@@ -45,6 +45,9 @@ function App() {
               <Test /></ProtectedRoute>} />
             <Route path="/testIshi" element={<ProtectedRoute>
               <TestIshihara />
+            </ProtectedRoute>} />
+            <Route path="/listO" element={<ProtectedRoute>
+              <ListOptical />
             </ProtectedRoute>} />
           </Routes>
         </Router>
