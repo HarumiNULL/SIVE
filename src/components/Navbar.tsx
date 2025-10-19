@@ -16,8 +16,9 @@ export default function Navbar() {
 
         try {
             await logoutUser(token);
-            localStorage.removeItem("token"); // 🧹 Limpia el token local
-            navigate("/login"); // 🔁 Redirige al login
+            await logout();
+            /*Storage.removeItem("token");*/
+            navigate("/login"); 
         } catch (error) {
             console.error("Error cerrando sesión:", error);
         }
@@ -37,9 +38,15 @@ export default function Navbar() {
 
                 <div className="home-buttons">
                     <Link to="/" className="btn ver">Inicio</Link>
+                    <Link to="/listTest" className="btn ver">Tests</Link>
+                    <Link to="/listOptical" className="btn ver">Opticas</Link>
+                    <Link to="/listProb" className="btn ver">"Diagnosticos"</Link>
                     <Link to="/viewO"className="btn ver">ver mi optica</Link>
-                    {isAuthenticated ? (<Link onClick={handleLogout}className="btn cerrar">cerrar sesion</Link>):
-                    (<Link to="/login" className="btn cerrar">iniciar sesion</Link>)}
+                    {isAuthenticated ? 
+                    (<Link to="/login" onClick={handleLogout}className="btn cerrar">cerrar sesion</Link>
+                    ):(
+                    <Link to="/login" className="btn cerrar">iniciar sesion</Link>
+                    )}
                     
                 </div>
             </header>

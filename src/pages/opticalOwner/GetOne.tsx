@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getOneOptical } from "../services/api";
-import "./viewOptical.css";
+import { getOneOptical } from "../../services/api";
+import "../user/viewOptical.css";
 
 export default function OneOptical() {
     interface Optical {

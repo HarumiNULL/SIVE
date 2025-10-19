@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link }  from "react-router-dom";
 import './register.css'
-import { registerUser } from "../services/api";
+import { registerUser } from '../../services/api'
 
 export default function Register() {
 

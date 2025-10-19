@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getOneOptical, deleteOptical } from "../services/api";
+import { getOneOptical, deleteOptical } from "../../services/api";
 import { Link } from "react-router-dom";
-import LoadingView from "./LoadingView";
+import LoadingView from "../LoadingView";
 import "./viewOptical.css";
 
 export default function View_optical() {
