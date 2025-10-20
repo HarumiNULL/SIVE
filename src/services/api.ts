@@ -48,8 +48,8 @@ export const logoutUser = async (token: string) => {
   await API.post<AuthResponse>("logout/", null, { headers: { Authorization: `Token ${token}` } });
 };
 
-export const getOneOptical = async(id:number) => {
- return axios.get(`http://127.0.0.1:8000/api/optical/${id}/`);
+export const getOneOptical = async (id: number) => {
+  return axios.get(`http://127.0.0.1:8000/api/optical/${id}/`);
 }
 
 export const deleteOptical = async (id: number) => {
@@ -70,22 +70,23 @@ export const getAllOpticals = async () => {
         Authorization: `Token ${token}`,
       },
     });
-    return res.data; 
+    return res.data;
   } catch (error: any) {
     console.error("Error al obtener ópticas:", error);
     throw new Error(error.response?.data?.detail || "Error al obtener ópticas");
   }
 };
 
-/*export const getCities = async () => {
+export const getCities = async () => {
   try {
-    const res = await axios.get("city/");
+    const res = await axios.get(`http://127.0.0.1:8000/api/city/`);
+    console.log("📡 Datos recibidos de cities:", res.data);
     return res.data;
   } catch (error: any) {
     console.error("Error al obtener ciudades:", error);
     throw new Error(error.response?.data?.error || "Error al obtener ciudades");
   }
-};*/
+};
 
 export const getDays = async () => {
   try {
@@ -109,14 +110,38 @@ export const getHours = async () => {
   }
 };
 
-export const createOptical = async (formData: FormData) => {
+export const createOptical = async (data: any) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(`http://127.0.0.1:8000/api/optical/`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${ token }` : "",
+    },
+});
+
+
+console.log("✅ Óptica creada:", response.data);
+return response.data;
+  } catch (error) {
+  console.error("❌ Error creando óptica:", error);
+  throw error;
+}
+};
+
+/*
+export const createOptical = async (formData: FormData, token: string) => {
   try {
     const res = await axios.post(`http://127.0.0.1:8000/api/optical/`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        Authorization: `Token ${token}`,
+         "Content-Type": "multipart/form-data" },
     });
+    console.log("exitoo")
     return res.data;
   } catch (error) {
     console.error("❌ Error creando óptica:", error);
     throw error;
   }
-};
+};*/

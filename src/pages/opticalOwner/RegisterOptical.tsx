@@ -1,8 +1,9 @@
 // src/pages/RegisterOptical.tsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getDays, getHours, createOptical } from "../../services/api";
-import "./registerOptical.css";
+import { getDays, getHours, createOptical,getCities } from "../../services/api";
+import styles from "./registerOptical.module.css"
+import Navbar from "../../components/Navbar";
 
 export default function RegisterOptical() {
   const navigate = useNavigate();
@@ -23,27 +24,28 @@ export default function RegisterOptical() {
 
   const [days, setDays] = useState([]);
   const [hours, setHours] = useState([]);
+  const[cities, setCities]=useState([]);
 
   // Cargar datos desde el backend
- useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const [ dayData, hourData] = await Promise.all([
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [dayData, hourData,cityData] = await Promise.all([
+          getDays(),
+          getHours(),
+          getCities()
+        ]);
+        // 👇 Esto se asegura de que sea un array válido para map()
+        setDays(Array.isArray(dayData) ? dayData : []);
+        setHours(Array.isArray(hourData) ? hourData : []);
+        setCities(Array.isArray(cityData) ? cityData : []);
+      } catch (error) {
+        console.error("Error cargando datos:", error);
+      }
+    };
 
-        getDays(),
-        getHours(),
-      ]);
-
-      // 👇 Esto se asegura de que sea un array válido para map()
-      setDays(Array.isArray(dayData) ? dayData : []);
-      setHours(Array.isArray(hourData) ? hourData : []);
-    } catch (error) {
-      console.error("Error cargando datos:", error);
-    }
-  };
-
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
 
 
 
@@ -77,73 +79,70 @@ export default function RegisterOptical() {
 
   return (
     <div className="edit-container">
-      {/* 🔹 Navbar integrada */}
-      <header className="edit-header">
-        <div className="edit-logo">
-          <img src="/src/assets/sunglasses.png" alt="Logo" className="logo-img" />
-          <span>S I V E</span>
-        </div>
+      <Navbar />
 
-        <div className="edit-buttons">
-          <Link to="/" className="btn">Inicio</Link>
-          <Link to="/viewO" className="btn">Ver mi óptica</Link>
-          <Link to="/login" className="btn">Logout</Link>
-        </div>
-      </header>
+       <h2 className={styles.optical_title}>Registrar Óptica</h2><br />
+      <div className={styles.formContainer}>
+       
+        <form action="">
+          <label htmlFor="nameOp">Nombre de Óptica</label><br />
+          <input className={styles.register_optical_input}
+            type="text"
+            name="nameOp"
+            value={formData.nameOp}
+            onChange={handleChange}
+          />
 
-      <main className="edit-content">
-        <h2 className="edit-title">Registrar Óptica</h2>
-        <form className="edit-form" onSubmit={handleSubmit}>
-          {/* Nombre */}
-          <label>Nombre de Óptica</label>
-          <div className="form-group">
-            <input
-              type="text"
-              name="nameOp"
-              value={formData.nameOp}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* Dirección */}
-          <label>Dirección</label>
-          <div className="form-group">
-            <input
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* Teléfono */}
-          <label>Teléfono</label>
-          <div className="form-group">
-            <input
-              type="text"
-              name="tel"
-              value={formData.tel}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* Día */}
-          <label>Día</label>
-          <div className="form-group">
-            <select name="day" value={formData.day} onChange={handleChange}>
-              <option value="">Seleccionar...</option>
-              {days.map((d: any) => (
-                <option key={d.id_day} value={d.id_day}>
-                  {d.name_day}
-                </option>
+          <br />
+          <label htmlFor="address">Dirección</label><br />
+          <input className={styles.register_optical_input}
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+          />
+          <br />
+          <label htmlFor="tel">Teléfono</label><br />
+          <input className={styles.register_optical_input}
+            type="text"
+            name="tel"
+            value={formData.tel}
+            onChange={handleChange}
+          />
+          <br />
+          <label htmlFor="email">Correo de la optica</label><br />
+          <input className={styles.register_optical_input}
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <br />
+          <br />
+          <label >¿Que dias tiene servicio la optica?</label>
+          <div className={styles.days}>
+            {days
+              .sort((a: any, b: any) => a.id_day - b.id_day)
+              .map((days: any) => (
+                <label className={styles.option_day} key={days.id_day} htmlFor={`${days.id_day}`}>
+                  <input type="checkbox" className={styles.option_check}
+                    name={`day-${days.id_day}`}
+                    id={`${days.id_day}`}
+                    value={`${days.id_day}`} />
+                  {days.name_day}
+                </label>
               ))}
-            </select>
           </div>
+          <label htmlFor="city">¿En que ciudad esta ubicada?</label>
+          <select name="city" id="">
+            {cities.map((city: any)=>(
+              <option key={city.id_city} value={`${city.id_city}`}>{city.name}</option>
+            ))}
+          </select>
 
-          {/* Hora apertura */}
-          <label>Hora de Apertura</label>
-          <div className="form-group">
-            <select
+          <div className={styles.hours}>
+            <label htmlFor="hour_aper"  className={styles.label_form_optical}>Hora de Apertura</label>
+            <select className={styles.select_optical}
               name="hour_aper"
               value={formData.hour_aper}
               onChange={handleChange}
@@ -155,12 +154,8 @@ export default function RegisterOptical() {
                 </option>
               ))}
             </select>
-          </div>
-
-          {/* Hora cierre */}
-          <label>Hora de Cierre</label>
-          <div className="form-group">
-            <select
+            <label  className={styles.label_form_optical} htmlFor="hour_close">Hora de Cierre</label>
+            <select className={styles.select_optical}
               name="hour_close"
               value={formData.hour_close}
               onChange={handleChange}
@@ -173,45 +168,48 @@ export default function RegisterOptical() {
               ))}
             </select>
           </div>
-
-          {/* Archivos */}
-          <label>Logo (solo imágenes .jpg, .png)</label>
+          <br />
+          <label  htmlFor="logo">Logo (solo imágenes .jpg, .png)</label>
           <div className="form-group">
             <input
+            className={styles.input_file}
               type="file"
               name="logo"
               accept=".jpg,.jpeg,.png"
               onChange={handleChange}
             />
           </div>
-
-          <label>Certificado de Adecuación (solo PDF)</label>
+          <label htmlFor="certCadecuacion">Certificado de Adecuación (solo PDF)</label>
           <div className="form-group">
             <input
+            className={styles.input_file}
               type="file"
               name="certCadecuacion"
               accept=".pdf"
               onChange={handleChange}
             />
           </div>
-
-          <label>Certificado de Dispensación (solo PDF)</label>
+          <label htmlFor="certDispensacion">Certificado de Dispensación (solo PDF)</label>
           <div className="form-group">
             <input
+              className={styles.input_file}
               type="file"
               name="certDispensacion"
               accept=".pdf"
               onChange={handleChange}
             />
           </div>
-
           <div className="form-buttons">
             <button type="submit" className="btn editar">
               Guardar Cambios
             </button>
           </div>
+
         </form>
-      </main>
+
+      </div>
+
+
     </div>
   );
 }
