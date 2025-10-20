@@ -4,7 +4,6 @@ import { getOneOptical, deleteOptical } from "../../services/api";
 import { Link } from "react-router-dom";
 import LoadingView from "../LoadingView";
 import "./viewOptical.css";
-
 import L from "leaflet"; // 👈 Importa Leaflet correctamente
 import "leaflet/dist/leaflet.css"; // 👈 Importa los estilos CSS
 
@@ -36,7 +35,7 @@ export default function View_optical() {
         .then((res) => setOptic(res.data))
         .catch((err) => console.error("Error al obtener la óptica:", err));
     }
-  }, [id]);
+  }, [id]); 
 
   const handleDelete = async () => {
     if (!optic?.id_optical) return;

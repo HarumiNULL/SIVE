@@ -1,0 +1,147 @@
+.test-div {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    background-color: #D9D9D9;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 10px;
+}
+
+.test-name {
+    font-family: inter;
+    text-align: start;
+}
+
+p.test-descriptions {
+    font-family: inter;
+    text-align: start;
+}
+
+.col.imagen {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+
+.title-header{
+    margin-left: 25%;
+    margin-right: 26%;
+    font-family: 'Jura';
+    font-size: 700;
+    color:#4A376C ;
+    
+    background-color:#AC81FC;
+    border-radius: 15px;
+}
+
+
+.test-list-container {
+    padding: 2rem;
+    background: #f7f4fc;
+    min-height: 100vh;
+}
+
+.test-list-container h2 {
+    text-align: center;
+    color: #3b2a66;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.test-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.test-card {
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-bottom: 5%;
+    display: flex;
+    justify-content: space-between;
+    background: #D9D9D9;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 900px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.test-card:hover {
+    transform: scale(1.02);
+}
+
+.test-info {
+    flex: 1;
+    padding: 1.5rem 2rem;
+}
+
+
+
+
+
+
+
+.optical-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+
+
+.visit-btn:hover {
+    background: #AC81FC;
+}
+
+
+
+
+
+.test-image {
+    flex-basis: 20%;
+    background-color: #ffff;
+    
+    
+}
+
+.test-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-left: 1px solid #ddd;
+}
+
+.visit-btn-test {
+  background: #AC81FC;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.visit-btn-test:hover {
+  background: #3b2a66;
+}
+
+.test-buttons a {
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.test-buttons a:hover {
+  text-decoration: underline;
+}
+.linksss{
+    text-decoration: none;
+    color: white;
+}

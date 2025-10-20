@@ -28,10 +28,10 @@ function App() {
               <Register />
             </ProtectedRoute>} />
             <Route path="/listOptical" element={<ProtectedRoute> <ListOptical/></ProtectedRoute>}/>
-            <Route path="/viewO" element={<ProtectedRoute>
+            <Route path="/viewO/:id" element={<ProtectedRoute>
               <ViewOptical />
             </ProtectedRoute>} />
-            <Route path="/editO" element={<ProtectedRoute>
+            <Route path="/editO/:id" element={<ProtectedRoute>
               <EditOptical />
             </ProtectedRoute>} />
             <Route path="/prueba" element={<ProtectedRoute>
@@ -41,7 +41,8 @@ function App() {
             <Route path="/listTest" element={<ProtectedRoute>
               <ListTest />
             </ProtectedRoute>} />
-            <Route path="/test" element={<ProtectedRoute>
+            <Route path="/test/:id" element={<Test />} /> 
+            <Route path="/testSnell" element={<ProtectedRoute>
               <Test /></ProtectedRoute>} />
             <Route path="/testIshi" element={<ProtectedRoute>
               <TestIshihara />
