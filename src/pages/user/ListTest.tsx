@@ -22,7 +22,7 @@ export default function ListTest() {
 
     const getRouteForTest = (testName: string, id:number) => {
         switch (testName.toLowerCase()) {
-            case "ishihara":
+            case "test de daltonismo(ishihara)":
                 return `/test/${id}`;
             case "tabla de snellen ":
                 return `/test/${id}`;

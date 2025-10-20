@@ -193,6 +193,7 @@ button{
     cursor: pointer;
 }
 .text-banner{
+  margin-top:250px ;
     position: absolute;
     top: 150px; /* Ajusta este valor para mover el texto verticalmente */
     left: 50%;

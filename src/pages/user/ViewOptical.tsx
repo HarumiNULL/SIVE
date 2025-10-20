@@ -6,7 +6,7 @@ import LoadingView from "../LoadingView";
 import "./viewOptical.css";
 import L from "leaflet"; // 👈 Importa Leaflet correctamente
 import "leaflet/dist/leaflet.css"; // 👈 Importa los estilos CSS
-
+import Navbar from "../../components/Navbar";
 
 export default function View_optical() {
   const navigate = useNavigate();
@@ -58,10 +58,10 @@ export default function View_optical() {
     console.log("Datos recibidos de la API:", optic);
     const lat = optic.latitud; // fallback Bogotá
     const lng = optic.longitud;
+    console.log("Latitud:", optic.latitud, "Longitud:", optic.longitud);  
+    const map = L.map("map").setView([lat, lng], 20);
 
-    const map = L.map("map").setView([lat, lng], 13);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer(`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`, {
       attribution: "© OpenStreetMap contributors",
     }).addTo(map);
 
@@ -69,36 +69,17 @@ export default function View_optical() {
       .addTo(map)
       .bindPopup(optic.nameOp)
       .openPopup();
-
     return () => {
       map.remove(); // limpia el mapa al desmontar
     };
   }, [optic]);
-
+  
   if (!optic) return <LoadingView />;
 
   return (
     <div className="home-container">
-      {/* Encabezado */}
-      <header className="home-header">
-        <div className="home-logo">
-          <img src="/src/assets/sunglasses.png" alt="Logo" className="logo-img" />
-          <span>S I V E</span>
-        </div>
-
-        <div className="home-buttons">
-          <Link to="/" className="btn ver">
-            inicio
-          </Link>
-          <Link to="/editO" className="btn ver">
-            Editar óptica
-          </Link>
-          <Link to="/login" className="btn cerrar">
-            Cerrar Sesión
-          </Link>
-        </div>
-      </header>
-
+      <Navbar/>
+    
       {/* Contenido principal */}
       <div>
         <img src={optic?.logo} className="banner" alt="" />
