@@ -48,7 +48,9 @@ export default function Register() {
             <p>Empieza con nuestra web, solo crea tu cuenta y disfruta la experiencia </p>
             <form onSubmit={handleSubmit} className="form_register">
                 <div className="name">
+                    <label htmlFor="text">Ingresa tu nombre</label><br />
                     <input type="text" placeholder="Primer nombre" name="first_name" onChange={handleChange}/>
+                    <label htmlFor="text">Ingresa tu apellido</label><br />
                     <input type="text" placeholder="Apellido" name="last_name" onChange={handleChange}/><br />
                 </div>
                 <label htmlFor="email">Ingresa tu correo</label><br />

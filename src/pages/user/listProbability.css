@@ -1,0 +1,131 @@
+.probability-container {
+  background: #f7f4fc;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.probability-container h2 {
+  color: #3b2a66;
+  text-align: left;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+
+.probability-card {
+  display: flex;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.probability-content {
+  flex: 1;
+  padding: 2rem;
+  background: #f2f0f6;
+}
+
+.probability-content h3 {
+  color: #3b2a66;
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.test-times {
+  color: #6b6b6b;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.probability-body {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.chart-section {
+  flex-basis: 30%;
+  position: relative;
+}
+
+.chart-box {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: auto;
+}
+
+.chart-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  color: #6b21a8;
+  font-weight: bold;
+}
+
+.probability-info {
+  flex-basis: 70%;
+}
+
+.highlight {
+  font-size: 1rem;
+  color: #2d1b52;
+  margin-bottom: 0.5rem;
+}
+
+.recommendation {
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.probability-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-options {
+  color: #6b21a8;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.view-options:hover {
+  text-decoration: underline;
+}
+
+.test-btn {
+  display: inline-block;
+  text-decoration: none;
+  background: #7b4ce0;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+
+.test-btn:hover {
+  background: #5b38d2;
+}
+
+.probability-image {
+  flex-basis: 35%;
+  background: #fff;
+}
+
+.probability-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -14,6 +14,7 @@ import Test from "./pages/user/Test";
 import TestIshihara from "./pages/TestIshihara";
 import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
+import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 function App() {
 
   return (
@@ -24,9 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<ProtectedRoute>
-              <Register />
-            </ProtectedRoute>} />
+            <Route path="/register" element={<Register />} />
             <Route path="/listOptical" element={<ProtectedRoute> <ListOptical/></ProtectedRoute>}/>
             <Route path="/viewO" element={<ProtectedRoute>
               <ViewOptical />
@@ -48,6 +47,9 @@ function App() {
             </ProtectedRoute>} />
             <Route path="/listO" element={<ProtectedRoute>
               <ListOptical />
+            </ProtectedRoute>} />
+            <Route path="/regisO" element={<ProtectedRoute>
+              <RegisterOptical />
             </ProtectedRoute>} />
           </Routes>
         </Router>

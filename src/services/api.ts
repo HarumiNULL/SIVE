@@ -77,4 +77,46 @@ export const getAllOpticals = async () => {
   }
 };
 
+/*export const getCities = async () => {
+  try {
+    const res = await axios.get("city/");
+    return res.data;
+  } catch (error: any) {
+    console.error("Error al obtener ciudades:", error);
+    throw new Error(error.response?.data?.error || "Error al obtener ciudades");
+  }
+};*/
 
+export const getDays = async () => {
+  try {
+    const res = await axios.get(`http://127.0.0.1:8000/api/days/`);
+    console.log("📡 Datos recibidos de days:", res.data);
+    return res.data;
+  } catch (error) {
+    console.error("❌ Error en getDays:", error);
+    return [];
+  }
+};
+
+export const getHours = async () => {
+  try {
+    const res = await axios.get(`http://127.0.0.1:8000/api/hours/`);
+    console.log("📡 Datos recibidos de hours:", res.data);
+    return res.data;
+  } catch (error) {
+    console.error("❌ Error en getHours:", error);
+    return [];
+  }
+};
+
+export const createOptical = async (formData: FormData) => {
+  try {
+    const res = await axios.post(`http://127.0.0.1:8000/api/optical/`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("❌ Error creando óptica:", error);
+    throw error;
+  }
+};
