@@ -8,10 +8,11 @@ import ViewOptical from './pages/user/ViewOptical';
 import EditOptical from './pages/opticalOwner/EditOptical';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from "./components/AuthContext";
-import ListTest from "./pages/user/listTest";
+import ListTest from "./pages/user/ListTest";
 import Test from "./pages/user/Test";
-import ListOptical from "./pages/user/listOptical";
-import ListProbability from "./pages/user/listProbability";
+import ListOptical from "./pages/user/ListOptical";
+import ListProbability from "./pages/user/ListProbability";
+import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 function App() {
 
   return (
@@ -22,9 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<ProtectedRoute>
-              <Register />
-            </ProtectedRoute>} />
+            <Route path="/register" element={<Register />} />
             <Route path="/listOptical" element={<ProtectedRoute> <ListOptical/></ProtectedRoute>}/>
             <Route path="/viewO/:id" element={<ProtectedRoute>
               <ViewOptical />

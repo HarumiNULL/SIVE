@@ -1,11 +1,11 @@
+// src/pages/RegisterOptical.tsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getDays, getHours, createOptical,getCities } from "../../services/api";
-import styles from "./editOptical.module.css"
+import styles from "./registerOptical.module.css"
 import Navbar from "../../components/Navbar";
 
-
-export default function EditOptical() {
+export default function RegisterOptical() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -81,7 +81,7 @@ export default function EditOptical() {
     <div className="edit-container">
       <Navbar />
 
-       <h2 className={styles.optical_title}>Editar Óptica</h2><br />
+       <h2 className={styles.optical_title}>Registrar Óptica</h2><br />
       <div className={styles.formContainer}>
        
         <form action="">

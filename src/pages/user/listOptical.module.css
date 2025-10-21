@@ -1,0 +1,113 @@
+.optical_list_container{
+  padding: 2rem;
+  background: #f7f4fc;
+  min-height: 100vh;
+}
+
+.optical-list-container h2 {
+  text-align: center;
+  color: #3b2a66;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.optical_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.optical_card {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 900px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.optical_card:hover {
+  transform: scale(1.02);
+}
+
+.optical_info {
+  flex: 1;
+  padding: 1.5rem 2rem;
+}
+
+.optical_subtitle {
+  font-size: 0.8rem;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.optical_info h3 {
+  color: #3b2a66;
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.optical_stars {
+  margin-bottom: 1rem;
+}
+
+.star {
+  color: #ccc;
+  font-size: 1.2rem;
+  margin-right: 3px;
+}
+
+.star.filled {
+  color: #f6b93b;
+}
+
+.optical_info p {
+  color: #555;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.optical_buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.visit_btn {
+  background: #7d5efc;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.visit_btn:hover {
+  background: #5a3de8;
+}
+
+.optical_buttons a {
+  color: #7d5efc;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.optical_buttons a:hover {
+  text-decoration: underline;
+}
+
+.optical_image {
+  flex-basis: 35%;
+}
+
+.optical_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-left: 1px solid #ddd;
+}
