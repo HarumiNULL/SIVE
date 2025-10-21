@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/api";
 import { useAuth } from "./AuthContext";
-import "./navbar.css"
-
+import styles from "./navbar.module.css"
 
 export default function Navbar() {
     const {isAuthenticated, logout}=useAuth()
@@ -26,26 +25,26 @@ export default function Navbar() {
     return (
         <>
         <nav>
-            <header className="home-header">
-                <div className="home-logo">
+            <header className={styles.home_header}>
+                <div className={styles.home_logo}>
                     <img
                         src="/src/assets/sunglasses.png"
                         alt="Logo"
-                        className="logo-img"
+                        className={styles.logo_img}
                     />
                     <span>S I V E</span>
                 </div>
 
-                <div className="home-buttons">
-                    <Link to="/" className="btn ver">Inicio</Link>
-                    <Link to="/listTest" className="btn ver">Tests</Link>
-                    <Link to="/listOptical" className="btn ver">Opticas</Link>
-                    <Link to="/listProb" className="btn ver">"Diagnosticos"</Link>
-                    <Link to="/viewO"className="btn ver">ver mi optica</Link>
+                <div className={styles.home_buttons}>
+                    <Link to="/" className={styles.btn_ver}>Inicio</Link>
+                    <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
+                    <Link to="/listOptical" className={styles.btn_ver}>Opticas</Link>
+                    <Link to="/listProb" className={styles.btn_ver}>"Diagnosticos"</Link>
+                    <Link to="/viewO"className={styles.btn_ver}>ver mi optica</Link>
                     {isAuthenticated ? 
-                    (<Link to="/login" onClick={handleLogout}className="btn cerrar">cerrar sesion</Link>
+                    (<Link to="/login" onClick={handleLogout}className={styles.btn_cerrar}>cerrar sesion</Link>
                     ):(
-                    <Link to="/login" className="btn cerrar">iniciar sesion</Link>
+                    <Link to="/login" className={styles.btn_cerrar}>iniciar sesion</Link>
                     )}
                     
                 </div>

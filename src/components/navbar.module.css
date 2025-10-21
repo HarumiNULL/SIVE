@@ -1,11 +1,11 @@
-.nav-links {
+.nav_links {
    text-align: center;
     display: flex;
     gap: 20px;
     font-size: 18px;
     font-weight: bold;
 }
-.nav-links a {
+.nav_inks a {
     color: white;
     text-decoration: none;
     padding: 10px 15px; 
