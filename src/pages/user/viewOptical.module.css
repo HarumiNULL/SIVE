@@ -1,11 +1,11 @@
-.home-container {
+.home_container {
   height: 100%;
-    width: 100%;
+  width: 100%;
   background-color: white;
   display: grid;
   flex-direction: column;
 }
-.home-header {
+.home_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,7 +15,7 @@
   position: relative;
 }
 
-.home-logo {
+.home_logo {
   color: white;
   font-size: 1.8rem;
   font-weight: 600;
@@ -24,19 +24,19 @@
   gap: 10px;
 }
 
-.logo-img {
+.logo_img {
   width: 70px; 
   height: 50px;
   object-fit: contain;
   margin-right: 3px;
 }
-.logo-text {
+.logo_text {
   font-size: 30px;   
   font-weight: 700;
   letter-spacing: 12px;
   color: #fff;
 }
-.home-buttons {
+.home_buttons {
   display: flex;
   gap: 1rem;
 }
@@ -65,7 +65,7 @@
   background-color: #a17ff0;
 }
 
-.home-content {
+.home_content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -74,7 +74,7 @@
   text-align: center;
   color: #444;
 }
-.banner-container {
+.banner_container {
     width: 100%;
     height: 200px;
     background-color: #4CAF50;
@@ -95,7 +95,7 @@
     font-size: 2em;
     top: -50px; /* mueve el banner 50px hacia arriba */
 }
-.optic-title{
+.optic_title{
     text-align: center;
     font-family: 'Jura', sans-serif;
     margin-top: 20px;
@@ -105,7 +105,7 @@
 
 }
 
-.optic-description {
+.optic_description {
   text-align: start;
   max-width: 800px;
   margin: 20px auto;
@@ -115,7 +115,7 @@
   color: #555;
 
 }
-.grid-container{
+.grid_container{
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 3 columnas iguales */    
     gap: 10px; /* espacio entre filas y columnas */
@@ -144,7 +144,7 @@
     padding-left: 9rem;
 
 }
-.h2-title{
+.h2_title{
     text-align: left;
     font-family: 'Jura', sans-serif;
     margin-top: 20px;
@@ -153,7 +153,7 @@
     padding-left: 1rem;
 
 }
-.services-list{
+.services_list{
     font-family: 'Jura', sans-serif;
     font-size: 600;
     text-align: start;
@@ -164,13 +164,13 @@
     line-height: 1.6;
     color: #555;
 }
-.comments-p{
+.comments_p{
     padding-left: 1rem;
     padding-top: 6rem;
     font-size: 1.1rem;
     color: #555;
 }
-.button-div{
+.button_div{
     padding: 10rem;
     
 }
@@ -192,9 +192,9 @@ button{
     border: none;
     cursor: pointer;
 }
-.text-banner{
+.text_banner{
     position: absolute;
-    top: 150px; /* Ajusta este valor para mover el texto verticalmente */
+    top: 200px; /* Ajusta este valor para mover el texto verticalmente */
     left: 50%;
     transform: translateX(-50%);
     color: #FFFF;

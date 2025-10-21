@@ -1,28 +1,46 @@
 /*import { useState } from 'react'*/
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-
-/*import Navbar from "./pages/Navbar";*/
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
-import ViewOptical from './pages/ViewOptical';
-import EditOptical from './pages/EditOptical';
-
+import Login from './pages/user/Login';
+import Register from './pages/user/Register';
+import Home from './pages/user/Home'
+import ViewOptical from './pages/user/ViewOptical';
+import EditOptical from './pages/opticalOwner/EditOptical';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from "./components/AuthContext";
+import ListTest from "./pages/user/ListTest";
+import Test from "./pages/user/Test";
+import ListOptical from "./pages/user/ListOptical";
+import ListProbability from "./pages/user/ListProbability";
+import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 function App() {
 
   return (
     <>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/viewO" element={<ViewOptical/>}/>/* vista de opticas para dueño optica */
-        <Route path="/editO" element={<EditOptical/>}/>
-      
-      </Routes>
-    </Router>
+
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/listOptical" element={<ProtectedRoute> <ListOptical/></ProtectedRoute>}/>
+            <Route path="/viewO/:id" element={<ProtectedRoute>
+              <ViewOptical />
+            </ProtectedRoute>} />
+            <Route path="/editO/:id" element={<ProtectedRoute>
+              <EditOptical />
+            </ProtectedRoute>} />
+            
+            <Route path="/listProb" element={<ProtectedRoute> <ListProbability/> </ProtectedRoute>}/> 
+            <Route path="/listTest" element={<ProtectedRoute>
+              <ListTest />
+            </ProtectedRoute>} />
+            <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} /> 
+            
+          </Routes>
+        </Router>
+      </AuthProvider>
     </>
   );
 }

@@ -1,0 +1,152 @@
+.home_container {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  display: grid;
+  flex-direction: column;
+  font-family: 'Jura', sans-serif;
+}
+
+.home_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a884f7;
+  padding: 1rem 2rem;
+  height: 80px;
+  position: relative;
+}
+
+.home_logo {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.3rem;
+  font-family: "Poppins", sans-serif;
+  gap: 10px;
+}
+
+.logo_img {
+  width: 70px;
+  height: 50px;
+  object-fit: contain;
+  margin-right: 3px;
+}
+
+.logo_text {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 12px;
+  color: #fff;
+}
+
+.home_buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  background-color: #7d5cc6;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #9a74e0;
+}
+
+.btn.cerrar {
+  background-color: #8b5cf6;
+}
+
+.btn.cerrar:hover {
+  background-color: #a17ff0;
+}
+
+.home_content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #444;
+}
+
+
+
+
+
+.banner_container {
+  width: 100%;
+  height: 200px;
+  background-color: #c7affd;
+  display: flex;
+  justify-content: center;
+  /* centra horizontalmente */
+  align-items: center;
+  /* centra verticalmente */
+  position: relative;
+}
+
+.banner {
+  width: 100%;
+  height: 400px;
+  background-color: #4CAF50;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20%;
+  top: -50px;
+  /* mueve el banner 50px hacia arriba */
+}
+
+.test_title {
+  text-align: center;
+  font-family: 'Jura', sans-serif;
+  margin-top: 20px;
+  font-size: 2rem;
+  color: #333;
+  padding-left: 1rem;
+
+}
+
+.test_description {
+  text-align: start;
+  padding-left: 5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+
+}
+
+
+.contenedor_preguntas{
+  padding-top: 5%;
+}
+input.option_questionary{
+  width: fit-content;
+  height: fit-content;
+}
+div.test_container{
+  padding-left: 10%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+.grid_item2 img{
+  height: 95%;
+  width: 95%;
+}
+.option_questionary{
+  margin: 2%;
+}
+.label_questionary{
+  padding: 2%;
+}

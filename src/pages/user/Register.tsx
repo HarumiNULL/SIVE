@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link }  from "react-router-dom";
-import './register.css'
-import { registerUser } from "../services/api";
+import { registerUser } from '../../services/api'
+import styles from "./register.module.css"
 
 export default function Register() {
 
@@ -39,16 +39,18 @@ export default function Register() {
   };
 
     return(
-        <div id="form_register" className="forms" >
-            <div className="img_register ">
+        <div id={styles.form_register} className={styles.forms} >
+            <div className={styles.img_register}>
                 <img src="src\assets\sunglasses.png" alt="" />
                 <h5>SIVE</h5>
             </div>
-            <h1 className="registerh1">Registrate</h1>
+            <h1 className={styles.registerh1}>Registrate</h1>
             <p>Empieza con nuestra web, solo crea tu cuenta y disfruta la experiencia </p>
-            <form onSubmit={handleSubmit} className="form_register">
-                <div className="name">
+            <form onSubmit={handleSubmit} className={styles.form_register}>
+                <div className={styles.name}>
+                    <label htmlFor="text">Ingresa tu nombre</label><br />
                     <input type="text" placeholder="Primer nombre" name="first_name" onChange={handleChange}/>
+                    <label htmlFor="text">Ingresa tu apellido</label><br />
                     <input type="text" placeholder="Apellido" name="last_name" onChange={handleChange}/><br />
                 </div>
                 <label htmlFor="email">Ingresa tu correo</label><br />
@@ -58,9 +60,9 @@ export default function Register() {
                 <label htmlFor="confirm_password">Confirma tu contraseña</label><br />
                 <input type="password" name="confirm_password" id="confirm_password_input" placeholder="Confirma tu contraseña" onChange={handleChange} />
                 <br />
-                <div className="container_submit"><button type="submit">Registrar</button></div>
+                <div className={styles.container_submit}><button type="submit">Registrar</button></div>
             </form>
-            <p className="foot">¿Ya tienes una cuenta?</p> <Link to ="/login" className="login_link">Inicia sesion</Link>
+            <p className={styles.foot}>¿Ya tienes una cuenta?</p> <Link to ="/login" className={styles.login_link}>Inicia sesion</Link>
         </div> 
     ) 
 }
