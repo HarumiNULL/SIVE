@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
-import "./listProbability.css";
+import styles from "./listProbability.module.css"
+
 
 interface ProbabilityResult {
   id: number;
@@ -40,20 +41,20 @@ export default function ListProbability() {
   return (
     <>
       <Navbar />
-      <div className="probability-container">
+      <div className={styles.probability_container}>
         <h2>Test que has tomado</h2>
 
         {results.map((res) => (
-          <div key={res.id} className="probability-card">
-            <div className="probability-content">
+          <div key={res.id} className={styles.probability_card}>
+            <div className={styles.probability_content}>
               <h3>{res.testName}</h3>
-              <p className="test-times">
+              <p className={styles.test_times}>
                 Haz tomado el test: <strong>{res.timesTaken}</strong> veces
               </p>
 
-              <div className="probability-body">
-                <div className="chart-section">
-                  <div className="chart-box">
+              <div className={styles.probability_body}>
+                <div className={styles.chart_section}>
+                  <div className={styles.chart_box}>
                     <Pie
                       data={{
                         labels: ["Probabilidad", "Resto"],
@@ -70,12 +71,12 @@ export default function ListProbability() {
                         cutout: "75%",
                       }}
                     />
-                    <div className="chart-text">{res.probability} %</div>
+                    <div className={styles.chart_text}>{res.probability} %</div>
                   </div>
                 </div>
 
-                <div className="probability-info">
-                  <p className="highlight">
+                <div className={styles.probability_info}>
+                  <p className={styles.highlight}>
                     Tienes un{" "}
                     <strong>{res.probability} %</strong> de probabilidad de tener
                     un problema visual basado en tu último intento.
@@ -83,19 +84,20 @@ export default function ListProbability() {
 
                   <hr />
 
-                  <p className="recommendation">
+                  <p className={styles.recommendation}>
                     Te recomendamos que te dirijas a un consultorio
                     oftalmológico para recibir atención de un especialista y un
                     diagnóstico 100% seguro.
                   </p>
 
-                  <Link to={res.route} className="test-btn">
+                  <Link to={res.route} className={styles.test_btn}>
                     Realizar Nuevamente
                   </Link>
 
                 </div>
               </div>
             </div>
+            
           </div>
         ))}
       </div>

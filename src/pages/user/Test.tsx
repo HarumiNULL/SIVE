@@ -1,5 +1,5 @@
 /*import { Link } from "react-router-dom";*/
-import './test.css'
+import styles from "./test.module.css"
 import Navbar from "../../components/Navbar";
 
 export default function Test() {

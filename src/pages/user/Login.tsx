@@ -2,7 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { loginUser } from "../../services/api"; 
 import { useAuth } from "../../components/AuthContext";
-import "./login.css";
+import styles from "./login.module.css"
+
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -42,19 +43,19 @@ export default function Login() {
   };
 
   return (
-    <div id="form_login" className="forms_login">
-      <div className="img_register">
+    <div id="form_login" className={styles.forms_login}>
+      <div className={styles.img_register}>
         <img src="src/assets/sunglasses.png" alt="Logo SIVE" />
         <h5>SIVE</h5>
       </div>
-      <h1 className="loginh1">Inicia sesión</h1>
+      <h1 className={styles.loginh1}>Inicia sesión</h1>
 
       <form onSubmit={handleSubmit} className="form_login">
         <label htmlFor="email">Ingresa tu correo</label><br />
         <input
           type="email"
           name="email"
-          id="email_input"
+          id={styles.email_input}
           placeholder="Ingresa tu correo"
           value={formData.email}
           onChange={handleChange}
@@ -64,13 +65,13 @@ export default function Login() {
         <input
           type="password"
           name="password"
-          id="password_input"
+          id={styles.password_input}
           placeholder="Contraseña"
           value={formData.password}
           onChange={handleChange}
         /><br />
 
-        <div className="container_submit">
+        <div className={styles.container_submit}>
           <button type="submit">Iniciar Sesión</button>
         </div>
       </form>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { getAllOpticals } from "../../services/api";
 import defaultLogo from "../../assets/288-FOTO-Requisitos-para-optica-oftalmica.jpg";
-import "./listOptical.css";
+import styles from "./listOptical.module.css"
 
 interface Optical {
   id: number;
@@ -37,7 +37,7 @@ export default function ListOptical() {
   return (
     <>
       <Navbar />
-      <div className="optical-list-container">
+      <div className={styles.optical_list_container}>
         <h2>Ópticas</h2>
 
         {loading ? (
@@ -45,10 +45,10 @@ export default function ListOptical() {
         ) : opticals.length === 0 ? (
           <p>No se encontraron ópticas.</p>
         ) : (
-          <div className="optical-cards">
+          <div className={styles.optical_cards}>
             {opticals.map((opt) => (
-              <div key={opt.id} className="optical-card">
-                <div className="optical-info">
+              <div key={opt.id} className={styles.optical_card}>
+                <div className={styles.optical_info}>
                   <h3>{opt.nameOp}</h3>
 
                   <p>
@@ -57,15 +57,15 @@ export default function ListOptical() {
                     Correo: {opt.email}
                   </p>
 
-                  <div className="optical-buttons">
-                    <button className="visit-btn">Visitar</button>
+                  <div className={styles.optical_buttons}>
+                    <button className={styles.visit_btn}>Visitar</button>
                     <a target="_blank" rel="noopener noreferrer">
                       Ver en el mapa
                     </a>
                   </div>
                 </div>
 
-                <div className="optical-image">
+                <div className={styles.optical_image}>
                   <img
                     src={defaultLogo}
                     alt={opt.nameOp}
