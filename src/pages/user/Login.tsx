@@ -43,28 +43,30 @@ export default function Login() {
   };
 
   return (
-    <div id="form_login" className={styles.forms_login}>
+    <div id={styles.form_login} className={styles.forms_login}>
       <div className={styles.img_register}>
-        <img src="src/assets/sunglasses.png" alt="Logo SIVE" />
+        <img src="/sunglasses.png" alt="Logo SIVE" />
         <h5>SIVE</h5>
       </div>
       <h1 className={styles.loginh1}>Inicia sesión</h1>
 
       <form onSubmit={handleSubmit} className="form_login">
-        <label htmlFor="email">Ingresa tu correo</label><br />
+        <label className={styles.label_input}htmlFor="email">Ingresa tu correo</label><br />
         <input
           type="email"
+          className={styles.input_login}
           name="email"
-          id={styles.email_input}
+          id="email_input"
           placeholder="Ingresa tu correo"
           value={formData.email}
           onChange={handleChange}
         /><br />
 
-        <label htmlFor="password">Contraseña</label><br />
+        <label className={styles.label_input} htmlFor="password">Contraseña</label><br />
         <input
           type="password"
           name="password"
+          className={styles.input_login}
           id={styles.password_input}
           placeholder="Contraseña"
           value={formData.password}
@@ -76,8 +78,8 @@ export default function Login() {
         </div>
       </form>
 
-      <p className="foot">¿No tienes una cuenta?</p>
-      <Link to="/register" className="register_link">Regístrate</Link>
+      <p className={styles.foot}>¿No tienes una cuenta?</p>
+      <Link to="/register" className={styles.register_link}>Regístrate</Link>
     </div>
   );
 }

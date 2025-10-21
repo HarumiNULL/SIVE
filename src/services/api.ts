@@ -50,8 +50,6 @@ export const logoutUser = async (token: string) => {
 
 export const getOneOptical = async (id: number) => {
   return axios.get(`http://127.0.0.1:8000/api/optical/${id}/`);
-export const getOneOptical = async (id: number) => {
-  return axios.get(`http://127.0.0.1:8000/api/optical/${id}/`);
 }
 
 export const deleteOptical = async (id: number) => {
@@ -111,52 +109,6 @@ export const getOneQuestionary = async (id:number): Promise<Questionary> => {
   return res.data;
 };
 
-export interface QuestionaryItem {
-  id_questionary: number;
-  name_questionary: string;
-  description: string;
-
-}
-export interface Option {
-  id_option: number;
-  question_id: number;
-  descriptionOp: string;
-}
-
-// Pregunta dentro del cuestionario
-export interface Question {
-  id_question: number;
-  question: string;
-  image_question: string;
-  options: Option[]; // lista de opciones
-}
-
-// Cuestionario completo
-export interface Questionary {
-  id_questionary: number;
-  name_questionary: string;
-  description: string;
-  questions: Question[]; // lista de preguntas
-}
-
-export const getQuestionaries = async () => {
-  try {
-    const res = await API.get<QuestionaryItem[]>("questionary/");
-    return res.data;
-  } catch (error: any) {
-    throw new Error(
-      error.response?.data?.error ||
-      JSON.stringify(error.response?.data) ||
-      error.message
-    );
-  }
-}
-
-
-export const getOneQuestionary = async (id:number): Promise<Questionary> => {
-  const res = await API.get<Questionary>(`questionary/${id}/`);
-  return res.data;
-};
 
 export const getAllOpticals = async () => {
   const token = localStorage.getItem("token");
