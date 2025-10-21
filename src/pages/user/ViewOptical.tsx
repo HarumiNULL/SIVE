@@ -3,11 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getOneOptical, deleteOptical } from "../../services/api";
 import { Link } from "react-router-dom";
 import LoadingView from "../LoadingView";
-import "./viewOptical.css";
 import L from "leaflet"; // 👈 Importa Leaflet correctamente
 import "leaflet/dist/leaflet.css"; // 👈 Importa los estilos CSS
 import Navbar from "../../components/Navbar";
-
+import styles from "./viewOptical.module.css"
 export default function View_optical() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -77,24 +76,24 @@ export default function View_optical() {
   if (!optic) return <LoadingView />;
 
   return (
-    <div className="home-container">
+    <div className={styles.home_container}>
       <Navbar/>
     
       {/* Contenido principal */}
       <div>
-        <img src={optic?.logo} className="banner" alt="" />
-        <h1 className="text-banner">{optic?.nameOp}</h1>
+        <img src={optic?.logo} className={styles.banner} alt="" />
+        <h1 className={styles.text_banner}>{optic?.nameOp}</h1>
       </div>
 
-      <div className="grid-container">
-        <div className="grid-item1">
-          <h1 className="optic-title">{optic?.nameOp}</h1>
-          <p className="optic-description">
+      <div className={styles.grid_container}>
+        <div className={styles.grid_item1}>
+          <h1 className={styles.optic_title}>{optic?.nameOp}</h1>
+          <p className={styles.optic_description}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua.
           </p>
-          <h3 className="subtitle">Servicios</h3>
-          <ul className="services-list">
+          <h3 className={styles.subtitle}>Servicios</h3>
+          <ul className={styles.services_list}>
             <li>Examen de la vista</li>
             <li>Venta de lentes</li>
             <li>Venta de armazones</li>
@@ -102,25 +101,25 @@ export default function View_optical() {
         </div>
 
         {/* Mapa */}
-        <div className="grid-item2">
-          <div id="map" style={{ height: "400px" }}></div>
+        <div className={styles.grid_item2}>
+          <div id={styles.map} style={{ height: "400px" }}></div>
         </div>
 
-        <div className="grid-item3">
-          <div className="button-div">
+        <div className={styles.grid_item3}>
+          <div className={styles.button_div}>
             <Link to="/editO">
-              <button className="edit_optic">Editar óptica</button>
+              <button className={styles.edit_optic}>Editar óptica</button>
             </Link>
-            <button className="delete" onClick={handleDelete}>
+            <button className={styles.delete} onClick={handleDelete}>
               Eliminar
             </button>
           </div>
         </div>
 
-        <div className="grid-item4">
-          <h2 className="h2-title">Comentarios</h2>
-          <div className="comments">
-            <p className="comments-p">No hay comentarios aún.</p>
+        <div className={styles.grid_item4}>
+          <h2 className={styles.h2_title}>Comentarios</h2>
+          <div className={styles.comments}>
+            <p className={styles.comments_p}>No hay comentarios aún.</p>
           </div>
         </div>
       </div>
