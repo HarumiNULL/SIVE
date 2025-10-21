@@ -1,60 +1,96 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/api";
 import { useAuth } from "./AuthContext";
-import styles from "./navbar.module.css"
+import styles from "./navbar.module.css";
 
 export default function Navbar() {
-    const {isAuthenticated, logout}=useAuth()
+  const { isAuthenticated, logout, role } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const navigate = useNavigate();
+  const ROL_ADMIN = 1;
+  const ROL_DUEÑO = 2;
+  const ROL_USUARIO = 3;
+  const isHome = location.pathname === "/";
 
-    const handleLogout = async () => {
-        const token = localStorage.getItem("token");
-        if (!token) return navigate("/login");
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return navigate("/login");
 
-        try {
-            await logoutUser(token);
-            await logout();
-            navigate("/"); 
-        } catch (error) {
-            console.error("Error cerrando sesión:", error);
-        }
-    };
-    return (
+    try {
+      await logoutUser(token);
+      logout();
+    } catch (error) {
+      console.error("Error cerrando sesión:", error);
+    }
+  };
+
+  const renderNavLinks = () => {
+    const commonLinks = (
+      <>
+        <Link to="/" className={styles.btn_ver}>Inicio</Link>
+        <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
+        <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
+      </>
+    );
+
+    let roleLinks = null;
+
+    if (role === ROL_ADMIN) {
+      roleLinks = (
         <>
-        <nav>
-            <header className={styles.home_header}>
-                <div className={styles.home_logo}>
-                    <img
-                        src="/src/assets/sunglasses.png"
-                        alt="Logo"
-                        className={styles.logo_img}
-                    />
-                    <span>S I V E</span>
-                </div>
-
-                <div className={styles.home_buttons}>
-                    {isAuthenticated &&(<Link to="/" className={styles.btn_ver}>Inicio</Link>)}
-                    <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
-                    <Link to="/listOptical" className={styles.btn_ver}>Opticas</Link>
-                    <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
-                    <Link to="/viewO"className={styles.btn_ver}>Ver Mi Optica</Link>
-                    {!isAuthenticated && (
-                     <Link to="/register" className="btn ver">
-                        Registrarse
-                    </Link>
-                    )}
-                    {isAuthenticated ? 
-                    (<Link to="/login" onClick={handleLogout}className={styles.btn_cerrar}>cerrar sesion</Link>
-                    ):(
-                    <Link to="/login" className={styles.btn_cerrar}>iniciar sesion</Link>
-                    )}
-                    
-                </div>
-            </header>
-            </nav>
+          <Link to="/homeAdmin" className={styles.btn_ver}>Dashboard Admin</Link>
+          <Link to="/listOptical" className={styles.btn_ver}>Administrar Ópticas</Link>
         </>
-    )
+      );
+    } else if (role === ROL_DUEÑO) {
+      roleLinks = (
+        <>
+          <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
+          <Link to="/viewO" className={styles.btn_ver}>Ver Mi Óptica</Link>
+        </>
+      );
+    } else if (role === ROL_USUARIO) {
+      roleLinks = (
+        <>
+          <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
+        </>
+      );
+    }
 
+    return (
+      <>
+        {commonLinks}
+        {roleLinks}
+        <button onClick={handleLogout} className={styles.btn_cerrar}>Cerrar sesión</button>
+      </>
+    );
+  };
+
+  return (
+    <nav>
+      <header className={styles.home_header}>
+        <div className={styles.home_logo}>
+          <img src="/src/assets/sunglasses.png" alt="Logo" className={styles.logo_img} />
+          <span>S I V E</span>
+        </div>
+
+        <div className={styles.home_buttons}>
+          {isHome && !isAuthenticated ? (
+            <>
+              <Link to="/register" className={styles.btn_ver}>Registrarse</Link>
+              <Link to="/login" className={styles.btn_ver}>Iniciar sesión</Link>
+            </>
+          ) : isAuthenticated ? (
+            renderNavLinks()
+          ) : (
+            <>
+              <Link to="/register" className={styles.btn_ver}>Registrarse</Link>
+              <Link to="/login" className={styles.btn_cerrar}>Iniciar sesión</Link>
+            </>
+          )}
+        </div>
+      </header>
+    </nav>
+  );
 }

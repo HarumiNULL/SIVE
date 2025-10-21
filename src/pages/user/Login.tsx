@@ -4,7 +4,6 @@ import { loginUser } from "../../services/api";
 import { useAuth } from "../../components/AuthContext";
 import styles from "./login.module.css"
 
-
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -30,9 +29,20 @@ export default function Login() {
       console.log("Login exitoso:", res);
 
       if (res.token) {
-        login(res.token); // <- Actualiza el contexto y guarda el token
+        login(res.token, res.role); // <- Actualiza el contexto y guarda el token
         alert("Inicio de sesión correcto ✅");
-        navigate("/"); // Redirige a inicio
+
+        // ✅ Redirigir según el rol del usuario
+        if (res.role === 1) {
+          navigate("/homeAdmin"); // Admin
+        } else if (res.role === 2) {
+          navigate("/viewO"); // Dueño
+        } else if (res.role === 3) {
+          navigate("/listOptical"); // Usuario normal
+        } else {
+          navigate("/"); // fallback
+        }
+
       } else {
         alert("No se recibió token del servidor ❌");
       }
@@ -51,7 +61,7 @@ export default function Login() {
       <h1 className={styles.loginh1}>Inicia sesión</h1>
 
       <form onSubmit={handleSubmit} className="form_login">
-        <label className={styles.label_input}htmlFor="email">Ingresa tu correo</label><br />
+        <label className={styles.label_input} htmlFor="email">Ingresa tu correo</label><br />
         <input
           type="email"
           className={styles.input_login}
