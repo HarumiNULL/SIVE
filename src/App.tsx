@@ -13,6 +13,7 @@ import Test from "./pages/user/Test";
 import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
+import RedirectToMyOptical from "./pages/opticalOwner/RedirectToMyOptical";
 function App() {
 
   return (
@@ -37,7 +38,7 @@ function App() {
               <ListTest />
             </ProtectedRoute>} />
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} /> 
-            
+            <Route path="/my-optical" element={<RedirectToMyOptical />} />
           </Routes>
         </Router>
       </AuthProvider>

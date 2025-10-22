@@ -28,7 +28,7 @@ export default function Login() {
     try {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
-
+      localStorage.setItem("user", JSON.stringify(res.user));
       if (res.token) {
         login(res.token); // <- Actualiza el contexto y guarda el token
         alert("Inicio de sesión correcto ✅");

@@ -39,7 +39,7 @@ export default function Navbar() {
                     <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
                     <Link to="/listOptical" className={styles.btn_ver}>Opticas</Link>
                     <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
-                    <Link to="/viewO"className={styles.btn_ver}>Ver Mi Optica</Link>
+                    <Link to="/my-optical"className={styles.btn_ver}>Ver Mi Optica</Link>
                     {!isAuthenticated && (
                      <Link to="/register" className="btn ver">
                         Registrarse

@@ -31,7 +31,10 @@ export default function View_optical() {
   useEffect(() => {
     if (id) { // Asegúrate de que el id exista antes de hacer la llamada
       getOneOptical(Number(id))
-        .then((res) => setOptic(res.data))
+        .then((res) => {
+          console.log("Respuesta de la API:", res);
+          setOptic(res);
+    })
         .catch((err) => console.error("Error al obtener la óptica:", err));
     }
   }, [id]); 
@@ -50,6 +53,7 @@ export default function View_optical() {
       }
     }
   };
+  console.log(optic)
 
   // Inicializar el mapa una vez que optic esté cargado
   useEffect(() => {
@@ -102,7 +106,7 @@ export default function View_optical() {
 
         {/* Mapa */}
         <div className={styles.grid_item2}>
-          <div id={styles.map} style={{ height: "400px" }}></div>
+          <div id="map" style={{ height: "400px" }}></div>
         </div>
 
         <div className={styles.grid_item3}>

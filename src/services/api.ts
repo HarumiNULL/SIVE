@@ -48,8 +48,39 @@ export const logoutUser = async (token: string) => {
   await API.post<AuthResponse>("logout/", null, { headers: { Authorization: `Token ${token}` } });
 };
 
+
+
+// devuelve la primera óptica asociada al userId o null
+export const findOpticalForUser = async (userId: number) => {
+  try {
+    const all = await getAllOpticals(); // ya incluye token
+    if (!Array.isArray(all)) return null;
+    const found = all.find((o: any) => Number(o.user) === Number(userId));
+    return found || null;
+  } catch (err) {
+    console.error("Error buscando óptica para usuario:", err);
+    throw err;
+  }
+};
+
+
 export const getOneOptical = async (id: number) => {
-  return axios.get(`http://127.0.0.1:8000/api/optical/${id}/`);
+  const token = localStorage.getItem("token");
+  try {
+    const res= await axios.get(`http://127.0.0.1:8000/api/optical/${id}/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      }
+    });
+      return res.data;
+  } catch (error:any) {
+    throw new Error(
+      error.response?.data?.error ||
+      JSON.stringify(error.response?.data) ||
+      error.message    );
+    
+  }
+  
 }
 
 export const deleteOptical = async (id: number) => {
@@ -91,8 +122,14 @@ export interface Questionary {
 }
 
 export const getQuestionaries = async () => {
+  const token=localStorage.getItem("token");
   try {
-    const res = await API.get<QuestionaryItem[]>("questionary/");
+    const res = await API.get<QuestionaryItem[]>("questionary/",{
+      headers:{
+        Authorization: `Token ${token}`,
+      },
+
+      });
     return res.data;
   } catch (error: any) {
     throw new Error(
@@ -105,8 +142,18 @@ export const getQuestionaries = async () => {
 
 
 export const getOneQuestionary = async (id:number): Promise<Questionary> => {
-  const res = await API.get<Questionary>(`questionary/${id}/`);
-  return res.data;
+  const token= localStorage.getItem("token");
+  try {
+    const res = await axios.get<Questionary>(`http://127.0.0.1:8000/api/questionary/${id}/`,{
+      headers:{
+        Authorization: `Token ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error al obtner el cuestionario ", error);
+    throw new Error(error. response?.data?.detail|| "Error al obtner cuestionario");
+  }
 };
 
 
@@ -168,8 +215,6 @@ export const createOptical = async (data: any) => {
         Authorization: token ? `Token ${ token }` : "",
     },
 });
-
-
 console.log("✅ Óptica creada:", response.data);
 return response.data;
   } catch (error) {
