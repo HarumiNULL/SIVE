@@ -229,7 +229,7 @@ export const getOpticalsByCity = async (): Promise<OpticalByCity[]> => {
 
 export const getUsers = async () => {
     try {
-        const res = await axios.get(`${BASE_URL}/users/`);
+        const res = await API.get('users/');
         console.log("📡 Datos recibidos de usuarios:", res.data);
         return res.data; // Asume que res.data es el array de usuarios
     } catch (error) { // <--- CORREGIDO: Se elimina el ': any' si no usas TypeScript
@@ -242,7 +242,7 @@ export const getUsers = async () => {
 // 2. ELIMINAR USUARIO
 export const deleteUser = async (userId) => { // <--- Función necesaria
     try {
-        await axios.delete(`${BASE_URL}/users/${userId}/`);
+        await API.patch(`users/${userId}/`);
         return true; // Éxito en la eliminación
     } catch (error) {
         console.error(`Error al eliminar usuario ${userId}:`, error);
@@ -254,7 +254,7 @@ export const deleteUser = async (userId) => { // <--- Función necesaria
 export const toggleBlockUser = async (userId, isBlocked) => { // <--- Función necesaria
     try {
         // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
-        const response = await axios.put(`${BASE_URL}/users/${userId}/block/`, { is_blocked: isBlocked }); 
+        const response = await API.patch('users/${userId}/block/', { is_blocked: isBlocked }); 
         
         // Retorna el usuario actualizado (idealmente)
         return response.data; 

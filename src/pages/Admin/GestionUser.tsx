@@ -90,7 +90,8 @@ function UserList() {
           {users.map(user => (
             <tr key={user.id}>
               <td>{user.id}</td>
-              <td>{user.name}</td>
+              <td>{user.first_name}</td>
+              <td>{user.last_name}</td>
               <td>{user.isBlocked ? 'Bloqueado 🔒' : 'Activo ✅'}</td>
               <td>
                 <button onClick={() => handleToggleBlock(user.id)}>
@@ -111,6 +112,5 @@ function UserList() {
     </div>
   );
 }
-import { getUsers } from "../../services/api"
 
 export default UserList;
