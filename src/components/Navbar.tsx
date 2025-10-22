@@ -5,6 +5,8 @@ import styles from "./navbar.module.css";
 
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuth();
+  console.log(isAuthenticated)
+  console.log(role)
   const location = useLocation();
 
   const ROL_ADMIN = 1;
@@ -14,10 +16,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
   try {
-    const token = localStorage.getItem("token");
-    if (token) {
-      await logoutUser(token);
-    }
+    await logoutUser();
   } catch (error) {
     console.error("Error cerrando sesión en el servidor:", error);
   } finally {

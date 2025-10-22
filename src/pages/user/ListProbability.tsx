@@ -16,33 +16,31 @@ interface ProbabilityResult {
 
 export default function ListProbability() {
   const [results, setResults] = useState<ProbabilityResult[]>([]);
+useEffect(() => {
+  const mockData = [
+    {
+      id: 1,
+      testName: "Test de Snellen",
+      timesTaken: 3,
+      probability: 70,
+      route: "/test",
+    },
+    {
+      id: 2,
+      testName: "Test de Ishihara",
+      timesTaken: 2,
+      probability: 45,
+      route: "/testIshi",
+    },
+  ];
+  setResults(mockData);
 
-  useEffect(() => {
-  //Aquí va la API miestras con datos provicionales
-    const mockData = [
-      {
-        id: 1,
-        testName: "Test de Snellen",
-        timesTaken: 3,
-        probability: 70,
-        route:"/test"
-      },
-      {
-        id: 2,
-        testName: "Test de Ishihara",
-        timesTaken: 2,
-        probability: 45,
-        route: "/testIshi",
-      },
-    ];
-    setResults(mockData);
-  }, []);
+}, []);
 
   return (
     <>
       <Navbar />
       <div className={styles.probability_container}>
-        <h2>Test que has tomado</h2>
 
         {results.map((res) => (
           <div key={res.id} className={styles.probability_card}>
