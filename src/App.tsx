@@ -12,6 +12,7 @@ import ListTest from "./pages/user/ListTest";
 import Test from "./pages/user/Test";
 import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
+import Estadisticas from "./pages/Admin/Estadisticas";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/viewO/:id" element={<ProtectedRoute>
               <ViewOptical />
             </ProtectedRoute>} />
+            <Route path="/estadisticas" element={<Estadisticas />}/>
             <Route path="/editO/:id" element={<ProtectedRoute>
               <EditOptical />
             </ProtectedRoute>} />
@@ -39,6 +41,7 @@ function App() {
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} /> 
             
           </Routes>
+          
         </Router>
       </AuthProvider>
     </>

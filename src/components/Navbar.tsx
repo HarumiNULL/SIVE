@@ -31,6 +31,7 @@ export default function Navbar() {
         <Link to="/" className={styles.btn_ver}>Inicio</Link>
         <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
         <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
+        <Link to="/estadisticas" className={styles.btn_ver}>Estadisticas</Link>
       </>
     );
 
