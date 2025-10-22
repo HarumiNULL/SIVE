@@ -12,7 +12,6 @@ import ListTest from "./pages/user/ListTest";
 import Test from "./pages/user/Test";
 import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
-import Estadisticas from "./pages/Admin/Estadisticas";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
 function App() {

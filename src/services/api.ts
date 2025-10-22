@@ -5,6 +5,7 @@ import axios from "axios";
 const API = axios.create({
   baseURL: "http://127.0.0.1:8000/api/"
 });
+
 export interface User {
   id: number;
   email: string;
@@ -179,6 +180,43 @@ return response.data;
   throw error;
 }
 };
+
+export const getUsers = async () => {
+    try {
+        const res = await axios.get(`${BASE_URL}/users/`);
+        console.log("📡 Datos recibidos de usuarios:", res.data);
+        return res.data; // Asume que res.data es el array de usuarios
+    } catch (error) { // <--- CORREGIDO: Se elimina el ': any' si no usas TypeScript
+        console.error("Error al obtener usuarios:", error);
+        // Lanzar un error más limpio para el componente
+        throw new Error(error.response?.data?.error || "Error al obtener usuarios del servidor");
+    }
+}
+
+// 2. ELIMINAR USUARIO
+export const deleteUser = async (userId) => { // <--- Función necesaria
+    try {
+        await axios.delete(`${BASE_URL}/users/${userId}/`);
+        return true; // Éxito en la eliminación
+    } catch (error) {
+        console.error(`Error al eliminar usuario ${userId}:`, error);
+        throw new Error("No se pudo eliminar el usuario.");
+    }
+}
+
+// 3. BLOQUEAR/DESBLOQUEAR USUARIO
+export const toggleBlockUser = async (userId, isBlocked) => { // <--- Función necesaria
+    try {
+        // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
+        const response = await axios.put(`${BASE_URL}/users/${userId}/block/`, { is_blocked: isBlocked }); 
+        
+        // Retorna el usuario actualizado (idealmente)
+        return response.data; 
+    } catch (error) {
+        console.error(`Error al cambiar estado de bloqueo ${userId}:`, error);
+        throw new Error("No se pudo cambiar el estado de bloqueo.");
+    }
+}
 
 /*
 export const createOptical = async (formData: FormData, token: string) => {
