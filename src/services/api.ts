@@ -13,6 +13,28 @@ export interface User {
   first_name: string;
   last_name: string;
 }
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Token ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export interface TopViewedOptical{
+  nameOp: string;
+  view: number;
+}
+
+export interface OpticalByCity {
+  city_name: string;
+  count: number;
+}
 
 export interface AuthResponse {
   token: string;
@@ -52,12 +74,12 @@ export const logoutUser = async (token: string) => {
 };
 
 export const getOneOptical = async (id: number) => {
-  return axios.get(`http://127.0.0.1:8000/api/optical/${id}/`);
+  return API.get(`optical/${id}/`);
 }
 
 export const deleteOptical = async (id: number) => {
   try {
-    const res = await axios.delete(`http://127.0.0.1:8000/api/optical/${id}/`);
+    const res = await API.delete(`optical/${id}/`);
     return res.data;
   } catch (error: any) {
     console.error("Error eliminando óptica:", error);
@@ -116,7 +138,7 @@ export const getOneQuestionary = async (id:number): Promise<Questionary> => {
 export const getAllOpticals = async () => {
   const token = localStorage.getItem("token");
   try {
-    const res = await axios.get("http://127.0.0.1:8000/api/optical/", {
+    const res = await API.get("optical/", {
       headers: {
         Authorization: `Token ${token}`,
       },
@@ -130,7 +152,7 @@ export const getAllOpticals = async () => {
 
 export const getCities = async () => {
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/city/`);
+    const res = await API.get(`city/`);
     console.log("📡 Datos recibidos de cities:", res.data);
     return res.data;
   } catch (error: any) {
@@ -141,7 +163,7 @@ export const getCities = async () => {
 
 export const getDays = async () => {
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/days/`);
+    const res = await API.get(`days/`);
     console.log("📡 Datos recibidos de days:", res.data);
     return res.data;
   } catch (error) {
@@ -152,7 +174,7 @@ export const getDays = async () => {
 
 export const getHours = async () => {
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/hours/`);
+    const res = await API.get(`hours/`);
     console.log("📡 Datos recibidos de hours:", res.data);
     return res.data;
   } catch (error) {
@@ -165,7 +187,7 @@ export const createOptical = async (data: any) => {
   try {
     const token = localStorage.getItem("token");
 
-    const response = await axios.post(`http://127.0.0.1:8000/api/optical/`, data, {
+    const response = await API.post(`optical/`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Token ${ token }` : "",
@@ -179,6 +201,54 @@ return response.data;
   console.error("❌ Error creando óptica:", error);
   throw error;
 }
+};
+
+export const getTopViewedOpticals = async (): Promise<TopViewedOptical[]> => {
+  try {
+    const res = await API.get<TopViewedOptical[]>(`optical/top-viewed/`);
+    if (res.status === 200) {
+      return (await res).data
+
+    } else {
+      throw new Error(`Error: Received status code ${res.status}`);
+    }
+  } catch (error) {
+    console.error("Error al obtener ópticas más vistas:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
+};
+export const getOpticalsByCity = async (): Promise<OpticalByCity[]> => {
+  try {
+    const res = await API.get<OpticalByCity[]>(`optical/by-city/`);
+    return res.data;
+  } catch (error) {
+    console.error("Error al obtener ópticas por ciudad:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
+};
+
+export const getTopViewedOpticals = async (): Promise<TopViewedOptical[]> => {
+  try {
+    const res = await API.get<TopViewedOptical[]>(`optical/top-viewed/`);
+    if (res.status === 200) {
+      return (await res).data
+
+    } else {
+      throw new Error(`Error: Received status code ${res.status}`);
+    }
+  } catch (error) {
+    console.error("Error al obtener ópticas más vistas:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
+};
+export const getOpticalsByCity = async (): Promise<OpticalByCity[]> => {
+  try {
+    const res = await API.get<OpticalByCity[]>(`optical/by-city/`);
+    return res.data;
+  } catch (error) {
+    console.error("Error al obtener ópticas por ciudad:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
 };
 
 export const getUsers = async () => {
