@@ -13,6 +13,7 @@ import Test from "./pages/user/Test";
 import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
+import HomeAdmin from "./pages/Admin/HomeAdmin";
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/HomeAdmin" element={<ProtectedRoute> <HomeAdmin /> </ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/listOptical" element={<ProtectedRoute> <ListOptical/></ProtectedRoute>}/>
@@ -31,13 +33,12 @@ function App() {
             <Route path="/editO/:id" element={<ProtectedRoute>
               <EditOptical />
             </ProtectedRoute>} />
-            
-            <Route path="/listProb" element={<ProtectedRoute> <ListProbability/> </ProtectedRoute>}/> 
+            <Route path="/listProb" element={<ProtectedRoute> <ListProbability/> </ProtectedRoute>}/>
             <Route path="/listTest" element={<ProtectedRoute>
               <ListTest />
             </ProtectedRoute>} />
-            <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} /> 
-            
+            <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} />
+
           </Routes>
         </Router>
       </AuthProvider>

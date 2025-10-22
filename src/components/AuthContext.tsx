@@ -16,18 +16,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const roleStr = localStorage.getItem("role");
-    if (token && roleStr) {
-      setIsAuthenticated(true);
-      const parsedRole = parseInt(roleStr, 10);
-      if (!isNaN(parsedRole)) {setUserRole(parsedRole);
 
-      }else {
-        // Si falta alguno, nos aseguramos de que no esté autenticado.
-            setIsAuthenticated(false);
-            setUserRole(null);
-            localStorage.removeItem("token"); // Limpieza si algo está a medias
-            localStorage.removeItem("role");
-      }
+    const parsedRole = parseInt(roleStr, 10);
+
+    if (token && !isNaN(parsedRole)) {
+      setIsAuthenticated(true);
+      setUserRole(parsedRole);
+    } else {
+      setIsAuthenticated(false);
+      setUserRole(null);
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
     }
   }, []);
 

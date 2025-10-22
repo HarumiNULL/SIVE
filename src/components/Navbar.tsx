@@ -1,11 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { logoutUser } from "../services/api";
 import { useAuth } from "./AuthContext";
 import styles from "./navbar.module.css";
 
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const ROL_ADMIN = 1;
@@ -14,54 +13,62 @@ export default function Navbar() {
   const isHome = location.pathname === "/";
 
   const handleLogout = async () => {
+  try {
     const token = localStorage.getItem("token");
-    if (!token) return navigate("/login");
-
-    try {
+    if (token) {
       await logoutUser(token);
-      logout();
-    } catch (error) {
-      console.error("Error cerrando sesión:", error);
     }
-  };
+  } catch (error) {
+    console.error("Error cerrando sesión en el servidor:", error);
+  } finally {
+    logout();
+  }
+};
 
   const renderNavLinks = () => {
     const commonLinks = (
       <>
-        <Link to="/" className={styles.btn_ver}>Inicio</Link>
         <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
         <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
       </>
     );
-
     let roleLinks = null;
-
-    if (role === ROL_ADMIN) {
+  switch (role) {
+    case ROL_ADMIN:
       roleLinks = (
         <>
-          <Link to="/homeAdmin" className={styles.btn_ver}>Dashboard Admin</Link>
+          <Link to="/homeAdmin" className={styles.btn_ver}>Inicio</Link>
           <Link to="/listOptical" className={styles.btn_ver}>Administrar Ópticas</Link>
         </>
       );
-    } else if (role === ROL_DUEÑO) {
+      break;
+
+    case ROL_DUEÑO:
       roleLinks = (
         <>
+          <Link to="/" className={styles.btn_ver}>Inicio</Link>
           <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
           <Link to="/viewO" className={styles.btn_ver}>Ver Mi Óptica</Link>
         </>
       );
-    } else if (role === ROL_USUARIO) {
+      break;
+
+    case ROL_USUARIO:
       roleLinks = (
         <>
+          <Link to="/" className={styles.btn_ver}>Inicio</Link>
           <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
         </>
       );
+      break;
+    default:
+      roleLinks = null;
     }
 
     return (
       <>
-        {commonLinks}
         {roleLinks}
+        {commonLinks}
         <button onClick={handleLogout} className={styles.btn_cerrar}>Cerrar sesión</button>
       </>
     );
@@ -76,20 +83,22 @@ export default function Navbar() {
         </div>
 
         <div className={styles.home_buttons}>
-          {isHome && !isAuthenticated ? (
-            <>
-              <Link to="/register" className={styles.btn_ver}>Registrarse</Link>
-              <Link to="/login" className={styles.btn_ver}>Iniciar sesión</Link>
-            </>
-          ) : isAuthenticated ? (
+          {isAuthenticated ? (
             renderNavLinks()
           ) : (
             <>
-              <Link to="/register" className={styles.btn_ver}>Registrarse</Link>
-              <Link to="/login" className={styles.btn_cerrar}>Iniciar sesión</Link>
+              <Link to="/register" className={styles.btn_ver}>
+                Registrarse
+              </Link>
+              <Link
+                to="/login"
+                className={isHome ? styles.btn_ver : styles.btn_cerrar}
+              >
+                Iniciar sesión
+              </Link>
             </>
           )}
-        </div>
+          </div>
       </header>
     </nav>
   );

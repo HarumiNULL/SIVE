@@ -8,7 +8,7 @@ const API = axios.create({
 export interface User {
   id: number;
   email: string;
-  rol: number; 
+  role_id: number;
   first_name: string;
   last_name: string;
 }
@@ -16,7 +16,7 @@ export interface User {
 export interface AuthResponse {
   token: string;
   user: User;
-  role: number; 
+  role: number;
 }
 
 // Función para registrar usuario
