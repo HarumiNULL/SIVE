@@ -1,6 +1,5 @@
 import Navbar from "../../components/Navbar"
 import styles from "./gestionUser.css"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { getUsers, deleteUser, toggleBlockUser } from "../../services/api";
 
