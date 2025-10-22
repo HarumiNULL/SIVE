@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { loginUser } from "../../services/api"; 
+import { loginUser } from "../../services/api";
 import { useAuth } from "../../components/AuthContext";
 import styles from "./login.module.css"
 
@@ -27,30 +27,35 @@ export default function Login() {
     try {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
+      const role = res.user.role_id;
 
       if (res.token) {
-        login(res.token, res.role); // <- Actualiza el contexto y guarda el token
+        login(res.token, role);
         alert("Inicio de sesión correcto ✅");
-
-        // ✅ Redirigir según el rol del usuario
-        if (res.role === 1) {
-          navigate("/homeAdmin"); // Admin
-        } else if (res.role === 2) {
-          navigate("/viewO"); // Dueño
-        } else if (res.role === 3) {
-          navigate("/listOptical"); // Usuario normal
+        if (role === 1) {
+          navigate("/homeAdmin");
+        } else if (role === 2) {
+          navigate("/viewO");
+        } else if (role === 3) {
+          navigate("/listOptical");
         } else {
-          navigate("/"); // fallback
+          navigate("/");
         }
 
       } else {
         alert("No se recibió token del servidor ❌");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error en login:", err);
-      alert("Error al iniciar sesión ❌");
+
+      // Así se comprueba el tipo
+      if (err instanceof Error) {
+        alert(`Error: ${err.message}`); // <-- Ahora sí es seguro
+      } else {
+        alert("Error al iniciar sesión ❌");
+      }
     }
-  };
+  }
 
   return (
     <div id={styles.form_login} className={styles.forms_login}>
@@ -92,4 +97,5 @@ export default function Login() {
       <Link to="/register" className={styles.register_link}>Regístrate</Link>
     </div>
   );
+
 }
