@@ -227,30 +227,6 @@ export const getOpticalsByCity = async (): Promise<OpticalByCity[]> => {
   }
 };
 
-export const getTopViewedOpticals = async (): Promise<TopViewedOptical[]> => {
-  try {
-    const res = await API.get<TopViewedOptical[]>(`optical/top-viewed/`);
-    if (res.status === 200) {
-      return (await res).data
-
-    } else {
-      throw new Error(`Error: Received status code ${res.status}`);
-    }
-  } catch (error) {
-    console.error("Error al obtener ópticas más vistas:", error);
-    throw new Error(error.response?.data?.error || error.message);
-  }
-};
-export const getOpticalsByCity = async (): Promise<OpticalByCity[]> => {
-  try {
-    const res = await API.get<OpticalByCity[]>(`optical/by-city/`);
-    return res.data;
-  } catch (error) {
-    console.error("Error al obtener ópticas por ciudad:", error);
-    throw new Error(error.response?.data?.error || error.message);
-  }
-};
-
 export const getUsers = async () => {
     try {
         const res = await axios.get(`${BASE_URL}/users/`);
