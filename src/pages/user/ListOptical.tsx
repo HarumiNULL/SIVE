@@ -10,7 +10,7 @@ interface Optical {
   address: string;
   tel: string;
   email: string;
-  logo?: string; 
+  logo?: string;
 }
 
 export default function ListOptical() {
