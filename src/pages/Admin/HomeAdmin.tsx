@@ -100,7 +100,7 @@ export default function HomeAdmin() {
     <>
     <Navbar />
     <div className={styles.adminContainer}>
-      <h1>Dashboard de Administrador</h1>
+      <h1>Bienvenido  Administrador</h1>
       <div className={styles.chartsGrid}>
 
         {/* Gráfica 1: Vistas (Barras) */}
