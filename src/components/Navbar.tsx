@@ -27,8 +27,10 @@ export default function Navbar() {
   const renderNavLinks = () => {
     const commonLinks = (
       <>
+        
         <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
         <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
+        <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
       </>
     );
     let roleLinks = null;
@@ -46,7 +48,6 @@ export default function Navbar() {
       roleLinks = (
         <>
           <Link to="/" className={styles.btn_ver}>Inicio</Link>
-          <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
           <Link to="/viewO" className={styles.btn_ver}>Ver Mi Óptica</Link>
         </>
       );
@@ -55,8 +56,9 @@ export default function Navbar() {
     case ROL_USUARIO:
       roleLinks = (
         <>
+          
           <Link to="/" className={styles.btn_ver}>Inicio</Link>
-          <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
+          <Link to="/regisO" className={styles.btn_ver}>¿Eres una Optica?</Link>
         </>
       );
       break;

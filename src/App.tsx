@@ -14,7 +14,7 @@ import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
-import { ROL_ADMIN } from "./config";
+import { ROL_ADMIN, ROL_DUENO, ROL_USUARIO } from "./config";
 function App() {
 
   return (
@@ -40,8 +40,8 @@ function App() {
             <Route path="/listTest" element={<ProtectedRoute>
               <ListTest />
             </ProtectedRoute>} />
-            <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} />
-
+            <Route path="/test/:id" element={<ProtectedRoute required_rol={ROL_USUARIO}><Test /></ProtectedRoute>} />
+            <Route path="/regisO" element={<ProtectedRoute required_rol={ROL_DUENO}><RegisterOptical /></ProtectedRoute>} />
           </Routes>
           
         </Router>

@@ -43,8 +43,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("user")
     setIsAuthenticated(false);
     setUserRole(null);
+    
     window.location.href = "/";
   };
 

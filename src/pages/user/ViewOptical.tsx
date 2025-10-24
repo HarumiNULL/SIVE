@@ -102,7 +102,7 @@ export default function View_optical() {
 
         {/* Mapa */}
         <div className={styles.grid_item2}>
-          <div id={styles.map} style={{ height: "400px" }}></div>
+          <div id="map" style={{ height: "400px" }}></div>
         </div>
 
         <div className={styles.grid_item3}>
