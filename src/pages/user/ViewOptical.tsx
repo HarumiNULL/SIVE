@@ -85,8 +85,7 @@ export default function View_optical() {
       <Navbar />
 
       {/* Contenido principal */}
-      <div>
-       
+      <div>       
         <img src={`${BASE_URL}${optic.logo}`} className={styles.banner} alt="" />
         <h1 className={styles.text_banner}>{optic?.nameOp}</h1>
       </div>

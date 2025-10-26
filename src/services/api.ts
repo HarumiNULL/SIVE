@@ -98,6 +98,15 @@ export interface AuthResponse {
   user: User;
   role: number;
 }
+export interface Schedule {
+  id_schedule: number;
+  id_day: number;
+  id_hour_aper: number;
+  id_hour_close: number;
+  id_optical: number;
+}
+
+
 
 API.interceptors.request.use(
   (config) => {
@@ -476,6 +485,26 @@ export const createSchedule = async (data: any) => {
     throw new Error("Error al crear el horario");
   }
 };
+export const getScheduleByOptical = async (id_optical: number) => {
+  try {
+    const response = await API.get(`/schedules/?id_optical=${id_optical}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error obteniendo horario:", error.response?.data || error);
+    throw new Error("Error al obtener el horario");
+  }
+};
+
+export const getAllSchedules = async () => {
+  try {
+    const response = await API.get("/schedules/");
+    return response.data;
+  } catch (error: any) {
+    console.error("Error obteniendo schedules:", error.response?.data || error);
+    throw new Error("No se pudieron obtener los horarios");
+  }
+};
+
 
 
 

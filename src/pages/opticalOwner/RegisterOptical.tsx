@@ -224,6 +224,7 @@ export default function EditOptical() {
               <textarea className={styles.register_optical_input_description}
                 name="descriptionOp"
                 id="descriptionOp"
+                onChange={handleChange}
                 required />
 
               <label htmlFor="address">Dirección</label><br />
