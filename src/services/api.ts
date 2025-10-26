@@ -12,6 +12,7 @@ export interface User {
   role_id: number;
   first_name: string;
   last_name: string;
+  state: number;
 }
 
 export interface QuestionaryItem {
@@ -220,41 +221,50 @@ export const getOpticalsByCity = async (): Promise<OpticalByCity[]> => {
 };
 
 export const getUsers = async () => {
-    try {
-        const res = await API.get(`users/`);
-        console.log("📡 Datos recibidos de usuarios:", res.data);
-        return res.data; // Asume que res.data es el array de usuarios
-    } catch (error) { // <--- CORREGIDO: Se elimina el ': any' si no usas TypeScript
-        console.error("Error al obtener usuarios:", error);
-        // Lanzar un error más limpio para el componente
-        throw new Error(error.response?.data?.error || "Error al obtener usuarios del servidor");
-    }
-}
+  try {
+    const res = await API.get("users/");
+    console.log("📡 Datos recibidos de usuarios:", res.data);
+    return res.data; // Se asume que el backend devuelve un array de usuarios
+  } catch (error: any) {
+    console.error("❌ Error al obtener usuarios:", error);
+    throw new Error(
+      error.response?.data?.error || "Error al obtener usuarios del servidor"
+    );
+  }
+};
 
-// 2. ELIMINAR USUARIO
-export const deleteUser = async (userId: number) => { // <--- Función necesaria
-    try {
-        await API.delete(`users/${userId}/`);
-        return true; // Éxito en la eliminación
-    } catch (error) {
-        console.error(`Error al eliminar usuario ${userId}:`, error);
-        throw new Error("No se pudo eliminar el usuario.");
-    }
-}
+// 2. ELIMINAR USUARIO (borrado lógico)
+export const deleteUser = async (userId: number) => {
+  try {
+    const response = await API.patch(`users/${userId}/`, {
+      state: 4, // 👈 Estado 'Eliminado'
+    });
+    console.log(`🗑️ Usuario ${userId} marcado como eliminado.`);
+    return response.data;
+  } catch (error: any) {
+    console.error(`❌ Error al eliminar usuario ${userId}:`, error);
+    throw new Error(
+      error.response?.data?.error || "No se pudo eliminar el usuario."
+    );
+  }
+};
 
-// 3. BLOQUEAR/DESBLOQUEAR USUARIO
-export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { // <--- Función necesaria
-    try {
-        // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
-        const response = await API.put(`users/${userId}/block/`, { is_blocked: isBlocked }); 
-        
-        // Retorna el usuario actualizado (idealmente)
-        return response.data; 
-    } catch (error) {
-        console.error(`Error al cambiar estado de bloqueo ${userId}:`, error);
-        throw new Error("No se pudo cambiar el estado de bloqueo.");
-    }
-}
+// 3. BLOQUEAR / DESBLOQUEAR USUARIO
+export const toggleBlockUser = async (userId: number, newState: number) => {
+  try {
+    // 🔥 CORREGIDO: ahora usa backticks (``) para interpolar la variable
+    const response = await API.patch(`users/${userId}/`, { state: newState });
+    console.log(
+      `🔄 Estado de usuario ${userId} cambiado a ${newState === 2 ? "Bloqueado" : "Activo"}`
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(`❌ Error al cambiar estado de usuario ${userId}:`, error);
+    throw new Error(
+      error.response?.data?.error || "No se pudo cambiar el estado del usuario."
+    );
+  }
+};
 
 /*
 export const createOptical = async (formData: FormData, token: string) => {
