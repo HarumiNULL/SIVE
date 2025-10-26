@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDays, getHours, createOptical, getCities } from "../../services/api";
-import styles from "./editOptical.module.css"
+import { useAuth } from "../../components/AuthContext";
+import styles from "./registerOptical.module.css"
 import Navbar from "../../components/Navbar";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
@@ -11,9 +12,11 @@ import { getOneOptical, createSchedule, createScheduleByUrl } from "../../servic
 export default function EditOptical() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { role, userId } = useAuth();
   interface OpticalFormData {
     id_optical: number;
     nameOp: string;
+    descriptionOp: string;
     address: string;
     tel: string;
     city: string;
@@ -29,6 +32,7 @@ export default function EditOptical() {
   }
   const [formData, setFormData] = useState<OpticalFormData>({
     nameOp: "",
+    descriptionOp: "",
     address: "",
     tel: "",
     city: "",
@@ -134,7 +138,26 @@ export default function EditOptical() {
         /*console.log("📅 Creando horario:", scheduleData);
         await createSchedule(scheduleData);*/
       }
-
+      if (role === 3) { // usuario
+        try {
+          await fetch(`/api/users/${userId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              first_name: "", // si lo quieres mantener igual puedes leerlo
+              last_name: "",
+              email: "",      // el mismo email del usuario logueado
+              role: 2,        // 2 = dueño
+              state: 1,       // activo
+            }),
+          });
+          console.log("✅ Rol actualizado a dueño");
+        } catch (err) {
+          console.error("❌ Error actualizando rol:", err);
+        }
+      }
       alert("✅ Óptica y horarios registrados correctamente.");
       navigate(`/viewO/${opticalId}`);
 
@@ -197,6 +220,12 @@ export default function EditOptical() {
               />
 
               <br />
+              <label htmlFor="descriptionOp">Agrega una descripcion de tu optica</label>
+              <textarea className={styles.register_optical_input_description}
+                name="descriptionOp"
+                id="descriptionOp"
+                required />
+
               <label htmlFor="address">Dirección</label><br />
               <input className={styles.register_optical_input}
                 type="text"
@@ -232,7 +261,6 @@ export default function EditOptical() {
                         type="checkbox"
                         className={styles.option_check}
                         value={dayItem.id_day}
-                        checked={formData.day.includes(dayItem.id_day)}
                         onChange={(e) => {
                           const checked = e.target.checked;
                           setFormData((prev) => ({
@@ -243,10 +271,11 @@ export default function EditOptical() {
                           }));
                         }}
                       />
-                      {days.name_day}
+                      {dayItem.name_day}
                     </label>
                   ))}
               </div>
+              <br /><br /><br />
             </div>
 
             <div className={styles.grid_item2}>
@@ -326,10 +355,11 @@ export default function EditOptical() {
             </div>
 
           </div>
-          <h3>Selecciona la ubicacion de tu optica dando clic en el mapa</h3>
-          <p> <strong>Latitud: </strong>{formData.lat}   |   <strong>Longitud:    </strong> {formData.lng}</p>
+
           {/* 🗺️ Mapa Leaflet */}
-          <div style={{ height: "400px", width: "100%" }}>
+          <div style={{ height: "400px", width: "100%" ,paddingTop:"13%"}}>
+            <h3>Selecciona la ubicacion de tu optica dando clic en el mapa</h3>
+            <p> <strong>Latitud: </strong>{formData.latitud}   |   <strong>Longitud:    </strong> {formData.longitud}</p>
             <MapContainer
               center={defaultCenter}
               zoom={14}
@@ -343,7 +373,7 @@ export default function EditOptical() {
             </MapContainer>
           </div>
 
-          <div className="form-buttons">
+          <div className={styles.form_buttons}>
             <button type="submit" className="btn editar">
               Guardar Cambios
             </button>

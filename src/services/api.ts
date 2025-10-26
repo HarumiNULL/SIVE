@@ -12,7 +12,6 @@ export interface User {
   id: number;
   email: string;
   role_id: number;
-  role_id: number;
   first_name: string;
   last_name: string;
   state: number;
@@ -142,8 +141,8 @@ export const questionary = async (data: any): Promise<AuthResponse> => {
     throw new Error(error.response?.data?.error || JSON.stringify(error.response?.data) || error.message);
   }
 };
-export const logoutUser = async (token: string) => {
-  await API.post<AuthResponse>("logout/", null, { headers: { Authorization: `Token ${token}` } });
+export const logoutUser = async () => {
+  await API.post<AuthResponse>("logout/", null);
 };
 
 export const getOneOptical = async (id: number) => {
@@ -153,7 +152,6 @@ export const getOneOptical = async (id: number) => {
 
 export const deleteOptical = async (id: number) => {
   try {
-    const res = await API.delete(`optical/${id}/`);
     const res = await API.delete(`optical/${id}/`);
     return res.data;
   } catch (error: any) {
@@ -196,7 +194,6 @@ export const getAllOpticals = async () => {
 export const getCities = async () => {
   try {
     const res = await API.get(`city/`);
-    const res = await API.get(`city/`);
     console.log("📡 Datos recibidos de cities:", res.data);
     return res.data;
   } catch (error: any) {
@@ -208,7 +205,6 @@ export const getCities = async () => {
 export const getDays = async () => {
   try {
     const res = await API.get(`days/`);
-    const res = await API.get(`days/`);
     console.log("📡 Datos recibidos de days:", res.data);
     return res.data;
   } catch (error) {
@@ -219,7 +215,6 @@ export const getDays = async () => {
 
 export const getHours = async () => {
   try {
-    const res = await API.get(`hours/`);
     const res = await API.get(`hours/`);
     console.log("📡 Datos recibidos de hours:", res.data);
     return res.data;

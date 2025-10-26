@@ -2,9 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import { logoutUser } from "../services/api";
 import { useAuth } from "./AuthContext";
 import styles from "./navbar.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { isAuthenticated, logout, role } = useAuth();
+  const navigate = useNavigate();
   console.log(isAuthenticated)
   console.log(role)
   const location = useLocation();
@@ -14,25 +16,17 @@ export default function Navbar() {
   const ROL_USUARIO = 3;
   const isHome = location.pathname === "/";
 
-    const handleLogout = async () => {
-        try {
-            await logoutUser();
-            navigate("/"); 
-        } catch (error) {
-            console.error("Error cerrando sesión:", error);
-        }finally{
-            logout();
-        }
-    };
+ 
   const handleLogout = async () => {
-  try {
-    await logoutUser();
-  } catch (error) {
-    console.error("Error cerrando sesión en el servidor:", error);
-  } finally {
-    logout();
-  }
-};
+    try {
+      await logoutUser();
+      navigate("/");
+    } catch (error) {
+      console.error("Error cerrando sesión en el servidor:", error);
+    } finally {
+      logout();
+    }
+  };
 
   const renderNavLinks = () => {
     const commonLinks = (
@@ -42,37 +36,38 @@ export default function Navbar() {
       </>
     );
     let roleLinks = null;
-  switch (role) {
-    case ROL_ADMIN:
-      roleLinks = (
-        <>
-          <Link to="/homeAdmin" className={styles.btn_ver}>Inicio</Link>
-          <Link to="/listOptical" className={styles.btn_ver}>Administrar Ópticas</Link>
-          <Link to="/GestionUser" className={styles.btn_ver}>Gestión Usuarios</Link>
-        </>
-      );
-      break;
+    switch (role) {
+      case ROL_ADMIN:
+        roleLinks = (
+          <>
+            <Link to="/homeAdmin" className={styles.btn_ver}>Inicio</Link>
+            <Link to="/listOptical" className={styles.btn_ver}>Administrar Ópticas</Link>
+            <Link to="/GestionUser" className={styles.btn_ver}>Gestión Usuarios</Link>
+          </>
+        );
+        break;
 
-    case ROL_DUEÑO:
-      roleLinks = (
-        <>
-          <Link to="/" className={styles.btn_ver}>Inicio</Link>
-          <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
-          <Link to="/viewO" className={styles.btn_ver}>Ver Mi Óptica</Link>
-        </>
-      );
-      break;
+      case ROL_DUEÑO:
+        roleLinks = (
+          <>
+            <Link to="/" className={styles.btn_ver}>Inicio</Link>
+            <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
+            <Link to="/my-optical" className={styles.btn_ver}>Ver Mi Óptica</Link>
+          </>
+        );
+        break;
 
-    case ROL_USUARIO:
-      roleLinks = (
-        <>
-          <Link to="/" className={styles.btn_ver}>Inicio</Link>
-          <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
-        </>
-      );
-      break;
-    default:
-      roleLinks = null;
+      case ROL_USUARIO:
+        roleLinks = (
+          <>
+            <Link to="/" className={styles.btn_ver}>Inicio</Link>
+            <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
+            <Link to="/registerO" className={styles.btn_ver}>trabaja con nosotros</Link>
+          </>
+        );
+        break;
+      default:
+        roleLinks = null;
     }
 
     return (
@@ -108,7 +103,7 @@ export default function Navbar() {
               </Link>
             </>
           )}
-          </div>
+        </div>
       </header>
     </nav>
   );

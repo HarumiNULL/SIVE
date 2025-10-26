@@ -14,8 +14,8 @@ import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
-
 import GestionUser from "./pages/Admin/GestionUser";
+
 
 import { ROL_ADMIN } from "./config";
 import RedirectToMyOptical from "./pages/opticalOwner/RedirectToMyOptical";
@@ -60,6 +60,7 @@ function App() {
               <ListTest />
             </ProtectedRoute>} />
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} />
+            <Route path="/GestionUser" element={<ProtectedRoute><GestionUser /></ProtectedRoute>}/>
             <Route path="/GestionUser" element={<ProtectedRoute><GestionUser /></ProtectedRoute>}/>
           </Routes>
           
