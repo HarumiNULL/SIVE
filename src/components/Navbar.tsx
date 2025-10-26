@@ -10,15 +10,13 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        const token = localStorage.getItem("token");
-        if (!token) return navigate("/login");
-
         try {
-            await logoutUser(token);
-            await logout();
+            await logoutUser();
             navigate("/"); 
         } catch (error) {
             console.error("Error cerrando sesión:", error);
+        }finally{
+            logout();
         }
     };
     return (

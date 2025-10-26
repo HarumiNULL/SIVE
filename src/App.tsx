@@ -33,10 +33,10 @@ function App() {
               <EditOptical />
             </ProtectedRoute>} />
             
-            <Route path="/listProb" element={<ProtectedRoute> <ListProbability/> </ProtectedRoute>}/> 
-            <Route path="/listTest" element={<ProtectedRoute>
-              <ListTest />
-            </ProtectedRoute>} />
+            <Route path="/listProb" element={<ProtectedRoute><ListProbability/></ProtectedRoute>}/> 
+            <Route path="/listTest" element={<ProtectedRoute><ListTest/></ProtectedRoute>} />
+            <Route path="/registerO" element={<ProtectedRoute><RegisterOptical/></ProtectedRoute>}/>
+            <Route path="/registerO/:id_optical" element={<RegisterOptical/>} />
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} /> 
             <Route path="/my-optical" element={<RedirectToMyOptical />} />
           </Routes>

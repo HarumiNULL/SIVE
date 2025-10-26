@@ -77,3 +77,10 @@ input#file-upload-button{
   margin-bottom:0 ;
   padding-top: 2%;
 }
+
+
+/*acomodar los contenedores en dos columnas*/
+.grid_container{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}

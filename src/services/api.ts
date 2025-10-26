@@ -1,97 +1,19 @@
 import axios from "axios";
 /*import { Axios } from "axios";*/
+export const BASE_URL = "http://127.0.0.1:8000";
 
 // Configura la URL de tu backend (puede estar en otro servidor)
 const API = axios.create({
   baseURL: "http://127.0.0.1:8000/api/"
 });
+
 export interface User {
   id: number;
   email: string;
+  role_id: number;
   first_name: string;
   last_name: string;
 }
-
-export interface AuthResponse {
-  token: string;
-  user: User;
-}
-
-// Función para registrar usuario
-export const registerUser = async (data: any): Promise<AuthResponse> => {
-  try {
-    const res = await API.post<AuthResponse>("register/", data);
-    return res.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.non_field_errors || JSON.stringify(error.response?.data) || error.message);
-  }
-};
-
-export const loginUser = async (data: any): Promise<AuthResponse> => {
-  try {
-    const res = await API.post<AuthResponse>("login/", data);
-    return res.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.error || JSON.stringify(error.response?.data) || error.message);
-  }
-};
-
-export const questionary = async (data: any): Promise<AuthResponse> => {
-  try {
-    const res = await API.post<AuthResponse>("questionary/", data);
-    return res.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.error || JSON.stringify(error.response?.data) || error.message);
-  }
-};
-export const logoutUser = async (token: string) => {
-  await API.post<AuthResponse>("logout/", null, { headers: { Authorization: `Token ${token}` } });
-};
-
-
-
-// devuelve la primera óptica asociada al userId o null
-export const findOpticalForUser = async (userId: number) => {
-  try {
-    const all = await getAllOpticals(); // ya incluye token
-    if (!Array.isArray(all)) return null;
-    const found = all.find((o: any) => Number(o.user) === Number(userId));
-    return found || null;
-  } catch (err) {
-    console.error("Error buscando óptica para usuario:", err);
-    throw err;
-  }
-};
-
-
-export const getOneOptical = async (id: number) => {
-  const token = localStorage.getItem("token");
-  try {
-    const res= await axios.get(`http://127.0.0.1:8000/api/optical/${id}/`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      }
-    });
-      return res.data;
-  } catch (error:any) {
-    throw new Error(
-      error.response?.data?.error ||
-      JSON.stringify(error.response?.data) ||
-      error.message    );
-    
-  }
-  
-}
-
-export const deleteOptical = async (id: number) => {
-  try {
-    const res = await axios.delete(`http://127.0.0.1:8000/api/optical/${id}/`);
-    return res.data;
-  } catch (error: any) {
-    console.error("Error eliminando óptica:", error);
-    throw new Error(error.response?.data?.error || error.message);
-  }
-};
 
 export interface QuestionaryItem {
   id_questionary: number;
@@ -121,15 +43,87 @@ export interface Questionary {
   questions: Question[]; // lista de preguntas
 }
 
-export const getQuestionaries = async () => {
-  const token=localStorage.getItem("token");
-  try {
-    const res = await API.get<QuestionaryItem[]>("questionary/",{
-      headers:{
-        Authorization: `Token ${token}`,
-      },
+export interface TopViewedOptical{
+  nameOp: string;
+  view: number;
+}
 
-      });
+export interface OpticalByCity {
+  city_name: string;
+  count: number;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: User;
+  role: number;
+}
+
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers!.Authorization = `Token ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+
+
+// Función para registrar usuario
+export const registerUser = async (data: any): Promise<AuthResponse> => {
+  try {
+    const res = await API.post<AuthResponse>("register/", data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.non_field_errors || JSON.stringify(error.response?.data) || error.message);
+  }
+};
+
+export const loginUser = async (data: any): Promise<AuthResponse> => {
+  try {
+    const res = await API.post<AuthResponse>("login/", data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || JSON.stringify(error.response?.data) || error.message);
+  }
+};
+
+export const questionary = async (data: any): Promise<AuthResponse> => {
+  try {
+    const res = await API.post<AuthResponse>("questionary/", data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || JSON.stringify(error.response?.data) || error.message);
+  }
+};
+export const logoutUser = async () => {
+  await API.post<AuthResponse>("logout/");
+};
+
+export const getOneOptical = async (id: number) => {
+  const res = await API.get(`optical/${id}/`);
+  return res.data;
+}
+
+export const deleteOptical = async (id: number) => {
+  try {
+    const res = await API.delete(`optical/${id}/`);
+    return res.data;
+  } catch (error: any) {
+    console.error("Error eliminando óptica:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
+};
+
+
+export const getQuestionaries = async () => {
+  try {
+    const res = await API.get<QuestionaryItem[]>("questionary/");
     return res.data;
   } catch (error: any) {
     throw new Error(
@@ -142,29 +136,14 @@ export const getQuestionaries = async () => {
 
 
 export const getOneQuestionary = async (id:number): Promise<Questionary> => {
-  const token= localStorage.getItem("token");
-  try {
-    const res = await axios.get<Questionary>(`http://127.0.0.1:8000/api/questionary/${id}/`,{
-      headers:{
-        Authorization: `Token ${token}`,
-      },
-    });
-    return res.data;
-  } catch (error) {
-    console.error("Error al obtner el cuestionario ", error);
-    throw new Error(error. response?.data?.detail|| "Error al obtner cuestionario");
-  }
+  const res = await API.get<Questionary>(`questionary/${id}/`);
+  return res.data;
 };
 
 
 export const getAllOpticals = async () => {
-  const token = localStorage.getItem("token");
   try {
-    const res = await axios.get("http://127.0.0.1:8000/api/optical/", {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
+    const res = await API.get("optical/");
     return res.data;
   } catch (error: any) {
     console.error("Error al obtener ópticas:", error);
@@ -174,7 +153,7 @@ export const getAllOpticals = async () => {
 
 export const getCities = async () => {
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/city/`);
+    const res = await API.get(`city/`);
     console.log("📡 Datos recibidos de cities:", res.data);
     return res.data;
   } catch (error: any) {
@@ -185,18 +164,18 @@ export const getCities = async () => {
 
 export const getDays = async () => {
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/days/`);
+    const res = await API.get(`days/`);
     console.log("📡 Datos recibidos de days:", res.data);
     return res.data;
   } catch (error) {
     console.error("❌ Error en getDays:", error);
-    return [];
+    return null;
   }
 };
 
 export const getHours = async () => {
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/hours/`);
+    const res = await API.get(`hours/`);
     console.log("📡 Datos recibidos de hours:", res.data);
     return res.data;
   } catch (error) {
@@ -205,16 +184,10 @@ export const getHours = async () => {
   }
 };
 
+/*
 export const createOptical = async (data: any) => {
   try {
-    const token = localStorage.getItem("token");
-
-    const response = await axios.post(`http://127.0.0.1:8000/api/optical/`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Token ${ token }` : "",
-    },
-});
+    const response = await API.post(`optical/`, data);
 console.log("✅ Óptica creada:", response.data);
 return response.data;
   } catch (error) {
@@ -222,6 +195,79 @@ return response.data;
   throw error;
 }
 };
+*/
+export const createOptical = async (data: any) => {
+  try {
+    const res = await API.post(`optical/`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("❌ Error creando óptica:", error.response?.data || error);
+    throw error;
+  }
+};
+
+export const getTopViewedOpticals = async (): Promise<TopViewedOptical[]> => {
+  try {
+    const res = await API.get<TopViewedOptical[]>(`optical/top-viewed/`);
+    if (res.status === 200) {
+      return (await res).data
+
+    } else {
+      throw new Error(`Error: Received status code ${res.status}`);
+    }
+  } catch (error) {
+    console.error("Error al obtener ópticas más vistas:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
+};
+export const getOpticalsByCity = async (): Promise<OpticalByCity[]> => {
+  try {
+    const res = await API.get<OpticalByCity[]>(`optical/by-city/`);
+    return res.data;
+  } catch (error) {
+    console.error("Error al obtener ópticas por ciudad:", error);
+    throw new Error(error.response?.data?.error || error.message);
+  }
+};
+
+export const getUsers = async () => {
+    try {
+        const res = await API.get(`users/`);
+        console.log("📡 Datos recibidos de usuarios:", res.data);
+        return res.data; // Asume que res.data es el array de usuarios
+    } catch (error) { // <--- CORREGIDO: Se elimina el ': any' si no usas TypeScript
+        console.error("Error al obtener usuarios:", error);
+        // Lanzar un error más limpio para el componente
+        throw new Error(error.response?.data?.error || "Error al obtener usuarios del servidor");
+    }
+}
+
+// 2. ELIMINAR USUARIO
+export const deleteUser = async (userId: number) => { // <--- Función necesaria
+    try {
+        await API.delete(`users/${userId}/`);
+        return true; // Éxito en la eliminación
+    } catch (error) {
+        console.error(`Error al eliminar usuario ${userId}:`, error);
+        throw new Error("No se pudo eliminar el usuario.");
+    }
+}
+
+// 3. BLOQUEAR/DESBLOQUEAR USUARIO
+export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { // <--- Función necesaria
+    try {
+        // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
+        const response = await API.put(`users/${userId}/block/`, { is_blocked: isBlocked }); 
+        
+        // Retorna el usuario actualizado (idealmente)
+        return response.data; 
+    } catch (error) {
+        console.error(`Error al cambiar estado de bloqueo ${userId}:`, error);
+        throw new Error("No se pudo cambiar el estado de bloqueo.");
+    }
+}
 
 /*
 export const createOptical = async (formData: FormData, token: string) => {
@@ -238,3 +284,19 @@ export const createOptical = async (formData: FormData, token: string) => {
     throw error;
   }
 };*/
+
+export const createSchedule = async (data: any) => {
+  try {
+    const response = await API.post("/schedules/", data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error creando schedule:", error.response?.data || error);
+    throw new Error("Error al crear el horario");
+  }
+};
+
+
+
+
+
+

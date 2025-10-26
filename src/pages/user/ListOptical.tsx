@@ -11,7 +11,7 @@ interface Optical {
   address: string;
   tel: string;
   email: string;
-  logo?: string; 
+  logo?: string;
 }
 
 export default function ListOptical() {
@@ -23,6 +23,9 @@ export default function ListOptical() {
       try {
         const data = await getAllOpticals();
         console.log("Ópticas recibidas:", data);
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("Primer id_optical:", data[0].id_optical);
+        }
         setOpticals(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error cargando ópticas:", error);
