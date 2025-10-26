@@ -20,6 +20,8 @@ export default function Test() {
         }
     }, [id]);
     console.log(test)
+    if (!test) return <div>Cargando cuestionario...</div>;
+
     if (error) return <div>{error}</div>
     return (
         <>

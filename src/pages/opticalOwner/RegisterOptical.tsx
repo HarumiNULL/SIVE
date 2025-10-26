@@ -1,14 +1,33 @@
-// src/pages/RegisterOptical.tsx
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getDays, getHours, createOptical,getCities } from "../../services/api";
-import styles from "./registerOptical.module.css"
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getDays, getHours, createOptical, getCities } from "../../services/api";
+import styles from "./editOptical.module.css"
 import Navbar from "../../components/Navbar";
+import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import L from "leaflet";
+import { getOneOptical, createSchedule, createScheduleByUrl } from "../../services/api";
 
-export default function RegisterOptical() {
+export default function EditOptical() {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
+  const { id } = useParams();
+  interface OpticalFormData {
+    id_optical: number;
+    nameOp: string;
+    address: string;
+    tel: string;
+    city: string;
+    email: string;
+    logo: File | null;
+    certCadecuacion: File | null;
+    certDispensacion: File | null;
+    day: number[]; // ✅ aquí definimos el tipo correctamente
+    hour_aper: string;
+    hour_close: string;
+    latitud: string;
+    longitud: string;
+  }
+  const [formData, setFormData] = useState<OpticalFormData>({
     nameOp: "",
     address: "",
     tel: "",
@@ -17,25 +36,47 @@ export default function RegisterOptical() {
     logo: null as File | null,
     certCadecuacion: null as File | null,
     certDispensacion: null as File | null,
-    day: "",
+    day: [],
     hour_aper: "",
     hour_close: "",
+    latitud: "",
+    longitud: "",
   });
 
   const [days, setDays] = useState([]);
   const [hours, setHours] = useState([]);
-  const[cities, setCities]=useState([]);
+  const [cities, setCities] = useState([]);
 
-  // Cargar datos desde el backend
+
+  // 🧭 Función para actualizar lat/lng al hacer clic en el mapa
+  const LocationMarker = () => {
+    useMapEvents({
+      click(e) {
+        const { lat, lng } = e.latlng;
+        setFormData((prev) => ({
+          ...prev,
+          latitud: lat.toFixed(6),
+          longitud: lng.toFixed(6),
+        }));
+      },
+    });
+
+    return formData.latitud && formData.longitud ? (
+      <Marker
+        position={[parseFloat(formData.latitud), parseFloat(formData.longitud)]}
+      />
+    ) : null;
+  };
+
+  // 📡 Cargar datos iniciales del backend
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [dayData, hourData,cityData] = await Promise.all([
+        const [dayData, hourData, cityData] = await Promise.all([
           getDays(),
           getHours(),
-          getCities()
+          getCities(),
         ]);
-        // 👇 Esto se asegura de que sea un array válido para map()
         setDays(Array.isArray(dayData) ? dayData : []);
         setHours(Array.isArray(hourData) ? hourData : []);
         setCities(Array.isArray(cityData) ? cityData : []);
@@ -44,161 +85,264 @@ export default function RegisterOptical() {
       }
     };
 
+
     fetchData();
   }, []);
-
-
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value, files } = e.target as any;
-    if (files) {
-      setFormData({ ...formData, [name]: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const data = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value) data.append(key, value as any);
-      });
 
-      await createOptical(data);
-      alert("Óptica registrada correctamente");
-      navigate("/listOptical");
-    } catch (error) {
-      console.error("Error registrando óptica:", error);
-      alert("Error al registrar la óptica");
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("nameOp", formData.nameOp);
+      formDataToSend.append("address", formData.address);
+      formDataToSend.append("tel", formData.tel);
+      formDataToSend.append("city", formData.city);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("latitud", formData.latitud);
+      formDataToSend.append("longitud", formData.longitud);
+      if (formData.logo) formDataToSend.append("logo", formData.logo);
+      if (formData.certCadecuacion)
+        formDataToSend.append("certCadecuacion", formData.certCadecuacion);
+      if (formData.certDispensacion)
+        formDataToSend.append("certDispensacion", formData.certDispensacion);
+
+      // 🔹 Verifica los datos antes de enviar
+      for (let [key, value] of formDataToSend.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      // ✅ Envía al backend
+      const opticalCreated = (await createOptical(formDataToSend)) as OpticalFormData;
+      const opticalId = opticalCreated.id_optical;
+      console.log("🆔 Óptica creada con ID:", opticalId);
+
+      // 🧭 2️⃣ Crear schedules por cada día seleccionado
+      for (const day of formData.day) {
+        const scheduleData = {
+          day_id: day,
+          hour_aper_id: formData.hour_aper,   // ID de la hora de apertura
+          hour_close_id: formData.hour_close, // ID de la hora de cierre
+          optical_id: opticalId,
+        };
+        try {
+          await createSchedule(scheduleData);
+          console.log(`✅ Horario creado para el día ${day}`);
+        } catch (err) {
+          console.error(`❌ Error creando horario del día ${day}:`, err);
+        }
+
+        /*console.log("📅 Creando horario:", scheduleData);
+        await createSchedule(scheduleData);*/
+      }
+
+      alert("✅ Óptica y horarios registrados correctamente.");
+      navigate(`/viewO/${opticalId}`);
+
+    } catch (error: any) {
+      console.error("❌ Error en el registro de óptica:", error);
+
+      // 🧠 Manejo de error específico si el correo ya existe
+      if (error.response && error.response.data.email) {
+        alert("⚠️ El correo ya está registrado. Usa otro distinto.");
+      } else {
+        alert("Ocurrió un error al registrar la óptica. Intenta nuevamente.");
+      }
     }
   };
+
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type, files } = e.target as HTMLInputElement;
+
+    // Si es un archivo
+    if (type === "file" && files) {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: files[0],
+      }));
+    } else {
+      // Cualquier otro input o select
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  // 📍 Posición inicial: si tiene datos, usa los del backend, sino Facatativá
+  const defaultCenter =
+    formData.latitud && formData.longitud
+      ? [parseFloat(formData.latitud), parseFloat(formData.longitud)]
+      : [4.8166, -74.3545]; // fallback a Facatativá
+
+
 
   return (
     <div className="edit-container">
       <Navbar />
 
-       <h2 className={styles.optical_title}>Registrar Óptica</h2><br />
+      <h2 className={styles.optical_title}>Registrar Óptica</h2><br />
       <div className={styles.formContainer}>
-       
-        <form action="">
-          <label htmlFor="nameOp">Nombre de Óptica</label><br />
-          <input className={styles.register_optical_input}
-            type="text"
-            name="nameOp"
-            value={formData.nameOp}
-            onChange={handleChange}
-          />
 
-          <br />
-          <label htmlFor="address">Dirección</label><br />
-          <input className={styles.register_optical_input}
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-          />
-          <br />
-          <label htmlFor="tel">Teléfono</label><br />
-          <input className={styles.register_optical_input}
-            type="text"
-            name="tel"
-            value={formData.tel}
-            onChange={handleChange}
-          />
-          <br />
-          <label htmlFor="email">Correo de la optica</label><br />
-          <input className={styles.register_optical_input}
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <br />
-          <br />
-          <label >¿Que dias tiene servicio la optica?</label>
-          <div className={styles.days}>
-            {days
-              .sort((a: any, b: any) => a.id_day - b.id_day)
-              .map((days: any) => (
-                <label className={styles.option_day} key={days.id_day} htmlFor={`${days.id_day}`}>
-                  <input type="checkbox" className={styles.option_check}
-                    name={`day-${days.id_day}`}
-                    id={`${days.id_day}`}
-                    value={`${days.id_day}`} />
-                  {days.name_day}
-                </label>
-              ))}
-          </div>
-          <label htmlFor="city">¿En que ciudad esta ubicada?</label>
-          <select name="city" id="">
-            {cities.map((city: any)=>(
-              <option key={city.id_city} value={`${city.id_city}`}>{city.name}</option>
-            ))}
-          </select>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.grid_container}>
+            <div className={styles.grid_item1}>
+              <label htmlFor="nameOp">Nombre de Óptica</label><br />
+              <input className={styles.register_optical_input}
+                type="text"
+                name="nameOp"
+                onChange={handleChange}
+                required
+              />
 
-          <div className={styles.hours}>
-            <label htmlFor="hour_aper"  className={styles.label_form_optical}>Hora de Apertura</label>
-            <select className={styles.select_optical}
-              name="hour_aper"
-              value={formData.hour_aper}
-              onChange={handleChange}
+              <br />
+              <label htmlFor="address">Dirección</label><br />
+              <input className={styles.register_optical_input}
+                type="text"
+                name="address"
+                onChange={handleChange}
+                required
+              />
+              <br />
+              <label htmlFor="tel">Teléfono</label><br />
+              <input className={styles.register_optical_input}
+                type="text"
+                name="tel"
+                onChange={handleChange}
+                required
+              />
+              <br />
+              <label htmlFor="email">Correo de la optica</label><br />
+              <input className={styles.register_optical_input}
+                type="email"
+                name="email"
+                onChange={handleChange}
+                required
+              />
+              <br />
+              <br />
+              <label >¿Que dias tiene servicio la optica?</label>
+              <div className={styles.days}>
+                {days
+                  .sort((a: any, b: any) => a.id_day - b.id_day)
+                  .map((dayItem: any) => (
+                    <label className={styles.option_day} key={dayItem.id_day}>
+                      <input
+                        type="checkbox"
+                        className={styles.option_check}
+                        value={dayItem.id_day}
+                        checked={formData.day.includes(dayItem.id_day)}
+                        onChange={(e) => {
+                          const checked = e.target.checked;
+                          setFormData((prev) => ({
+                            ...prev,
+                            day: checked
+                              ? [...prev.day, dayItem.id_day]
+                              : prev.day.filter((d) => d !== dayItem.id_day),
+                          }));
+                        }}
+                      />
+                      {days.name_day}
+                    </label>
+                  ))}
+              </div>
+            </div>
+
+            <div className={styles.grid_item2}>
+
+              <div className={styles.hours}>
+                <label htmlFor="city" className={styles.label_form_optical}>¿En que ciudad esta ubicada?</label>
+                <select required name="city" id="" className={styles.select_optical} onChange={(e) => setFormData({ ...formData, city: e.target.value })}>
+                  <option value=""> seleccionar..</option>
+                  {cities.map((city: any) => (
+                    <option key={city.id_city} value={`${city.id_city}`}>{city.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.hours}>
+                <label htmlFor="hour_aper" className={styles.label_form_optical}>Hora de Apertura</label>
+                <select required className={styles.select_optical}
+                  name="hour_aper"
+                  value={formData.hour_aper}
+                  onChange={handleChange}
+                >
+                  <option value="">Selecciona hora de apertura</option>
+                  {hours.map((h: any) => (
+                    <option key={h.id_hour} value={h.id_hour}>
+                      {h.hour}
+                    </option>
+                  ))}
+                </select>
+                <label className={styles.label_form_optical} htmlFor="hour_close">Hora de Cierre</label>
+                <select required className={styles.select_optical}
+                  name="hour_close"
+                  value={formData.hour_close}
+                  onChange={handleChange}
+                >
+                  <option value="">Selecciona hora de cierre</option>
+                  {hours.map((h: any) => (
+                    <option key={h.id_hour} value={h.id_hour}>
+                      {h.hour}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <br />
+              <label htmlFor="logo">Logo (solo imágenes .jpg, .png)</label>
+              <div className={styles.register_optical_input}>
+                <input
+                  className={styles.input_file}
+                  type="file"
+                  name="logo"
+                  accept=".jpg,.jpeg,.png"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <label htmlFor="certCadecuacion">Certificado de Adecuación (solo PDF)</label>
+              <div className="form-group">
+                <input
+                  className={styles.input_file}
+                  type="file"
+                  name="certCadecuacion"
+                  accept=".pdf"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <label htmlFor="certDispensacion">Certificado de Dispensación (solo PDF)</label>
+              <div className="form-group">
+                <input
+                  className={styles.input_file}
+                  type="file"
+                  name="certDispensacion"
+                  accept=".pdf"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+          </div>
+          <h3>Selecciona la ubicacion de tu optica dando clic en el mapa</h3>
+          <p> <strong>Latitud: </strong>{formData.lat}   |   <strong>Longitud:    </strong> {formData.lng}</p>
+          {/* 🗺️ Mapa Leaflet */}
+          <div style={{ height: "400px", width: "100%" }}>
+            <MapContainer
+              center={defaultCenter}
+              zoom={14}
+              style={{ height: "100%", width: "100%" }}
             >
-              <option value="">Seleccionar...</option>
-              {hours.map((h: any) => (
-                <option key={h.id_hour} value={h.id_hour}>
-                  {h.hour}
-                </option>
-              ))}
-            </select>
-            <label  className={styles.label_form_optical} htmlFor="hour_close">Hora de Cierre</label>
-            <select className={styles.select_optical}
-              name="hour_close"
-              value={formData.hour_close}
-              onChange={handleChange}
-            >
-              <option value="">Seleccionar...</option>
-              {hours.map((h: any) => (
-                <option key={h.id_hour} value={h.id_hour}>
-                  {h.hour}
-                </option>
-              ))}
-            </select>
+              <TileLayer
+                attribution="© OpenStreetMap contributors"
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <LocationMarker />
+            </MapContainer>
           </div>
-          <br />
-          <label  htmlFor="logo">Logo (solo imágenes .jpg, .png)</label>
-          <div className="form-group">
-            <input
-            className={styles.input_file}
-              type="file"
-              name="logo"
-              accept=".jpg,.jpeg,.png"
-              onChange={handleChange}
-            />
-          </div>
-          <label htmlFor="certCadecuacion">Certificado de Adecuación (solo PDF)</label>
-          <div className="form-group">
-            <input
-            className={styles.input_file}
-              type="file"
-              name="certCadecuacion"
-              accept=".pdf"
-              onChange={handleChange}
-            />
-          </div>
-          <label htmlFor="certDispensacion">Certificado de Dispensación (solo PDF)</label>
-          <div className="form-group">
-            <input
-              className={styles.input_file}
-              type="file"
-              name="certDispensacion"
-              accept=".pdf"
-              onChange={handleChange}
-            />
-          </div>
+
           <div className="form-buttons">
             <button type="submit" className="btn editar">
               Guardar Cambios

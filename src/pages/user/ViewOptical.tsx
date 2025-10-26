@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getOneOptical, deleteOptical } from "../../services/api";
+import { getOneOptical, deleteOptical,BASE_URL } from "../../services/api";
 import { Link } from "react-router-dom";
 import LoadingView from "../LoadingView";
 import L from "leaflet"; // 👈 Importa Leaflet correctamente
@@ -18,10 +18,10 @@ export default function View_optical() {
     tel: string;
     city: number;
     email: string;
-    logo: string;
+    logo: File | string;
     user: number;
-    certCadecuacion: string;
-    certDispensacion: string;
+    certCadecuacion: File | string;
+    certDispensacion: File | string;
     latitud: number;
     longitud: number;
   }
@@ -31,10 +31,13 @@ export default function View_optical() {
   useEffect(() => {
     if (id) { // Asegúrate de que el id exista antes de hacer la llamada
       getOneOptical(Number(id))
-        .then((res) => setOptic(res.data))
+        .then((res) => {
+          console.log("Respuesta de la API:", res);
+          setOptic(res);
+        })
         .catch((err) => console.error("Error al obtener la óptica:", err));
     }
-  }, [id]); 
+  }, [id]);
 
   const handleDelete = async () => {
     if (!optic?.id_optical) return;
@@ -50,6 +53,7 @@ export default function View_optical() {
       }
     }
   };
+  console.log(optic)
 
   // Inicializar el mapa una vez que optic esté cargado
   useEffect(() => {
@@ -57,7 +61,7 @@ export default function View_optical() {
     console.log("Datos recibidos de la API:", optic);
     const lat = optic.latitud; // fallback Bogotá
     const lng = optic.longitud;
-    console.log("Latitud:", optic.latitud, "Longitud:", optic.longitud);  
+    console.log("Latitud:", optic.latitud, "Longitud:", optic.longitud);
     const map = L.map("map").setView([lat, lng], 20);
 
     L.tileLayer(`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`, {
@@ -72,16 +76,17 @@ export default function View_optical() {
       map.remove(); // limpia el mapa al desmontar
     };
   }, [optic]);
-  
+
   if (!optic) return <LoadingView />;
 
   return (
     <div className={styles.home_container}>
-      <Navbar/>
-    
+      <Navbar />
+
       {/* Contenido principal */}
       <div>
-        <img src={optic?.logo} className={styles.banner} alt="" />
+       
+        <img src={`${BASE_URL}${optic.logo}`} className={styles.banner} alt="" />
         <h1 className={styles.text_banner}>{optic?.nameOp}</h1>
       </div>
 

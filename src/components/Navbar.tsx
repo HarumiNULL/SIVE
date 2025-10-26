@@ -14,6 +14,16 @@ export default function Navbar() {
   const ROL_USUARIO = 3;
   const isHome = location.pathname === "/";
 
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+            navigate("/"); 
+        } catch (error) {
+            console.error("Error cerrando sesión:", error);
+        }finally{
+            logout();
+        }
+    };
   const handleLogout = async () => {
   try {
     await logoutUser();

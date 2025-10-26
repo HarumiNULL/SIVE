@@ -24,6 +24,7 @@ export default function Login() {
   // Manejo del submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Datos enviados:", formData);
     try {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
@@ -45,7 +46,7 @@ export default function Login() {
       } else {
         alert("No se recibió token del servidor ❌");
       }
-    } catch (err: unknown) {
+    } catch (err: any) {
       console.error("Error en login:", err);
 
       // Así se comprueba el tipo

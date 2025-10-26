@@ -18,6 +18,7 @@ import { ROL_DUENO, ROL_USUARIO } from "./config";
 import GestionUser from "./pages/Admin/GestionUser";
 
 import { ROL_ADMIN } from "./config";
+import RedirectToMyOptical from "./pages/opticalOwner/RedirectToMyOptical";
 function App() {
 
   return (
@@ -44,6 +45,13 @@ function App() {
             <Route path="/editO/:id" element={<ProtectedRoute>
               <EditOptical />
             </ProtectedRoute>} />
+            
+            <Route path="/listProb" element={<ProtectedRoute><ListProbability/></ProtectedRoute>}/> 
+            <Route path="/listTest" element={<ProtectedRoute><ListTest/></ProtectedRoute>} />
+            <Route path="/registerO" element={<ProtectedRoute><RegisterOptical/></ProtectedRoute>}/>
+            <Route path="/registerO/:id_optical" element={<RegisterOptical/>} />
+            <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} /> 
+            <Route path="/my-optical" element={<RedirectToMyOptical />} />
             <Route path="/listProb" element={<ProtectedRoute>
               <ListProbability/>
             </ProtectedRoute>}/>

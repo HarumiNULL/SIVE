@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { getAllOpticals } from "../../services/api";
 import defaultLogo from "../../assets/288-FOTO-Requisitos-para-optica-oftalmica.jpg";
 import styles from "./listOptical.module.css";
 
 interface Optical {
-  id: number;
+  id_optical: number;
   nameOp: string;
   address: string;
   tel: string;
   email: string;
+  logo?: string;
   logo?: string;
 }
 
@@ -24,6 +26,9 @@ export default function ListOptical() {
       try {
         const data = await getAllOpticals();
         console.log("Ópticas recibidas:", data);
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("Primer id_optical:", data[0].id_optical);
+        }
         setOpticals(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error cargando ópticas:", error);
@@ -84,7 +89,7 @@ export default function ListOptical() {
             {/* Tarjetas */}
             <div className={styles.optical_cards}>
               {currentOpticals.map((opt) => (
-                <div key={opt.id} className={styles.optical_card}>
+                <div key={opt.id_optical} className={styles.optical_card}>
                   
                   <div className={styles.optical_image}>
                     <img src={opt.logo || defaultLogo} alt={opt.nameOp} />
@@ -98,6 +103,7 @@ export default function ListOptical() {
                       Correo: {opt.email}
                     </p>
                     <div className={styles.optical_buttons}>
+                    <Link to={`/viewO/${opt.id_optical}`}>visita optica</Link>
                       <button className={styles.visit_btn}>Visitar</button>
                       <a target="_blank" rel="noopener noreferrer">
                         Ver en el mapa
