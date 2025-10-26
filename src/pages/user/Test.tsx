@@ -3,7 +3,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { getOneQuestionary, Questionary, Option, Question } from '../../services/api';
+import { getOneQuestionary, type Questionary, type Option, type Question } from '../../services/api';
 import styles from "./test.module.css"
 
 export default function Test() {

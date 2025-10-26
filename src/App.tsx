@@ -13,6 +13,11 @@ import Test from "./pages/user/Test";
 import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
+import HomeAdmin from "./pages/Admin/HomeAdmin";
+
+import GestionUser from "./pages/Admin/GestionUser";
+
+import { ROL_ADMIN } from "./config";
 import RedirectToMyOptical from "./pages/opticalOwner/RedirectToMyOptical";
 function App() {
 
@@ -23,9 +28,17 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/HomeAdmin" element={<ProtectedRoute>
+              <HomeAdmin />
+            </ProtectedRoute>} />
+
+            <Route path="/HomeAdmin" element={<ProtectedRoute required_rol={ROL_ADMIN}><HomeAdmin /></ProtectedRoute>} />
+
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/listOptical" element={<ProtectedRoute> <ListOptical/></ProtectedRoute>}/>
+            <Route path="/listOptical" element={<ProtectedRoute>
+              <ListOptical/>
+            </ProtectedRoute>}/>
             <Route path="/viewO/:id" element={<ProtectedRoute>
               <ViewOptical />
             </ProtectedRoute>} />
@@ -39,7 +52,17 @@ function App() {
             <Route path="/registerO/:id_optical" element={<RegisterOptical/>} />
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} /> 
             <Route path="/my-optical" element={<RedirectToMyOptical />} />
+            <Route path="/listProb" element={<ProtectedRoute>
+              <ListProbability/>
+            </ProtectedRoute>}/>
+            <Route path="/listProb" element={<ProtectedRoute><ListProbability/></ProtectedRoute>}/>
+            <Route path="/listTest" element={<ProtectedRoute>
+              <ListTest />
+            </ProtectedRoute>} />
+            <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} />
+            <Route path="/GestionUser" element={<ProtectedRoute><GestionUser /></ProtectedRoute>}/>
           </Routes>
+          
         </Router>
       </AuthProvider>
     </>
