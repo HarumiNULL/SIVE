@@ -17,6 +17,7 @@ import HomeAdmin from "./pages/Admin/HomeAdmin";
 import { ROL_DUENO, ROL_USUARIO } from "./config";
 import GestionUser from "./pages/Admin/GestionUser";
 
+
 import { ROL_ADMIN } from "./config";
 import RedirectToMyOptical from "./pages/opticalOwner/RedirectToMyOptical";
 function App() {
@@ -63,6 +64,7 @@ function App() {
             <Route path="/test/:id" element={<ProtectedRoute required_rol={ROL_USUARIO}><Test /></ProtectedRoute>} />
             <Route path="/regisO" element={<ProtectedRoute required_rol={ROL_DUENO}><RegisterOptical /></ProtectedRoute>} />
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} />
+            <Route path="/GestionUser" element={<ProtectedRoute><GestionUser /></ProtectedRoute>}/>
             <Route path="/GestionUser" element={<ProtectedRoute><GestionUser /></ProtectedRoute>}/>
           </Routes>
           

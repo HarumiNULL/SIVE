@@ -13,6 +13,7 @@ export default function View_optical() {
 
   interface Optical {
     id_optical: number;
+    descriptionOp:string;
     nameOp: string;
     address: string;
     tel: string;
@@ -94,8 +95,7 @@ export default function View_optical() {
         <div className={styles.grid_item1}>
           <h1 className={styles.optic_title}>{optic?.nameOp}</h1>
           <p className={styles.optic_description}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua.
+            {optic?.descriptionOp}
           </p>
           <h3 className={styles.subtitle}>Servicios</h3>
           <ul className={styles.services_list}>
