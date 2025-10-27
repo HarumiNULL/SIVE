@@ -1,11 +1,16 @@
-import Navbar from "../../components/Navbar"
+import Navbar from "../../components/Navbar";
 import React, { useState, useEffect } from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import "chart.js/auto";
-import { getTopViewedOpticals, getOpticalsByCity, type TopViewedOptical, type OpticalByCity } from "../../services/api"; // Funciones que debes crear
+import { 
+  getTopViewedOpticals, 
+  getOpticalsByCity, 
+  generarReporteOpticas, // 🔹 Importamos la nueva función
+  type TopViewedOptical, 
+  type OpticalByCity 
+} from "../../services/api";
 import styles from "./homeAdmin.module.css";
 
-// Opciones para la gráfica de Barras
 const barOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -15,7 +20,6 @@ const barOptions = {
   },
 };
 
-// Opciones para la gráfica de Torta
 const pieOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -26,32 +30,30 @@ const pieOptions = {
 };
 
 export default function HomeAdmin() {
-  // Nuevos estados para tus datos
   const [viewsData, setViewsData] = useState<any>(null);
   const [cityData, setCityData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false); // 🔹 nuevo estado
 
   useEffect(() => {
     const loadChartData = async () => {
       try {
         setLoading(true);
-        // 1. Pides los datos a tu API (ver Paso 3)
         const topViewedApi: TopViewedOptical[] = await getTopViewedOpticals();
         const byCityApi: OpticalByCity[] = await getOpticalsByCity();
 
-        // 2. Transformas los datos de la API al formato que Chart.js necesita
         const formattedViewsData = {
           labels: topViewedApi.map(item => item.nameOp),
           datasets: [{
             label: "Total de Vistas",
             data: topViewedApi.map(item => item.view),
-            backgroundColor: [ // Un color por cada ciudad
+            backgroundColor: [
               "rgba(255, 99, 132, 0.6)",
               "rgba(54, 162, 235, 0.6)",
               "rgba(255, 206, 86, 0.6)",
               "rgba(75, 192, 192, 0.6)",
               "rgba(153, 102, 255, 0.6)",
-            ], // Color Púrpura
+            ],
           }],
         };
 
@@ -60,7 +62,7 @@ export default function HomeAdmin() {
           datasets: [{
             label: "Nro. de Ópticas",
             data: byCityApi.map(item => item.count),
-            backgroundColor: [ // Un color por cada ciudad
+            backgroundColor: [
               "rgba(255, 99, 132, 0.6)",
               "rgba(54, 162, 235, 0.6)",
               "rgba(255, 206, 86, 0.6)",
@@ -78,7 +80,6 @@ export default function HomeAdmin() {
           }],
         };
 
-        // 3. Guardas los datos en el estado
         setViewsData(formattedViewsData);
         setCityData(formattedCityData);
 
@@ -90,7 +91,26 @@ export default function HomeAdmin() {
     };
 
     loadChartData();
-  }, []); // El array vacío [] significa que esto se ejecuta solo 1 vez
+  }, []);
+
+  // 🔹 Función para manejar la descarga del reporte
+  const handleGenerarReporte = async () => {
+    try {
+      setDownloading(true);
+      const pdfBlob = await generarReporteOpticas();
+      const url = window.URL.createObjectURL(new Blob([pdfBlob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "reporte_opticas.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      alert("Error al generar el reporte. Revisa la consola para más detalles.");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   if (loading) {
     return <div>Cargando gráficas...</div>;
@@ -98,27 +118,38 @@ export default function HomeAdmin() {
 
   return (
     <>
-    <Navbar />
-    <div className={styles.adminContainer}>
-      <h1>Bienvenido  Administrador</h1>
-      <div className={styles.chartsGrid}>
+      <Navbar />
+      <div className={styles.adminContainer}>
+        <h1>Bienvenido Administrador</h1>
 
-        {/* Gráfica 1: Vistas (Barras) */}
-        {viewsData && (
-          <div className={styles.chartContainer}>
-            <Bar options={barOptions} data={viewsData} />
-          </div>
-        )}
+        <div className={styles.chartsGrid}>
+          {/* Gráfica 1: Vistas (Barras) */}
+          {viewsData && (
+            <div className={styles.chartContainer}>
+              <Bar options={barOptions} data={viewsData} />
+            </div>
+          )}
 
-        {/* Gráfica 2: Ciudades (Torta) */}
-        {cityData && (
-          <div className={styles.chartContainer}>
-            <Pie options={pieOptions} data={cityData} />
-          </div>
-        )}
+          {/* Gráfica 2: Ciudades (Torta) */}
+          {cityData && (
+            <div className={styles.chartContainer}>
+              <Pie options={pieOptions} data={cityData} />
+            </div>
+          )}
+        </div>
+
+        {/* 🔹 Botón para generar reporte */}
+      <div style={{ textAlign: "center", marginTop: "40px" }}>
+        <button
+          onClick={handleGenerarReporte}
+          disabled={downloading}
+          className={styles.reportButton}
+        >
+          {downloading ? "⏳ Generando..." : "📄 Reporte Ópticas"}
+        </button>
+      </div>
 
       </div>
-    </div>
     </>
   );
 }
