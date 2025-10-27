@@ -5,7 +5,7 @@ import styles from "./navbar.module.css";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
-  const { isAuthenticated, logout, role } = useAuth();
+  const { isAuthenticated, logout, role, opticalId } = useAuth();
   const navigate = useNavigate();
   console.log(isAuthenticated)
   console.log(role)
@@ -29,14 +29,6 @@ export default function Navbar() {
   };
 
   const renderNavLinks = () => {
-    const commonLinks = (
-      <>
-        
-        <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
-        <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
-        <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
-      </>
-    );
     let roleLinks = null;
     switch (role) {
       case ROL_ADMIN:
@@ -53,9 +45,12 @@ export default function Navbar() {
       case ROL_DUEÑO:
         roleLinks = (
           <>
-            <Link to="/" className={styles.btn_ver}>Inicio</Link>
-            <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
-            <Link to="/my-optical" className={styles.btn_ver}>Ver Mi Óptica</Link>
+            <Link 
+              to={opticalId ? `/viewO/${opticalId}` : "/registerO"} className={styles.btn_ver}>
+              Inicio
+            </Link>
+
+            <Link to="/graphics" className={styles.btn_ver}>Mis Estadisticas</Link>
           </>
         );
         break;
@@ -64,8 +59,10 @@ export default function Navbar() {
         roleLinks = (
           <>
             <Link to="/" className={styles.btn_ver}>Inicio</Link>
+            <Link to="/listTest" className={styles.btn_ver}>Test Visuales</Link>
+            <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
             <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
-            <Link to="/registerO" className={styles.btn_ver}>trabaja con nosotros</Link>
+            <Link to="/registerO" className={styles.btn_ver}>Trabaja con Nosotros</Link>
           </>
         );
         break;
@@ -76,7 +73,6 @@ export default function Navbar() {
     return (
       <>
         {roleLinks}
-        {commonLinks}
         <button onClick={handleLogout} className={styles.btn_cerrar}>Cerrar sesión</button>
       </>
     );

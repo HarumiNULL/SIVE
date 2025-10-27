@@ -98,6 +98,15 @@ export interface AuthResponse {
   user: User;
   role: number;
 }
+export interface Schedule {
+  id_schedule: number;
+  id_day: number;
+  id_hour_aper: number;
+  id_hour_close: number;
+  id_optical: number;
+}
+
+
 
 API.interceptors.request.use(
   (config) => {
@@ -450,6 +459,16 @@ export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { /
         throw new Error("No se pudo cambiar el estado de bloqueo.");
     }
 }
+// Obtener catálogo de una óptica
+export async function getAllCatalogues() {
+  const response = await API.get("/catalogue/");
+  return response.data;
+}
+
+export async function getAllProducts() {
+  const response = await API.get("product/");
+  return response.data;
+}
 
 /*
 export const createOptical = async (formData: FormData, token: string) => {
@@ -476,9 +495,52 @@ export const createSchedule = async (data: any) => {
     throw new Error("Error al crear el horario");
   }
 };
+export const getScheduleByOptical = async (id_optical: number) => {
+  try {
+    const response = await API.get(`/schedules/?id_optical=${id_optical}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error obteniendo horario:", error.response?.data || error);
+    throw new Error("Error al obtener el horario");
+  }
+};
 
+export const getAllSchedules = async () => {
+  try {
+    const response = await API.get("/schedules/");
+    return response.data;
+  } catch (error: any) {
+    console.error("Error obteniendo schedules:", error.response?.data || error);
+    throw new Error("No se pudieron obtener los horarios");
+  }
+};
 
+export const addProductToCatalogue = async (opticalId: number, productId: number) => {
+  return fetch(`/api/catalogue/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ optical: opticalId, nameP: productId }),
+  });
+};
 
+// 📦 Crear un nuevo producto en el catálogo
+export async function createCatalogue(data: FormData) {
+  const response = await API.post("/catalogue/", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+}
 
-
+// 📊 Obtener las vistas de una óptica específica
+export const getViewsByOpticalId = async (opticalId: number) => {
+  try {
+    const res = await API.get(`/optical/${opticalId}/views`);
+    return res.data;
+  } catch (error: any) {
+    console.error("Error al obtener las vistas por óptica:", error);
+    throw new Error(error.response?.data?.message || "Error de conexión");
+  }
+};
 

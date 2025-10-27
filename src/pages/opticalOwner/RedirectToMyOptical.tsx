@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllOpticals } from "../../services/api"; // o import { findOpticalForUser } if añadiste helper
+import Navbar from "../../components/Navbar";
 
 export default function RedirectToMyOptical() {
   const navigate = useNavigate();
@@ -55,11 +56,14 @@ export default function RedirectToMyOptical() {
 
   if (loading) return <p>Cargando...</p>;
   if (error) return (
+    <>
+    <Navbar/>
     <div>
       <p>{error}</p>
       {/* opcional: un botón para intentar de nuevo */}
-      <button onClick={() => window.location.reload()}>Reintentar</button>
+      
     </div>
+    </>
   );
 
   return null;
