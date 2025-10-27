@@ -9,13 +9,17 @@
 }
 
 .test-name {
-    font-family: inter;
+    font-family: 'Inter';
     text-align: start;
+    color: #4A376C;
 }
 
 p.test-descriptions {
     font-family: inter;
     text-align: start;
+    font-size: 20px;
+    letter-spacing: normal;
+    font-weight: 500;
 }
 
 .col.imagen {
@@ -65,7 +69,7 @@ p.test-descriptions {
     margin-bottom: 5%;
     display: flex;
     justify-content: space-between;
-    background: #D9D9D9;
+    background: #b7baf7;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     width: 80%;

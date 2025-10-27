@@ -3,7 +3,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { getOneQuestionary, type Questionary, type Option, type Question } from '../../services/api';
+import { getOneQuestionary, type Questionary, type Option, type Question, BASE_URL } from '../../services/api';
 import styles from "./test.module.css"
 
 export default function Test() {
@@ -27,9 +27,8 @@ export default function Test() {
         <>
             <div className={styles.home_container}>
                 <Navbar />
-
                 {test ? (
-                    <div >
+                    <div className={styles.general_container}>
                         <div className={styles.banner_container}>
                             <h1 className={styles.text_banner}>{test.name_questionary}</h1>
                         </div>
@@ -39,15 +38,17 @@ export default function Test() {
                                 {test.description}
                             </p>
                         </div>
-                        <div className={styles.test_container}>
-                            {test.questions && (
-                                <div className={styles.contenedor_preguntas}>
-                                    {test.questions.map((question: Question) => (
-                                        <>
+                        {test.questions && (
+                            <div className={styles.contenedor_preguntas}>
+                                {test.questions.map((question: Question) => (
+                                    <>
+                                        <div className={styles.div_question}>
                                             <h3 key={question.id_question}>{question.question}</h3>
-                                            
-
-                                            <ul>
+                                            <div className={styles.div_image_question}>
+                                                <img src={`${BASE_URL}${question.image_question}`} alt={ `question-${question.id_question}`} className={styles.image_question} /><br />
+                                            </div>  
+                                            <div className={styles.question_option}>
+                                                <h5 className={styles.text}>Selecciona la respuesta que consideres correcta</h5>
                                                 {question.options.map((op: Option) => (
                                                     <label key={op.id_option} className={styles.label_questionary} htmlFor={`${op.id_option}`}>
                                                         <input
@@ -60,25 +61,18 @@ export default function Test() {
                                                         {op.descriptionOp}
                                                     </label>
                                                 ))}
-                                            </ul>
-                                        </>
-                                    ))}
-                                </div>
-                            )}
-
-
-                            <div className={styles.grid_item2}>
-                                <img src="/snellen_2daOpcion.svg" alt="" c/>
+                                            </div>
+                                        </div>
+                                    </>
+                                ))}
                             </div>
-                        </div>
+                        )}
+                        
                     </div>
                 ) : (
                     <p>Cargando test...</p>
                 )}
-                 
             </div>
-
-
         </>
     );
 }

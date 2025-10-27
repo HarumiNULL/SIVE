@@ -505,7 +505,48 @@ export const getAllSchedules = async () => {
   }
 };
 
+///actualizar optica
 
+export const updateOptical = async (id: number, data: FormData) => {
+  try {
+    const response = await API.patch(`/optical/${id}/`, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error actualizando óptica:", error.response?.data || error);
+    throw new Error("Error al actualizar la óptica");
+  }
+};
+
+//actualizar horario
+export const updateSchedule = async (id: number, data: {
+  day_id: number;
+  hour_aper_id: number;
+  hour_close_id: number;
+  optical_id: number;
+}) => {
+  try {
+    const response = await API.put(`/schedules/${id}/`, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error actualizando schedule:", error.response?.data || error);
+    throw new Error("Error al actualizar el horario");
+  }
+};
+
+export const createScheduleNew = async (data: {
+  day_id: number;
+  hour_aper_id: number;
+  hour_close_id: number;
+  optical_id: number;
+}) => {
+  try {
+    const response = await API.post("/schedules/", data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error creando schedule:", error.response?.data || error);
+    throw new Error("Error al crear el horario");
+  }
+};
 
 
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDays, getHours, getCities, getOneOptical, createOptical, Schedule, getAllSchedules } from "../../services/api";
+import { getDays, getHours, getCities, getOneOptical, createOptical, Schedule, getAllSchedules, BASE_URL, updateOptical, updateSchedule, createScheduleNew } from "../../services/api";
 import styles from "./editOptical.module.css"
 import Navbar from "../../components/Navbar";
 import "leaflet/dist/leaflet.css";
@@ -10,6 +10,20 @@ import L from "leaflet";
 export default function EditOptical() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [initialData, setInitialData] = useState<OpticalFormData | null>(null);
+  const [initialSchedules, setInitialSchedules] = useState<Schedule[]>([]);
+  // ✅ Tipo más claro para Schedule
+  interface ScheduleForm {
+    id_schedule: number;
+    day_id: number;          // el id del día
+    hour_aper_id: number;    // id hora apertura
+    hour_close_id: number;   // id hora cierre
+    optical_id: number;
+  }
+
+  // Estado para manejar los schedules
+  const [schedules, setSchedules] = useState<ScheduleForm[]>([]);
+
   interface OpticalFormData {
     id_optical: number;
     nameOp: string;
@@ -18,9 +32,12 @@ export default function EditOptical() {
     tel: string;
     city: string;
     email: string;
-    logo: File | null;
-    certCadecuacion: File | null;
-    certDispensacion: File | null;
+    logo: File | string | null;                // archivo nuevo
+    logoActual: string;               // archivo existente en backend
+    certCadecuacion: File | null;     // archivo nuevo
+    certCadecuacionActual: string;    // archivo existente en backend
+    certDispensacion: File | null;    // archivo nuevo
+    certDispensacionActual: string;
     day: number[]; // ✅ aquí definimos el tipo correctamente
     hour_aper: string;
     hour_close: string;
@@ -35,9 +52,14 @@ export default function EditOptical() {
     tel: "",
     city: "",
     email: "",
-    logo: null as File | null,
-    certCadecuacion: null as File | null,
-    certDispensacion: null as File | null,
+    // solo los archivos nuevos que suba el usuario
+    logo: null,
+    certCadecuacion: null,
+    certDispensacion: null,
+    // los paths actuales del backend
+    logoActual: "",
+    certCadecuacionActual: "",
+    certDispensacionActual: "",
     day: [],
     hour_aper: "",
     hour_close: "",
@@ -48,8 +70,6 @@ export default function EditOptical() {
   const [days, setDays] = useState([]);
   const [hours, setHours] = useState([]);
   const [cities, setCities] = useState([]);
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-
 
   // 🧭 Función para actualizar lat/lng al hacer clic en el mapa
   const LocationMarker = () => {
@@ -96,7 +116,24 @@ export default function EditOptical() {
         getOneOptical(Number(id)),
         getAllSchedules(),
       ]).then(([opticalData, allSchedules]) => {
+        const schedulesOptical: ScheduleForm[] = allSchedules
+          .filter((s: any) => s.optical_id === Number(id))
+          .map((s: any) => ({
+            id_schedule: s.id_schedule,
+            day_id: s.day.id_day,
+            hour_aper_id: s.hour_aper.id_hour,
+            hour_close_id: s.hour_close.id_hour,
+            optical_id: s.optical_id,
+          }));
+
+        // ⚠️ Declaramos firstSchedule antes de usarlo
+        //const firstSchedule = schedulesOptical[0];
+        const firstSchedule = schedulesOptical.length > 0 ? schedulesOptical[0] : undefined;
+
+
+
         console.log("📦 Todos los schedules:", allSchedules);
+        //console.log("PRIMER SCHEDULE: ", firstSchedule)
         console.log("🧩 IDs de ópticas con horarios:", allSchedules.map((s: any) => s.optical_id));
 
         console.log("🧿 ID de la óptica actual:", id);
@@ -111,63 +148,147 @@ export default function EditOptical() {
           tel: opticalData.tel,
           city: String(opticalData.city),
           email: opticalData.email,
+          logoActual: opticalData.logo || "",
+          certCadecuacionActual: opticalData.certCadecuacion || "",
+          certDispensacionActual: opticalData.certDispensacion || "",
+          logo: null,
+          certCadecuacion: null,
+          certDispensacion: null,
           day: opticalData.day || [],
-          hour_aper: String(opticalData.hour_aper || ""),
-          hour_close: String(opticalData.hour_close || ""),
+          hour_aper: firstSchedule ? String(firstSchedule.hour_aper_id) : "",
+          hour_close: firstSchedule ? String(firstSchedule.hour_close_id) : "",
           latitud: opticalData.latitud ? String(opticalData.latitud) : "",
           longitud: opticalData.longitud ? String(opticalData.longitud) : "",
         }));
-        const schedulesOptical = allSchedules.filter(
-          (s: any) => s.optical_id === Number(id)
-        );
+
         console.log("✅ Horarios de la óptica filtrados:", schedulesOptical);
         setSchedules(schedulesOptical);
-        setSchedules(schedulesOptical);
+        setInitialData({
+          ...opticalData,
+          logo: opticalData.logo || null,
+          certCadecuacion: opticalData.certCadecuacion || null,
+          certDispensacion: opticalData.certDispensacion || null,
+        });
+        setInitialSchedules(schedulesOptical);
+
 
 
       });
     }
   }, [id]);
 
-  // marcar o desmaracr los dias cuandoel usuario hace clic
+  // 🔹 toggleDay para agregar o quitar días
   const toggleDay = (dayId: number) => {
     setSchedules((prev) => {
-      // Si ya existe un horario con ese día, lo quitamos
-      if (prev.some((s) => s.id_day === dayId)) {
-        return prev.filter((s) => s.id_day !== dayId);
+      // Si ya existe el día, lo quitamos
+      if (prev.some((s) => s.day_id === dayId)) {
+        return prev.filter((s) => s.day_id !== dayId);
       }
-      // Si no existe, lo agregamos con valores por defecto
+      // Si no existe, agregamos uno nuevo con valores por defecto
       return [
         ...prev,
         {
           id_schedule: 0,
-          day: { id_day: dayId, name_day: "" },
-          id_hour_aper: 1,
-          id_hour_close: 1,
-          id_optical: formData.id_optical || 0,
+          day_id: dayId,
+          hour_aper_id: 1,   // valor por defecto
+          hour_close_id: 1,  // valor por defecto
+          optical_id: formData.id_optical,
         },
       ];
     });
   };
 
-
+  // 🔹 handleHourChange para actualizar la hora de apertura/cierre de un día
+  const handleHourChange = (id_schedule: number, type: "aper" | "close", value: string) => {
+    setSchedules((prev) =>
+      prev.map((s) =>
+        s.id_schedule === id_schedule || (s.id_schedule === 0 && s.day_id === id_schedule)
+          ? {
+            ...s,
+            hour_aper_id: type === "aper" ? Number(value) : s.hour_aper_id,
+            hour_close_id: type === "close" ? Number(value) : s.hour_close_id,
+          }
+          : s
+      )
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
+      if (!initialData) return;
+
       const data = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value) data.append(key, value as any);
+
+      // ✅ Comparar y enviar solo campos que cambiaron (texto)
+      ["nameOp","descriptionOp", "address", "tel", "city", "email", "latitud", "longitud"].forEach((key) => {
+        const current = formData[key as keyof OpticalFormData];
+        const original = initialData[key as keyof OpticalFormData];
+        if (current !== original && current !== "") {
+          data.append(key, current as string);
+        }
       });
 
-      await createOptical(data);
-      alert("Óptica registrada correctamente");
+      // ✅ Archivos: enviar solo si cambió
+      if (formData.logo instanceof File) data.append("logo", formData.logo);
+      if (formData.certCadecuacion instanceof File) data.append("certCadecuacion", formData.certCadecuacion);
+      if (formData.certDispensacion instanceof File) data.append("certDispensacion", formData.certDispensacion);
+
+      // ✅ Actualizar óptica solo si hay cambios
+      if (
+        data.has("nameOp") ||
+        data.has("address") ||
+        data.has("tel") ||
+        data.has("city") ||
+        data.has("email") ||
+        data.has("latitud") ||
+        data.has("longitud") ||
+        data.has("logo") ||
+        data.has("certCadecuacion") ||
+        data.has("certDispensacion")
+      ) {
+        await updateOptical(formData.id_optical, data);
+      }
+
+      // 🔹 Actualizar schedules correctamente
+      for (const s of schedules) {
+        const original = initialSchedules.find((sch) => sch.id_schedule === s.id_schedule);
+
+        const scheduleData = {
+          day_id: s.day_id,
+          hour_aper_id: s.hour_aper_id,
+          hour_close_id: s.hour_close_id,
+          optical_id: formData.id_optical,
+        };
+
+        if (!s.id_schedule || s.id_schedule === 0) {
+          await createScheduleNew(scheduleData);
+        } else if (
+          scheduleData.day_id !== original?.day?.id_day ||
+          scheduleData.hour_aper_id !== original?.hour_aper?.id_hour ||
+          scheduleData.hour_close_id !== original?.hour_close?.id_hour
+        ) {
+          await updateSchedule(s.id_schedule, scheduleData);
+        }
+      }
+
+
+
+      alert("Óptica y horarios actualizados correctamente");
       navigate("/listOptical");
     } catch (error) {
-      console.error("Error registrando óptica:", error);
-      alert("Error al registrar la óptica");
+      console.error("Error al actualizar óptica y horarios:", error);
+      alert("Ocurrió un error al actualizar la óptica");
     }
   };
+
+
+
+
+
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type, files } = e.target as HTMLInputElement;
@@ -196,7 +317,7 @@ export default function EditOptical() {
       <h2 className={styles.optical_title}>Editar Óptica</h2><br />
       <div className={styles.formContainer}>
 
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className={styles.grid_container}>
             <div className={styles.grid_item1}>
               <label htmlFor="nameOp">Nombre de Óptica</label><br />
@@ -253,7 +374,7 @@ export default function EditOptical() {
                         name={`day-${days.id_day}`}
                         id={`${days.id_day}`}
                         value={`${days.id_day}`}
-                        checked={schedules.some((s) => s.day?.id_day === days.id_day)}
+                        checked={schedules.some((s) => s.day_id === days.id_day)}
                         onChange={() => toggleDay(days.id_day)}
 
                       />
@@ -275,7 +396,7 @@ export default function EditOptical() {
                   className={styles.select_optical}
                   value={formData.city || ""} // aquí enlazas el valor actual
                   onChange={handleChange}
-                    >
+                >
                   <option value=""> seleccionar..</option>
                   {cities.map((city: any) => (
                     <option key={city.id_city} value={`${city.id_city}`}>{city.name}</option>
@@ -292,7 +413,7 @@ export default function EditOptical() {
                 >
                   <option value="">Selecciona hora de apertura</option>
                   {hours.map((h: any) => (
-                    <option key={h.id_hour} value={h.id_hour}>
+                    <option key={h.id_hour} value={`${h.id_hour}`}>
                       {h.hour}
                     </option>
                   ))}
@@ -300,18 +421,19 @@ export default function EditOptical() {
                 <label className={styles.label_form_optical} htmlFor="hour_close">Hora de Cierre</label>
                 <select className={styles.select_optical}
                   name="hour_close"
-                  value={formData.hour_close}
+                  value={formData.hour_close || ""}
                   onChange={handleChange}
                 >
                   <option value="">Selecciona hora de cierre</option>
                   {hours.map((h: any) => (
-                    <option key={h.id_hour} value={h.id_hour}>
+                    <option key={h.id_hour} value={String(h.id_hour)}>
                       {h.hour}
                     </option>
                   ))}
                 </select>
               </div>
               <br />
+              {/* Logo */}
               <label htmlFor="logo">Logo (solo imágenes .jpg, .png)</label>
               <div className={styles.register_optical_input}>
                 <input
@@ -321,27 +443,57 @@ export default function EditOptical() {
                   accept=".jpg,.jpeg,.png"
                   onChange={handleChange}
                 />
+                {/* Mostrar logo actual o seleccionado */}
+                {formData.logo && typeof formData.logo === "string" && (
+                  <div style={{ marginTop: "5px" }}>
+                    <img
+                      src={`${BASE_URL}${formData.logo}`}
+                      alt={formData.nameOp}
+                      style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                    />
+                  </div>
+                )}
+                {formData.logo && formData.logo instanceof File && (
+                  <div style={{ marginTop: "5px" }}>
+                    <img
+                      src={URL.createObjectURL(formData.logo)}
+                      alt="Nuevo logo"
+                      style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                    />
+                  </div>
+                )}
               </div>
+              {/* Certificado de Adecuación */}
               <label htmlFor="certCadecuacion">Certificado de Adecuación (solo PDF)</label>
-              <div className="form-group">
-                <input
-                  className={styles.input_file}
-                  type="file"
-                  name="certCadecuacion"
-                  accept=".pdf"
-                  onChange={handleChange}
-                />
-              </div>
+              <input
+                type="file"
+                name="certCadecuacion"
+                accept=".pdf"
+                onChange={handleChange}
+              />
+              {formData.certCadecuacion && typeof formData.certCadecuacion === "string" && (
+                <div className={styles.current_file}>
+                  <a href={`${BASE_URL}${formData.certCadecuacion}`} target="_blank" rel="noopener noreferrer">
+                    Ver certificado actual
+                  </a>
+                </div>
+              )}
+
+              {/* Certificado de Dispensación */}
               <label htmlFor="certDispensacion">Certificado de Dispensación (solo PDF)</label>
-              <div className="form-group">
-                <input
-                  className={styles.input_file}
-                  type="file"
-                  name="certDispensacion"
-                  accept=".pdf"
-                  onChange={handleChange}
-                />
-              </div>
+              <input
+                type="file"
+                name="certDispensacion"
+                accept=".pdf"
+                onChange={handleChange}
+              />
+              {formData.certDispensacion && typeof formData.certDispensacion === "string" && (
+                <div className={styles.current_file}>
+                  <a href={`${BASE_URL}${formData.certDispensacion}`} target="_blank" rel="noopener noreferrer">
+                    Ver certificado actual
+                  </a>
+                </div>
+              )}
             </div>
 
           </div>
@@ -364,7 +516,7 @@ export default function EditOptical() {
             </MapContainer>
           </div>
 
-          <div className="form-buttons">
+          <div className={styles.form_buttons}>
             <button type="submit" className="btn editar">
               Guardar Cambios
             </button>

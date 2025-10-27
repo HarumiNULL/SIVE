@@ -1,7 +1,7 @@
 import { useEffect, useState, } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import { getAllOpticals } from "../../services/api";
+import { getAllOpticals, BASE_URL } from "../../services/api";
 import defaultLogo from "../../assets/288-FOTO-Requisitos-para-optica-oftalmica.jpg";
 import styles from "./listOptical.module.css";
 
@@ -92,7 +92,7 @@ export default function ListOptical() {
                 <div key={opt.id_optical} className={styles.optical_card}>
                   
                   <div className={styles.optical_image}>
-                    <img src={opt.logo || defaultLogo} alt={opt.nameOp} />
+                    <img src={`${BASE_URL}${opt.logo}` || defaultLogo} alt={opt.nameOp} />
                   </div>
 
                   <div className={styles.optical_info}>
@@ -103,8 +103,8 @@ export default function ListOptical() {
                       Correo: {opt.email}
                     </p>
                     <div className={styles.optical_buttons}>
-                    <Link to={`/viewO/${opt.id_optical}`}>visita optica</Link>
-                      <button className={styles.visit_btn}>Visitar</button>
+                      
+                      <button className={styles.visit_btn}><Link to={`/viewO/${opt.id_optical}`} style={{color:"white"}}>visitar</Link></button>
                       <a target="_blank" rel="noopener noreferrer">
                         Ver en el mapa
                       </a>

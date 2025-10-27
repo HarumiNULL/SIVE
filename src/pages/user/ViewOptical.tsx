@@ -111,7 +111,7 @@ export default function View_optical() {
 
         <div className={styles.grid_item3}>
           <div className={styles.button_div}>
-            <Link to="/editO">
+            <Link to={`/editO/${id}`}>
               <button className={styles.edit_optic}>Editar óptica</button>
             </Link>
             <button className={styles.delete} onClick={handleDelete}>
