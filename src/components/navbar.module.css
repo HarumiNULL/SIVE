@@ -17,7 +17,7 @@
   border: none;
   border-radius: 8px;
   padding: 0.6rem 1.2rem;
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -28,6 +28,7 @@
 
 .btn_cerrar {
   background-color: #8b5cf6;
+  font-size: 1rem;
 }
 
 .btn_ cerrar:hover {

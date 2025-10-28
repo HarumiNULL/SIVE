@@ -143,29 +143,33 @@ function UserList() {
                 <td>{ROLE_MAP[user.role] || "Desconocido"}</td>
                 <td>{user.first_name}</td>
                 <td>{user.last_name}</td>
-                <td className={`state state-${user.state}`}>
+              <td className="state-cell">
+                <span className={`state state-${user.state}`}>
                   {STATE_MAP[user.state] || "Desconocido"}
-                </td>
-                <td>
-                  {user.state !== 4 ? (
-                    <div className="action-buttons">
-                      <button
-                        className={user.state === 2 ? "btn-unlock" : "btn-lock"}
-                        onClick={() => handleToggleBlock(user.id)}
-                      >
-                        {user.state === 2 ? "Desbloquear" : "Bloquear"}
-                      </button>
-                      <button
-                        className="btn-delete"
-                        onClick={() => handleDeleteUser(user.id)}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  ) : (
-                    <span>❌ Eliminado</span>
-                  )}
-                </td>
+                </span>
+              </td>
+
+              <td>
+                {user.state !== 4 ? (
+                  <div className="action-buttons">
+                    <button
+                      className={user.state === 2 ? "btn-unlock" : "btn-lock"}
+                      onClick={() => handleToggleBlock(user.id)}
+                    >
+                      {user.state === 2 ? "Desbloquear" : "Bloquear"}
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDeleteUser(user.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                ) : (
+                  <span>❌ Eliminado</span>
+                )}
+              </td>
+
               </tr>
             ))}
           </tbody>
