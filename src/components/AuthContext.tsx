@@ -41,7 +41,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (token: string, role: number, opticalId?: number | null) => {
     localStorage.setItem("token", token);
     localStorage.setItem("role", String(role));
-    if (opticalId) localStorage.setItem("opticalId", String(opticalId));
+    if (opticalId !== null && opticalId !== undefined) localStorage.setItem("opticalId", String(opticalId));
+    console.log("eSTE ES EL ID OPTICA",opticalId)
     setIsAuthenticated(true);
     setUserRole(role);
     setOpticalId(opticalId ?? null);

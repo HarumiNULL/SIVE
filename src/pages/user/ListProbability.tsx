@@ -35,7 +35,7 @@ export default function ListProbability() {
         timesTaken: 2,
         probability: 45,
         route: "/testIshi",
-        info: "Para mayor información respecto a este Test Visual ingresar a: ",
+        info: "Para mayor información respecto a este Test Visual ingresar a: https://apidspace.cordillera.edu.ec/server/api/core/bitstreams/64ee2017-b3b6-4e8f-af34-dc003039ad10/content ",
       },
     ];
     setResults(mockData);

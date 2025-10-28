@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function Navbar() {
   const { isAuthenticated, logout, role, opticalId } = useAuth();
   const navigate = useNavigate();
+  console.log("el id de optica",opticalId)
   console.log(isAuthenticated)
   console.log(role)
   const location = useLocation();

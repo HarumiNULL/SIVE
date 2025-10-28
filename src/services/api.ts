@@ -495,15 +495,19 @@ export const createSchedule = async (data: any) => {
     throw new Error("Error al crear el horario");
   }
 };
+
 export const getScheduleByOptical = async (id_optical: number) => {
   try {
-    const response = await API.get(`/schedules/?id_optical=${id_optical}`);
+    const response = await API.get(`/schedules/?optical=${id_optical}`);
+    console.log("📅 Horarios recibidos para óptica", id_optical, ":", response.data);
     return response.data;
   } catch (error: any) {
     console.error("Error obteniendo horario:", error.response?.data || error);
     throw new Error("Error al obtener el horario");
   }
 };
+
+
 
 export const getAllSchedules = async () => {
   try {
@@ -544,3 +548,5 @@ export const getViewsByOpticalId = async (opticalId: number) => {
   }
 };
 
+
+export default API;

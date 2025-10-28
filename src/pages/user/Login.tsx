@@ -22,65 +22,71 @@ export default function Login() {
   };
 
   // Manejo del submit
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Datos enviados:", formData);
+  // ... el resto de imports y estado siguen igual
 
-    try {
-      const res = await loginUser(formData);
-      console.log("Login exitoso:", res);
-      const role = res.user.role_id;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  console.log("Datos enviados:", formData);
 
-      if (res.token) {
-        login(res.token, role);
-        alert("Inicio de sesión correcto ✅");
+  try {
+    const res = await loginUser(formData);
+    console.log("Login exitoso:", res);
+    const role = res.user.role_id;
+    let opticalId: number | null = null; // inicializamos aquí
 
-        if (role === 1) {
-          navigate("/homeAdmin");
+    if (res.token) {
 
-        } else if (role === 2) {
-          try {
-            const opticals = await getAllOpticals();
+      if (role === 2) {
+        // Buscar óptica asociada al dueño
+        try {
+          const opticals = await getAllOpticals();
+          const myOptical = opticals.find((o: any) => o.user === res.user.id);
 
-            console.log("🔍 Lista de ópticas:", opticals);
-            console.log("👤 ID del usuario logueado:", res.user.id);
-
-            // Buscar óptica asociada al usuario
-            const myOptical = opticals.find((o: any) => o.user === res.user.id);
-
-            if (myOptical) {
-              console.log("✅ Óptica encontrada:", myOptical);
-              navigate(`/viewO/${myOptical.id_optical}`);
-            } else {
-              alert("No se encontró una óptica asociada a este usuario ❌");
-              navigate("/"); // Redirige a inicio si no tiene óptica
-            }
-
-          } catch (error) {
-            console.error("Error al buscar óptica:", error);
-            alert("Ocurrió un error al buscar la óptica asociada ❌");
+          if (myOptical) {
+            opticalId = myOptical.id_optical;
+          } else {
+            alert("No se encontró una óptica asociada a este usuario ❌");
           }
 
-        } else if (role === 3) {
-          navigate("/listOptical");
-
-        } else {
-          navigate("/");
+        } catch (error) {
+          console.error("Error al buscar óptica:", error);
+          alert("Ocurrió un error al buscar la óptica asociada ❌");
         }
-
-      } else {
-        alert("No se recibió token del servidor ❌");
       }
 
-    } catch (err: any) {
-      console.error("Error en login:", err);
-      if (err instanceof Error) {
-        alert(`Error: ${err.message}`);
+      // Guardamos en el contexto antes de navegar
+      login(res.token, role, opticalId);
+      alert("Inicio de sesión correcto ✅");
+
+      // Redirección según rol
+      if (role === 1) {
+        navigate("/homeAdmin");
+      } else if (role === 2) {
+        if (opticalId) {
+          navigate(`/viewO/${opticalId}`);
+        } else {
+          navigate("/"); // si no tiene óptica
+        }
+      } else if (role === 3) {
+        navigate("/listOptical");
       } else {
-        alert("Error al iniciar sesión ❌");
+        navigate("/");
       }
+
+    } else {
+      alert("No se recibió token del servidor ❌");
     }
-  };
+
+  } catch (err: any) {
+    console.error("Error en login:", err);
+    if (err instanceof Error) {
+      alert(`Error: ${err.message}`);
+    } else {
+      alert("Error al iniciar sesión ❌");
+    }
+  }
+};
+
 
   return (
     <div id={styles.form_login} className={styles.forms_login}>
