@@ -25,12 +25,7 @@ export default function Navbar() {
 };
 
   const renderNavLinks = () => {
-    const commonLinks = (
-      <>
-        <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
-        <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
-      </>
-    );
+   
     let roleLinks = null;
   switch (role) {
     case ROL_ADMIN:
@@ -39,6 +34,7 @@ export default function Navbar() {
           <Link to="/homeAdmin" className={styles.btn_ver}>Inicio</Link>
           <Link to="/listOptical" className={styles.btn_ver}>Administrar Ópticas</Link>
           <Link to="/GestionUser" className={styles.btn_ver}>Gestión Usuarios</Link>
+          <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
         </>
       );
       break;
@@ -58,6 +54,8 @@ export default function Navbar() {
         <>
           <Link to="/" className={styles.btn_ver}>Inicio</Link>
           <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
+          <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
+          <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
         </>
       );
       break;
@@ -68,7 +66,6 @@ export default function Navbar() {
     return (
       <>
         {roleLinks}
-        {commonLinks}
         <button onClick={handleLogout} className={styles.btn_cerrar}>Cerrar sesión</button>
       </>
     );

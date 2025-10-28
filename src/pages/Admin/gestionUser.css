@@ -17,7 +17,7 @@
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(137, 106, 231, 0.2);
   overflow: hidden;
-  margin: 0 auto 50px auto; /* <-- centra horizontalmente */
+  margin: 0 auto 50px auto; 
 }
 
 /* ======== Tabla ======== */
@@ -46,8 +46,10 @@
 .state {
   font-weight: 500;
   border-radius: 8px;
-  padding: 6px 10px;
-  display: inline-block;
+  padding: 14px 10px;
+  display:inline-block;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .state-1 {
@@ -108,7 +110,6 @@ button {
   background-color: #c92a3b;
 }
 
-/* ======== Cargando / Error ======== */
 .loading,
 .error {
   color: #3a0ca3;
@@ -117,7 +118,6 @@ button {
   margin-top: 30px;
 }
 
-/* ======== Responsive ======== */
 @media (max-width: 768px) {
   .table-container {
     width: 95%;
@@ -176,11 +176,11 @@ button {
 }
 
 .pagination button {
-  background-color: #7d5cc6; /* violeta base */
+  background-color: #7d5cc6; 
   color: white;
   border: none;
   padding: 10px 18px;
-  border-radius: 50px; /* cápsulas redondeadas */
+  border-radius: 50px; 
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;

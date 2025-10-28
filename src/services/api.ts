@@ -266,6 +266,19 @@ export const toggleBlockUser = async (userId: number, newState: number) => {
   }
 };
 
+export const generarReporteOpticas = async (): Promise<Blob> => {
+  try {
+    const response = await API.get(`/optical/report`, {
+      responseType: "blob", // importante para manejar el PDF como archivo binario
+    });
+    return response.data; // devuelve el blob del PDF
+  } catch (error) {
+    console.error("Error al generar el reporte:", error);
+    throw error;
+  }
+};
+
+
 /*
 export const createOptical = async (formData: FormData, token: string) => {
   try {
