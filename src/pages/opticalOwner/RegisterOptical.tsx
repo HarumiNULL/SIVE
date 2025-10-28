@@ -8,6 +8,9 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import { getOneOptical, createSchedule, createScheduleByUrl } from "../../services/api";
+import { HelpCircle } from "lucide-react";
+import InfoModal from "../../components/InfoModal";
+
 
 export default function EditOptical() {
   const navigate = useNavigate();
@@ -50,6 +53,8 @@ export default function EditOptical() {
   const [days, setDays] = useState([]);
   const [hours, setHours] = useState([]);
   const [cities, setCities] = useState([]);
+  const [openInfo, setOpenInfo] = useState<{ title: string; content: string } | null>(null);
+
 
 
   // 🧭 Función para actualizar lat/lng al hacer clic en el mapa
@@ -330,7 +335,21 @@ export default function EditOptical() {
                   required
                 />
               </div>
-              <label htmlFor="certCadecuacion">Certificado de Adecuación (solo PDF)</label>
+              <label htmlFor="certCadecuacion">
+                Certificado de Adecuación (solo PDF)
+                <HelpCircle
+                  size={18}
+                  className={styles.info_icon_inline}
+                  onClick={() =>
+                    setOpenInfo({
+                      title: "Certificado de Adecuación",
+                      content: `Este certificado acredita que la óptica cumple con la normativa vigente.
+        
+Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/medicamentos_Opticas`,
+                    })
+                  }
+                />
+              </label>
               <div className="form-group">
                 <input
                   className={styles.input_file}
@@ -341,7 +360,23 @@ export default function EditOptical() {
                   required
                 />
               </div>
-              <label htmlFor="certDispensacion">Certificado de Dispensación (solo PDF)</label>
+
+
+              <label htmlFor="certDispensacion">
+                Certificado de Dispensación (solo PDF)
+                <HelpCircle
+                  size={18}
+                  className={styles.info_icon_inline}
+                  onClick={() =>
+                    setOpenInfo({
+                      title: "Certificado de Dispensación",
+                      content: `Este certificado garantiza que la óptica está autorizada para dispensar medicamentos y productos ópticos.
+        
+Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/medicamentos_Opticas`,
+                    })
+                  }
+                />
+              </label>
               <div className="form-group">
                 <input
                   className={styles.input_file}
@@ -352,12 +387,14 @@ export default function EditOptical() {
                   required
                 />
               </div>
+
+
             </div>
 
           </div>
 
           {/* 🗺️ Mapa Leaflet */}
-          <div style={{ height: "400px", width: "100%" ,paddingTop:"13%"}}>
+          <div style={{ height: "400px", width: "100%", paddingTop: "13%" }}>
             <h3>Selecciona la ubicacion de tu optica dando clic en el mapa</h3>
             <p> <strong>Latitud: </strong>{formData.latitud}   |   <strong>Longitud:    </strong> {formData.longitud}</p>
             <MapContainer
@@ -383,7 +420,16 @@ export default function EditOptical() {
 
       </div>
 
+      {openInfo && (
+        <InfoModal
+          isOpen={!!openInfo}
+          title={openInfo.title}
+          content={openInfo.content}
+          onClose={() => setOpenInfo(null)}
+        />
+      )}
 
     </div>
+
   );
 }

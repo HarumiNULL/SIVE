@@ -4,7 +4,8 @@ import Navbar from "../../components/Navbar";
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import styles from "./listProbability.module.css";
-import { HelpCircle, X } from "lucide-react";
+import { HelpCircle } from "lucide-react";
+import InfoModal from "../../components/InfoModal"; // Nuevo componente modal
 
 interface ProbabilityResult {
   id: number;
@@ -20,7 +21,7 @@ export default function ListProbability() {
   const [openInfo, setOpenInfo] = useState<ProbabilityResult | null>(null);
 
   useEffect(() => {
-    const mockData = [
+    const mockData: ProbabilityResult[] = [
       {
         id: 1,
         testName: "Test de Snellen",
@@ -35,7 +36,7 @@ export default function ListProbability() {
         timesTaken: 2,
         probability: 45,
         route: "/testIshi",
-        info: "Para mayor información respecto a este Test Visual ingresar a: https://apidspace.cordillera.edu.ec/server/api/core/bitstreams/64ee2017-b3b6-4e8f-af34-dc003039ad10/content ",
+        info: "Para mayor información respecto a este Test Visual ingresar a: https://apidspace.cordillera.edu.ec/server/api/core/bitstreams/64ee2017-b3b6-4e8f-af34-dc003039ad10/content",
       },
     ];
     setResults(mockData);
@@ -48,8 +49,6 @@ export default function ListProbability() {
         {results.map((res) => (
           <div key={res.id} className={styles.probability_card}>
             <div className={styles.probability_content}>
-              {/* 🔹 Título con icono al lado */}
-              {/* 🔹 Título con icono al lado */}
               <div className={styles.title_row}>
                 <h3>
                   {res.testName}
@@ -60,7 +59,6 @@ export default function ListProbability() {
                   />
                 </h3>
               </div>
-
 
               <p className={styles.test_times}>
                 Has tomado el test: <strong>{res.timesTaken}</strong> veces
@@ -113,45 +111,13 @@ export default function ListProbability() {
           </div>
         ))}
 
-       {/* 🔹 Modal elegante */}
-        {openInfo && (
-          <div
-            className={styles.modal_overlay}
-            onClick={() => setOpenInfo(null)}
-          >
-            <div
-              className={styles.modal_content}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className={styles.close_btn}
-                onClick={() => setOpenInfo(null)}
-              >
-                <X size={18} />
-              </button>
-
-              <h2>{openInfo.testName}</h2>
-
-              <p>
-                {openInfo.info.split("https").length > 1 ? (
-                  <>
-                    {openInfo.info.split("https")[0]}
-                    <a
-                      href={`https${openInfo.info.split("https")[1]}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https{openInfo.info.split("https")[1]}
-                    </a>
-                  </>
-                ) : (
-                  openInfo.info
-                )}
-              </p>
-            </div>
-          </div>
-        )}
-
+        {/* 🔹 Modal reutilizable */}
+        <InfoModal
+          isOpen={!!openInfo}
+          title={openInfo?.testName || ""}
+          content={openInfo?.info || ""}
+          onClose={() => setOpenInfo(null)}
+        />
       </div>
     </>
   );

@@ -7,6 +7,9 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import { getOneOptical } from "../../services/api";
+import { HelpCircle } from "lucide-react";
+import "leaflet/dist/leaflet.css";
+import InfoModal from "../../components/InfoModal"; // Componente modal
 
 export default function EditOptical() {
   const navigate = useNavigate();
@@ -45,6 +48,8 @@ export default function EditOptical() {
   const [days, setDays] = useState([]);
   const [hours, setHours] = useState([]);
   const [cities, setCities] = useState([]);
+  const [openInfo, setOpenInfo] = useState<{ title: string; content: string } | null>(null);
+
 
 
   // 🧭 Función para actualizar lat/lng al hacer clic en el mapa
@@ -87,12 +92,12 @@ export default function EditOptical() {
   // 🛰️ Si hay un id, obtener los datos de esa óptica
   useEffect(() => {
     if (id) {
-      
+
       getOneOptical(Number(id))
         .then((data) => {
           console.log("📦 Datos recibidos de getOneOptical:", data);
           if (!data) return;
-            console.log("📦 Días de la óptica:", data.day);
+          console.log("📦 Días de la óptica:", data.day);
           setFormData((prev) => ({
             ...prev,
             nameOp: data.nameOp,
@@ -122,30 +127,36 @@ export default function EditOptical() {
     }
   };
 
-  
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      try {
-        const data = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-          if (value) data.append(key, value as any);
-        });
-  
-        await createOptical(data);
-        alert("Óptica registrada correctamente");
-        navigate("/listOptical");
-      } catch (error) {
-        console.error("Error registrando óptica:", error);
-        alert("Error al registrar la óptica");
-      }
-    };
- 
-  // 📍 Posición inicial: si tiene datos, usa los del backend, sino Facatativá
-  const defaultCenter = formData.lat && formData.lng
-    ? [parseFloat(formData.lat), parseFloat(formData.lng)]
-    : [4.8166, -74.3545]; // Faca
 
-  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const data = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value) data.append(key, value as any);
+      });
+
+      await createOptical(data);
+      alert("Óptica registrada correctamente");
+      navigate("/listOptical");
+    } catch (error) {
+      console.error("Error registrando óptica:", error);
+      alert("Error al registrar la óptica");
+    }
+  };
+
+
+  // 📍 Posición inicial del mapa: usa la de la óptica si existe, o Facatativá como fallback
+  const defaultCenter: [number, number] = (() => {
+    const lat = parseFloat(formData.lat);
+    const lng = parseFloat(formData.lng);
+    if (!isNaN(lat) && !isNaN(lng)) {
+      return [lat, lng];
+    }
+    return [4.8166, -74.3545]; // Coordenadas por defecto (Facatativá)
+  })();
+
+
 
   return (
     <div className="edit-container">
@@ -153,12 +164,12 @@ export default function EditOptical() {
 
       <h2 className={styles.optical_title}>Editar Óptica</h2><br />
       <div className={styles.formContainer}>
-
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className={styles.grid_container}>
             <div className={styles.grid_item1}>
               <label htmlFor="nameOp">Nombre de Óptica</label><br />
-              <input className={styles.register_optical_input}
+              <input
+                className={styles.register_optical_input}
                 type="text"
                 name="nameOp"
                 value={formData.nameOp}
@@ -167,7 +178,8 @@ export default function EditOptical() {
 
               <br />
               <label htmlFor="address">Dirección</label><br />
-              <input className={styles.register_optical_input}
+              <input
+                className={styles.register_optical_input}
                 type="text"
                 name="address"
                 value={formData.address}
@@ -175,33 +187,37 @@ export default function EditOptical() {
               />
               <br />
               <label htmlFor="tel">Teléfono</label><br />
-              <input className={styles.register_optical_input}
+              <input
+                className={styles.register_optical_input}
                 type="text"
                 name="tel"
                 value={formData.tel}
                 onChange={handleChange}
               />
               <br />
-              <label htmlFor="email">Correo de la optica</label><br />
-              <input className={styles.register_optical_input}
+              <label htmlFor="email">Correo de la óptica</label><br />
+              <input
+                className={styles.register_optical_input}
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
               />
-              <br />
-              <br />
-              <label >¿Que dias tiene servicio la optica?</label>
+              <br /><br />
+
+              <label>¿Qué días tiene servicio la óptica?</label>
               <div className={styles.days}>
                 {days
                   .sort((a: any, b: any) => a.id_day - b.id_day)
-                  .map((days: any) => (
-                    <label className={styles.option_day} key={days.id_day} htmlFor={`${days.id_day}`}>
-                      <input type="checkbox" className={styles.option_check}
-                        name={`day-${days.id_day}`}
-                        id={`${days.id_day}`}
-                        value={`${days.id_day}`}
-                        checked={formData.day.includes(Number(days.id_day))}
+                  .map((day: any) => (
+                    <label className={styles.option_day} key={day.id_day} htmlFor={`${day.id_day}`}>
+                      <input
+                        type="checkbox"
+                        className={styles.option_check}
+                        name={`day-${day.id_day}`}
+                        id={`${day.id_day}`}
+                        value={`${day.id_day}`}
+                        checked={formData.day.includes(Number(day.id_day))}
                         onChange={(e) => {
                           const value = Number(e.target.value);
                           setFormData((prev) => ({
@@ -212,30 +228,36 @@ export default function EditOptical() {
                           }));
                         }}
                       />
-                      {days.name_day}
+                      {day.name_day}
                     </label>
                   ))}
-
               </div>
-
-
             </div>
 
             <div className={styles.grid_item2}>
-
               <div className={styles.hours}>
-                <label htmlFor="city" className={styles.label_form_optical}>¿En que ciudad esta ubicada?</label>
-                <select name="city" id="" className={styles.select_optical}>
+                <label htmlFor="city" className={styles.label_form_optical}>
+                  ¿En qué ciudad está ubicada?
+                </label>
+                <select
+                  name="city"
+                  className={styles.select_optical}
+                  value={formData.city}
+                  onChange={handleChange}
+                >
                   <option value=""> seleccionar..</option>
                   {cities.map((city: any) => (
-                    <option key={city.id_city} value={`${city.id_city}`}>{city.name}</option>
+                    <option key={city.id_city} value={`${city.id_city}`}>
+                      {city.name}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div className={styles.hours}>
                 <label htmlFor="hour_aper" className={styles.label_form_optical}>Hora de Apertura</label>
-                <select className={styles.select_optical}
+                <select
+                  className={styles.select_optical}
                   name="hour_aper"
                   value={formData.hour_aper}
                   onChange={handleChange}
@@ -247,8 +269,10 @@ export default function EditOptical() {
                     </option>
                   ))}
                 </select>
+
                 <label className={styles.label_form_optical} htmlFor="hour_close">Hora de Cierre</label>
-                <select className={styles.select_optical}
+                <select
+                  className={styles.select_optical}
                   name="hour_close"
                   value={formData.hour_close}
                   onChange={handleChange}
@@ -262,6 +286,7 @@ export default function EditOptical() {
                 </select>
               </div>
               <br />
+
               <label htmlFor="logo">Logo (solo imágenes .jpg, .png)</label>
               <div className={styles.register_optical_input}>
                 <input
@@ -272,7 +297,22 @@ export default function EditOptical() {
                   onChange={handleChange}
                 />
               </div>
-              <label htmlFor="certCadecuacion">Certificado de Adecuación (solo PDF)</label>
+
+              <label htmlFor="certCadecuacion">
+                Certificado de Adecuación (solo PDF)
+                <HelpCircle
+                  size={18}
+                  className={styles.info_icon_inline}
+                  onClick={() =>
+                    setOpenInfo({
+                      title: "Certificado de Adecuación",
+                      content: `Este certificado acredita que la óptica cumple con la normativa vigente.
+        
+Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/medicamentos_Opticas`,
+                    })
+                  }
+                />
+              </label>
               <div className="form-group">
                 <input
                   className={styles.input_file}
@@ -280,9 +320,26 @@ export default function EditOptical() {
                   name="certCadecuacion"
                   accept=".pdf"
                   onChange={handleChange}
+                  required
                 />
               </div>
-              <label htmlFor="certDispensacion">Certificado de Dispensación (solo PDF)</label>
+
+
+              <label htmlFor="certDispensacion">
+                Certificado de Dispensación (solo PDF)
+                <HelpCircle
+                  size={18}
+                  className={styles.info_icon_inline}
+                  onClick={() =>
+                    setOpenInfo({
+                      title: "Certificado de Dispensación",
+                      content: `Este certificado garantiza que la óptica está autorizada para dispensar medicamentos y productos ópticos.
+        
+Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/medicamentos_Opticas`,
+                    })
+                  }
+                />
+              </label>
               <div className="form-group">
                 <input
                   className={styles.input_file}
@@ -290,20 +347,23 @@ export default function EditOptical() {
                   name="certDispensacion"
                   accept=".pdf"
                   onChange={handleChange}
+                  required
                 />
               </div>
             </div>
-
           </div>
-          <h3>Esta es tu ubicacion actual de <strong>'{formData.nameOp}'</strong>  ¿Deseas actualizarla?</h3>
-          <p> <strong>Latitud: </strong>{formData.lat}   |   <strong>Longitud:    </strong> {formData.lng}</p>
-          {/* 🗺️ Mapa Leaflet */}
+
+          <h3>
+            Esta es tu ubicación actual de <strong>'{formData.nameOp}'</strong>. ¿Deseas actualizarla?
+          </h3>
+          <p>
+            <strong>Latitud: </strong>
+            {formData.lat} | <strong>Longitud: </strong>
+            {formData.lng}
+          </p>
+
           <div style={{ height: "400px", width: "100%" }}>
-            <MapContainer
-              center={defaultCenter}
-              zoom={14}
-              style={{ height: "100%", width: "100%" }}
-            >
+            <MapContainer center={defaultCenter} zoom={14} style={{ height: "100%", width: "100%" }}>
               <TileLayer
                 attribution="© OpenStreetMap contributors"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -317,12 +377,18 @@ export default function EditOptical() {
               Guardar Cambios
             </button>
           </div>
-
         </form>
-
       </div>
 
-
+      {/* 🔹 Modal reutilizable para la info de certificados */}
+      {openInfo && (
+        <InfoModal
+          isOpen={!!openInfo}
+          title={openInfo.title}
+          content={openInfo.content}
+          onClose={() => setOpenInfo(null)}
+        />
+      )}
     </div>
   );
 }
