@@ -29,10 +29,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/HomeAdmin" element={<ProtectedRoute>
               <HomeAdmin />
-            </ProtectedRoute>} />
-
-            <Route path="/HomeAdmin" element={<ProtectedRoute required_rol={ROL_ADMIN}><HomeAdmin /></ProtectedRoute>} />
-
+            </ProtectedRoute>} /><Route path="/HomeAdmin" element={<ProtectedRoute required_rol={ROL_ADMIN}><HomeAdmin /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/listOptical" element={<ProtectedRoute>
@@ -54,7 +51,7 @@ function App() {
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} />
             <Route path="/GestionUser" element={<ProtectedRoute><GestionUser /></ProtectedRoute>}/>
           </Routes>
-          
+
         </Router>
       </AuthProvider>
     </>
