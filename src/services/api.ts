@@ -3,7 +3,7 @@ import axios from "axios";
 export const BASE_URL = "http://127.0.0.1:8000";
 
 // Configura la URL de tu backend (puede estar en otro servidor)
-const API = axios.create({
+export const API = axios.create({
   baseURL: "http://127.0.0.1:8000/api/"
 });
 
@@ -549,6 +549,62 @@ export const createScheduleNew = async (data: {
 };
 
 
+// POST para enviar el test
+export const postTest = async (testData: {
+  id_test?: number;
+  questionary: number;
+  date_test: string;
+  answer: string;
+}) => {
+  const userId = localStorage.getItem("user_id");
+
+  if (!userId) {
+    throw new Error("Usuario no autenticado");
+  }
+
+  const payload = {
+    ...testData,
+    user: Number(userId),
+  };
+
+  console.log("Datos que se envían al backend:", payload);
+
+  // Ya no es necesario enviar el token explícitamente
+  const res = await API.post(`test/`, payload);
+
+  return res.data;
+};
 
 
 
+
+
+
+// GET de una pregunta individual
+export const getOneQuestion = async (id_question: number) => {
+  const res = await API.get(`${BASE_URL}/api/question/${id_question}/`);
+  return res.data;
+};
+
+
+export interface Test {
+  id_test: number;
+  questionary: number;
+  user: number;
+  date_test: string;
+  answer: Option | number | null; // puede ser un solo objeto o array
+}
+
+// Traer tests del usuario logueado
+export const getTestsByUserAndQuestionary = async (questionaryId: number): Promise<Test[]> => {
+  const userId = localStorage.getItem("user_id");
+  if (!userId) throw new Error("Usuario no autenticado");
+
+  const res = await API.get<Test[]>(`test/`);
+  // filtrar por usuario y cuestionario
+  const filtered = res.data
+    .filter(t => t.user === Number(userId) && t.questionary === questionaryId)
+    .sort((a, b) => new Date(b.date_test).getTime() - new Date(a.date_test).getTime()); // ordenar por fecha descendente
+
+  return filtered;
+};

@@ -11,7 +11,7 @@ export default function Login() {
   });
 
   const navigate = useNavigate();
-  const { login } = useAuth(); // <- Usamos el contexto
+  const { login } = useAuth(); // <- Usamos el contextoa
 
   // Manejo de cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +32,8 @@ export default function Login() {
 
       if (res.token) {
         login(res.token, role);
+       localStorage.setItem("user_id", res.user.id.toString());
+
         alert("Inicio de sesión correcto ✅");
         if (role === 1) {
           navigate("/homeAdmin");

@@ -24,8 +24,8 @@
   border: 2px solid #7d5efc;
   border-radius: 14px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  width: 40%; /* ✅ se adapta al espacio y mantiene equilibrio */
-  max-width: 500px; /* ✅ evita que crezcan demasiado */
+  width: 1000%; /* ✅ se adapta al espacio y mantiene equilibrio */
+  max-width: 700px; /* ✅ evita que crezcan demasiado */
   height: auto;
   padding: 1.5rem;
   box-sizing: border-box;

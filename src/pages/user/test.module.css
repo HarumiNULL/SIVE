@@ -152,10 +152,11 @@ div.test_container{
 }
 .label_questionary{
   padding: 2%;
+  font-size: 25px;
 }
-.div_image_question img {
+.div_image_question  img{
   display: block;      /* elimina comportamiento inline que genera margen extraño */
-  max-width: 50%;      /* ancho relativo al contenedor */
+  max-width: 2%;      /* ancho relativo al contenedor */
   height: auto;        /* mantiene proporción de la imagen */
   margin: 0 auto 1rem; /* centra y agrega espacio debajo */
 }
@@ -168,9 +169,10 @@ div.test_container{
   line-height: 1.8;
   
 }
-img{
-  width: 50%;
+.image_question{
+  width: 20%;
   margin: 10%;
+  margin-left: 40%;
 }
 .div_question{
 
@@ -184,4 +186,10 @@ img{
 
 .question_option{
   text-align: center;
+}
+.question_option h5{
+  font-size: 25px;
+}
+.question{
+  font-size: 30px;
 }
