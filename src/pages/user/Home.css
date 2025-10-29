@@ -16,10 +16,10 @@
   color: white;
 
   /* 🖼 Fondo con imagen y degradado */
-  background: 
+  background:
     linear-gradient(rgba(125, 92, 198, 0.5), rgba(160, 132, 232, 0.6)),
-    url("/public/fondogg.jpg") center/cover no-repeat;
-  
+    url("/fondogg.jpg") center/cover no-repeat;
+
   position: relative;
   overflow: hidden;
 }

@@ -25,7 +25,7 @@ export default function Login() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData);
+    console.log("Datos enviados:", formData.email);
     try {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
@@ -49,7 +49,6 @@ export default function Login() {
         } catch (error) {
           console.error("Error al buscar óptica:", error);
           alert("Ocurrió un error al buscar la óptica asociada ❌");
-          navigate("/login");
         }
         }
 
@@ -69,10 +68,10 @@ export default function Login() {
           if (opticalId) {
             navigate(`/viewO/${opticalId}`);
           } else {
-            navigate("/"); // si no tiene óptica
+            navigate("/registerO"); // si no tiene óptica
           }
         } else if (role === 3) {
-          navigate("/listOptical");
+          navigate("/");
         } else {
           navigate("/");
         }
