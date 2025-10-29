@@ -316,6 +316,7 @@ export const toggleBlockUser = async (userId: number, newState: number) => {
     );
   }
 };
+*/
 
 export const generarReporteOpticas = async (): Promise<Blob> => {
   try {
@@ -325,7 +326,9 @@ export const generarReporteOpticas = async (): Promise<Blob> => {
     return response.data; // devuelve el blob del PDF
   } catch (error) {
     console.error("Error al generar el reporte:", error);
-
+  }
+};
+/*
 export const getTopViewedOpticals = async (): Promise<TopViewedOptical[]> => {
   try {
     const res = await API.get<TopViewedOptical[]>(`optical/top-viewed/`);
@@ -556,6 +559,4 @@ export const getViewsByOpticalId = async (opticalId: number) => {
     throw new Error(error.response?.data?.message || "Error de conexión");
   }
 };
-
-
 export default API;
