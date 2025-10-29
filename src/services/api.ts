@@ -317,15 +317,6 @@ export const toggleBlockUser = async (userId: number, newState: number) => {
   }
 };
 
-export const generarReporteOpticas = async (): Promise<Blob> => {
-  try {
-    const response = await API.get(`/optical/report`, {
-      responseType: "blob", // importante para manejar el PDF como archivo binario
-    });
-    return response.data; // devuelve el blob del PDF
-  } catch (error) {
-    console.error("Error al generar el reporte:", error);
-
 export const getTopViewedOpticals = async (): Promise<TopViewedOptical[]> => {
   try {
     const res = await API.get<TopViewedOptical[]>(`optical/top-viewed/`);
@@ -396,6 +387,16 @@ export const toggleBlockUser = async (userId: number, newState: number) => {
   }
 };
 */
+export const generarReporteOpticas = async (): Promise<Blob> => {
+  try {
+    const response = await API.get(`/optical/report`, {
+      responseType: "blob", // importante para manejar el PDF como archivo binario
+    });
+    return response.data; // devuelve el blob del PDF
+  } catch (error) {
+    console.error("Error al generar el reporte:", error);
+  }
+};
 export const createOptical = async (data: any) => {
   try {
     const res = await API.post(`optical/`, data, {
@@ -442,7 +443,7 @@ export const getUsers = async () => {
         // Lanzar un error más limpio para el componente
         throw new Error(error.response?.data?.error || "Error al obtener usuarios del servidor");
     }
-}
+};
 
 // 2. ELIMINAR USUARIO
 export const deleteUser = async (userId: number) => { // <--- Función necesaria
@@ -453,7 +454,7 @@ export const deleteUser = async (userId: number) => { // <--- Función necesaria
         console.error(`Error al eliminar usuario ${userId}:`, error);
         throw new Error("No se pudo eliminar el usuario.");
     }
-}
+};
 
 // 3. BLOQUEAR/DESBLOQUEAR USUARIO
 export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { // <--- Función necesaria
@@ -467,17 +468,17 @@ export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { /
         console.error(`Error al cambiar estado de bloqueo ${userId}:`, error);
         throw new Error("No se pudo cambiar el estado de bloqueo.");
     }
-}
+};
 // Obtener catálogo de una óptica
 export async function getAllCatalogues() {
   const response = await API.get("/catalogue/");
   return response.data;
-}
+};
 
 export async function getAllProducts() {
   const response = await API.get("product/");
   return response.data;
-}
+};
 
 /*
 export const createOptical = async (formData: FormData, token: string) => {
@@ -544,7 +545,7 @@ export async function createCatalogue(data: FormData) {
     },
   });
   return response.data;
-}
+};
 
 // 📊 Obtener las vistas de una óptica específica
 export const getViewsByOpticalId = async (opticalId: number) => {

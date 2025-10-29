@@ -33,18 +33,7 @@ export default function Login() {
       let opticalId: number | null = null;
 
       // ✅ Verificamos que el backend haya devuelto el usuario
-      if (!res.user || !res.token) {
-        // Si no hay usuario, mostramos el mensaje de error que venga del backend
-        const backendError =
-          (res as any)?.error ||
-          "Ocurrió un error inesperado durante el inicio de sesión.";
-
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: backendError,
-          confirmButtonColor: "#3085d6",
-        });
+      if (res.user || !res.token) {
         if (role === 2) {
         // Buscar óptica asociada al dueño
         try {
@@ -60,34 +49,48 @@ export default function Login() {
         } catch (error) {
           console.error("Error al buscar óptica:", error);
           alert("Ocurrió un error al buscar la óptica asociada ❌");
+          navigate("/login");
         }
-        return;
-      }
+        }
 
+        login(res.token, role, opticalId);
 
-      login(res.token, role,opticalId);
+        Swal.fire({
+          icon: "success",
+          title: "Inicio de sesión correcto ✅",
+          timer: 2000,
+          showConfirmButton: false,
+        });
 
-      Swal.fire({
-        icon: "success",
-        title: "Inicio de sesión correcto ✅",
-        timer: 2000,
-        showConfirmButton: false,
-      });
-
-      // ✅ Redirección según el rol
-      if (role === 1) {
-        navigate("/homeAdmin");
-      } else if (role === 2) {
-        if (opticalId) {
-          navigate(`/viewO/${opticalId}`);
+        // ✅ Redirección según el rol
+        if (role === 1) {
+          navigate("/homeAdmin");
+        } else if (role === 2) {
+          if (opticalId) {
+            navigate(`/viewO/${opticalId}`);
+          } else {
+            navigate("/"); // si no tiene óptica
+          }
+        } else if (role === 3) {
+          navigate("/listOptical");
         } else {
-          navigate("/"); // si no tiene óptica
+          navigate("/");
         }
-      } else if (role === 3) {
-        navigate("/listOptical");
       } else {
-        navigate("/");
+        // Si no hay usuario, mostramos el mensaje de error que venga del backend
+        const backendError =
+          (res as any)?.error ||
+          "Ocurrió un error inesperado durante el inicio de sesión.";
+
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: backendError,
+          confirmButtonColor: "#3085d6",
+        });
       }
+    } catch (err: unknown) {
+      console.error("Error en login:", err);
       if (err instanceof Error) {
         const message = err.message.toLowerCase();
 
@@ -127,19 +130,7 @@ export default function Login() {
           text: "Ocurrió un error desconocido.",
         });
       }
-
-    } else {
-      alert("No se recibió token del servidor ❌");
     }
-
-  } catch (err: any) {
-    console.error("Error en login:", err);
-    if (err instanceof Error) {
-      alert(`Error: ${err.message}`);
-    } else {
-      alert("Error al iniciar sesión ❌");
-    }
-  };
   }
 
   return (
