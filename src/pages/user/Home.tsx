@@ -64,13 +64,13 @@ export default function Home() {
           <h2>¿Qué ofrece SIVE?</h2>
           <div className="features-container">
             <div className="feature-card">
-              <img src="/public/test.jpg" alt="Test visual" />
+              <img src="/test.jpg" alt="Test visual" />
               <h3>Tests Inteligentes</h3>
               <p>Evalúa tu visión de forma sencilla</p>
             </div>
 
             <div className="feature-card">
-              <img src="/public/optica.jpg" alt="Ópticas" />
+              <img src="/optica.jpg" alt="Ópticas" />
               <h3>Encuentra Ópticas</h3>
               <p>Ubica ópticas certificadas a un clic</p>
             </div>

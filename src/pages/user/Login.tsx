@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { loginUser } from "../../services/api";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";import { loginUser } from "../../services/api";
 import { useAuth } from "../../components/AuthContext";
 import styles from "./login.module.css";
-import Swal from "sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
+
 
 export default function Login() {
   const [formData, setFormData] = useState({
