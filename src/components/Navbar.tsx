@@ -32,9 +32,9 @@ export default function Navbar() {
       roleLinks = (
         <>
           <Link to="/homeAdmin" className={styles.btn_ver}>Inicio</Link>
-          <Link to="/listOptical" className={styles.btn_ver}>Administrar Ópticas</Link>
+          <Link to="/listOptical" className={styles.btn_ver}>Gestión Ópticas</Link>
           <Link to="/GestionUser" className={styles.btn_ver}>Gestión Usuarios</Link>
-          <Link to="/listTest" className={styles.btn_ver}>Tests</Link>
+          <Link to="/listTest" className={styles.btn_ver}>Gestión Tests</Link>
         </>
       );
       break;
