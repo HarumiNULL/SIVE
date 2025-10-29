@@ -55,7 +55,7 @@
   border-radius: 16px;
   padding: 1.5rem 2rem;
   box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-  
+
 }
 
 .description_box h2,
@@ -64,7 +64,7 @@
   color: #6a0dad;
   margin-bottom: 1rem;
   font-size: 2rem; /* o el tamaño que quieras */
-  line-height: 1.8;  
+  line-height: 1.8;
 }
 
 /* Catálogo */
@@ -196,7 +196,7 @@
   padding: 20px;
   border-radius: 16px;
   justify-content: center; /* centra horizontal */
-  align-items: center;   
+  align-items: center;
   box-shadow: 0 6px 15px rgba(128, 0, 128, 0.2);
 }
 
@@ -223,6 +223,9 @@
   border-radius: 12px;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .calendar_cell:hover {
@@ -244,6 +247,8 @@
   background: #f3e5ff;
   padding: 6px 0;
   border-radius: 8px;
+  display: flexbox;
+  align-items: end;
 }
 
 .no_schedule {
