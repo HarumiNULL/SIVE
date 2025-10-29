@@ -1,0 +1,218 @@
+[33mcommit 2a1be7b01e112df6aae251ffbde3f16e0ee6d16d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mLuisa-Branch[m[33m, [m[1;31morigin/Luisa-Branch[m[33m)[m
+Merge: 4fce985 58c2bb5
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Tue Oct 28 02:08:54 2025 -0500
+
+    Merge branch 'Luisa-Branch' of https://github.com/HarumiNULL/SIVE into Luisa-Branch
+
+[33mcommit 4fce985f4d66704370ff61a8f5658c9be103b437[m
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Tue Oct 28 01:51:36 2025 -0500
+
+    Creacion de vista de graficas del dueño optica, arreglo de la vista de opticas y detalles respecto a los permisos de los botones
+
+[33mcommit 58c2bb53c69c5f00eb8a53c6f6da7cba09f83010[m
+Merge: cb9cb4d f07b727
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Mon Oct 27 08:49:50 2025 -0500
+
+    Merge branch 'Esteban-branch' into Luisa-Branch
+
+[33mcommit cb9cb4d1cca9f7bd3d3e0c2e87dde84371e7e6c6[m
+Merge: 0c64cc1 e6d633a
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Mon Oct 27 08:27:54 2025 -0500
+
+    Merge branch 'Esteban-branch' into Luisa-Branch
+
+[33mcommit 0c64cc1fe8e5bf5d9c00ec29ce1073b531e5162f[m
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Mon Oct 27 00:27:31 2025 -0500
+
+    Se implemento el catalogo, el arreglo de la vista optica, se realizo la vista de agregar productos y cambios pequeños
+
+[33mcommit f07b72713c2f8edc1c32d49734295b8336a1b647[m[33m ([m[1;31morigin/Esteban-branch[m[33m, [m[1;32mEsteban-branch[m[33m)[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Mon Oct 27 00:04:19 2025 -0500
+
+    arreglado el editOptical, parte visual de tests y coreecion de algunos estilos generales
+
+[33mcommit e6d633a0a4f5b4037c1e0ac884d6e717bfd66efc[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Sun Oct 26 13:03:02 2025 -0500
+
+    editOptical en proceso
+
+[33mcommit a755b65d907b836677393d976783609079700af7[m
+Merge: 61880a4 7bffff4
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Sun Oct 26 00:46:08 2025 -0500
+
+    Merge branch 'Esteban-branch' into Luisa-Branch
+
+[33mcommit 7bffff425f15ad05db1aca439eff3a617ddf292c[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Sun Oct 26 00:40:16 2025 -0500
+
+    se agrego el campo descripcion en formulario registerOptical, y ya se ve en viewOptical
+
+[33mcommit 61880a45a72a049aeb3484fd8e075e63575c2ec5[m
+Merge: 1dd3668 cb9eaf8
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Sat Oct 25 23:22:36 2025 -0500
+
+    Merge branch 'Esteban-branch' into Luisa-Branch
+
+[33mcommit 1dd3668e8154297557e72ef2e4b5130c827e6b87[m
+Merge: a322874 dd28f75
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Sat Oct 25 23:21:51 2025 -0500
+
+    Merge branch 'Shirly-Branch' into Luisa-Branch
+
+[33mcommit cb9eaf8ce053277f26f74c3115a1dedccca0d46f[m
+Merge: 79f006d dd28f75
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Sat Oct 25 20:35:05 2025 -0500
+
+    Merge branch 'Julian-Branch' into Esteban-branch
+
+[33mcommit 79f006d24e43ea95136947a52cf1446b5d7e7dfb[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Sat Oct 25 20:00:36 2025 -0500
+
+    arreglado el registeroptical(creacion de schedule y opticas), pero sin el cambio de roles
+
+[33mcommit a322874eb72787140f2112ce90838d09bc17efdd[m
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Fri Oct 24 18:36:30 2025 -0500
+
+    Creacion de la tarjeta de mas informacion en probabilidades, arreglo e implementacion de los roles en la Navbar
+
+[33mcommit dd28f7572655a11211db1d4df123c28f0ab10410[m[33m ([m[1;31morigin/Julian-Branch[m[33m)[m
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Wed Oct 22 22:33:20 2025 -0500
+
+    Correcto funcionamiento del gestión de usuarios
+
+[33mcommit fddf948206425aa459c20b0fc1a7f989fd476d3e[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Wed Oct 22 13:31:57 2025 -0500
+
+     funcionan la mayoria de las rutas con los usuarios admin
+
+[33mcommit b5699a2fc02d9bcf8b14adf787f4f5faedd896e7[m
+Merge: 44569e9 de8a99f
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Wed Oct 22 10:31:56 2025 -0500
+
+    Merge branch 'Luisa-Branch' into Shirly-Branch
+
+[33mcommit 44569e90924c8f78158d60dacbbf24d9722d4499[m
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Wed Oct 22 10:24:05 2025 -0500
+
+    Correciones minimas para la lista de usuarios solo acceso en admin
+
+[33mcommit de8a99fddfcf1207239b9a814c5b2230798a3fe0[m
+Author: Farfalla <165683664+Farfalla-L@users.noreply.github.com>
+Date:   Wed Oct 22 10:16:34 2025 -0500
+
+    Correccion de problemas
+
+[33mcommit af18dbf4b4da067f559e2f0ea636bd6d8786f7a0[m
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Tue Oct 21 23:41:36 2025 -0500
+
+    Removidas funciones duplicadas
+
+[33mcommit 164c94e5175da299aa6d0e6d1d7a0bbc435796e0[m
+Merge: cb7d0ce b174426
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Tue Oct 21 23:34:31 2025 -0500
+
+    Merge remote-tracking branch 'origin/Julian-Branch' into Shirly-Branch
+
+[33mcommit cb7d0ce7c607707dd47aa1b3dfebbd13dca437e8[m
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Tue Oct 21 23:29:51 2025 -0500
+
+    Intento de listada de usuarios
+
+[33mcommit b1744263a3943b72bfc8226a37fb1555b90ab0f9[m
+Author: Mr.Mostacho <133924865+MrMostacho04@users.noreply.github.com>
+Date:   Tue Oct 21 23:17:05 2025 -0500
+
+    implemetacion de dashboard con estaditicas de topviews y cantidad de opticas por cuidad
+
+[33mcommit 02c4e12dd169e658c68cb483405bf57b833ca374[m
+Merge: 881dba7 6bc0d26
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Tue Oct 21 20:38:52 2025 -0500
+
+    Merge remote-tracking branch 'origin/Julian-Branch' into Shirly-Branch
+
+[33mcommit 881dba728cb1ac6b1e6a8da351047f9694fd9d42[m
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Tue Oct 21 20:38:10 2025 -0500
+
+    Intento de estadisticas
+
+[33mcommit 6bc0d26e4517bc2535753b053df947f866030596[m
+Author: Mr.Mostacho <133924865+MrMostacho04@users.noreply.github.com>
+Date:   Tue Oct 21 20:35:24 2025 -0500
+
+    se corrigieron los botones te la barra navegadora y aparte tambien se corrigio el style de lo botones
+
+[33mcommit d024e30df2d0710c842d6fc2de440ffc719f131a[m
+Author: HarumiNULL <165682863+HarumiNULL@users.noreply.github.com>
+Date:   Tue Oct 21 18:50:21 2025 -0500
+
+    intento de separar la barra de navegacion por roles , error todabia debido a que no esta comparando por roles
+
+[33mcommit eacd0c3ce62ff44dc5dc9a574a15a0c8740b5ad6[m[33m ([m[1;31morigin/Develop[m[33m, [m[1;32mDevelop[m[33m)[m
+Merge: 9171075 4cfa9da
+Author: Daniel Esteban Rivera Gomez <dragoartworks@gmail.com>
+Date:   Mon Oct 20 23:05:10 2025 -0500
+
+    Merge pull request #14 from HarumiNULL/respaldo-Esteban
+    
+    estilos de login corregidos
+
+[33mcommit 4cfa9dad0491339d48cb801a030530598a65d141[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Mon Oct 20 23:00:57 2025 -0500
+
+    estilos de login corregidos
+
+[33mcommit 9171075dbd8eabc776d825f84065732f7fd8d29b[m
+Merge: f41c2d0 4182fc7
+Author: Daniel Esteban Rivera Gomez <dragoartworks@gmail.com>
+Date:   Mon Oct 20 22:33:46 2025 -0500
+
+    Merge pull request #13 from HarumiNULL/respaldo-Esteban
+
+[33mcommit 4182fc7f5dc546d6484e423c20f9061e511ea70a[m
+Merge: 047ce59 093f345
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Mon Oct 20 22:22:41 2025 -0500
+
+    Merge remote-tracking branch 'origin/Luisa-branch' into respaldo-Esteban
+
+[33mcommit 047ce59170345a124552ccb48aa62a98a0a22b7b[m[33m ([m[1;31morigin/respaldo2-Esteban[m[33m)[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Mon Oct 20 21:01:37 2025 -0500
+
+    arreglados los estiolos de navbar
+
+[33mcommit cfcc913fa15250dc860e6ca20b4977ca70d6b4ae[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Mon Oct 20 20:39:27 2025 -0500
+
+    ..
+
+[33mcommit 29192a251ca98926c0fb6d2c0bce9acd534a297f[m
+Author: drago668 <dragoartworks@gmail.com>
+Date:   Mon Oct 20 20:22:13 2025 -0500
+
+     areglados los 'modules.c
