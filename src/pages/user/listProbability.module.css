@@ -6,12 +6,11 @@
   justify-content: center;
   align-items: flex-start;
   gap: 2rem;
-  flex-wrap: wrap; /* ✅ permite que las tarjetas bajen si no caben */
-  overflow-x: hidden; /* ✅ elimina el desbordamiento horizontal */
-  overflow-y: visible;
+  flex-wrap: wrap;
+  overflow-x: hidden;
   padding: 3rem 2rem;
   box-sizing: border-box;
-  width: 100%; /* ✅ asegura que no se extienda más del viewport */
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -24,9 +23,8 @@
   border: 2px solid #7d5efc;
   border-radius: 14px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  width: 40%; /* ✅ se adapta al espacio y mantiene equilibrio */
-  max-width: 500px; /* ✅ evita que crezcan demasiado */
-  height: auto;
+  width: 40%;
+  max-width: 500px;
   padding: 1.5rem;
   box-sizing: border-box;
 }
@@ -41,25 +39,67 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
   box-sizing: border-box;
   overflow-wrap: break-word;
 }
 
-/* 🔹 TÍTULO */
-.probability_content h3 {
-  color: #3b2a66;
-  font-size: 1.7rem;
-  margin-bottom: 0.6rem;
-  text-align: center;
-  font-weight: 600;
+/* 🔹 TÍTULO CON ICONO */
+.title_row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+  width: 100%;
 }
 
-/* 🔹 VECES QUE HA HECHO EL TEST */
+.title_row h3 {
+  margin: 0;
+  font-size: 1.7rem;
+  color: #3b2a66;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.info_icon_inline {
+  color: #7d5efc;
+  background: #f3e8ff;
+  border-radius: 50%;
+  padding: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.info_icon_inline:hover {
+  background: #7d5efc;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* 🔹 TEXTO */
 .test_times {
   color: #6b6b6b;
   font-size: 1.1rem;
   margin: 0.4rem 0;
+}
+
+.highlight {
+  font-size: 1.2rem;
+  color: #2d1b52;
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.recommendation {
+  color: #555;
+  font-size: 1.05rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+  max-width: 90%;
 }
 
 /* 🔹 GRÁFICO */
@@ -86,23 +126,6 @@
   font-weight: bold;
 }
 
-/* 🔹 TEXTO INFORMATIVO */
-.highlight {
-  font-size: 1.2rem;
-  color: #2d1b52;
-  margin: 0.5rem 0;
-  line-height: 1.5;
-}
-
-.recommendation {
-  color: #555;
-  font-size: 1.05rem;
-  margin-top: 0.4rem;
-  margin-bottom: 0.6rem;
-  line-height: 1.5;
-  max-width: 90%;
-}
-
 /* 🔹 BOTÓN */
 .test_btn {
   display: inline-block;
@@ -118,4 +141,98 @@
 
 .test_btn:hover {
   background: #5b38d2;
+}
+
+/* 🔹 MODAL */
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal_content {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: popIn 0.3s ease;
+  border: 3px solid #9d7bff;
+}
+
+.modal_content h2 {
+  color: #6c45ff;
+  margin-bottom: 0.8rem;
+}
+
+.modal_content p {
+  color: #333;
+  line-height: 1.5;
+  font-size: 1rem;
+  margin: 0 auto;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+/* 🔗 Estilo para los enlaces dentro del modal */
+.modal_content a {
+  color: #6c45ff;
+  text-decoration: underline;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.modal_content a:hover {
+  color: #4a1fd1;
+}
+
+
+.close_btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.close_btn:hover {
+  transform: rotate(90deg);
+  color: #000;
+}
+
+/* 🔹 ANIMACIONES */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

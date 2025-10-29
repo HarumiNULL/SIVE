@@ -15,6 +15,7 @@
     "chartjs": "^0.3.24",
     "chartjs-2": "^0.0.1-security",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.546.0",
     "react": "^19.1.1",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.1.1",
