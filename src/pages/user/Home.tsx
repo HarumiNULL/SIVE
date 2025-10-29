@@ -15,30 +15,32 @@ export default function Home() {
     return"/login";
   }
   const getTestsPath = () => {
-    if (role === 1) {
-      return "/gestionUser"; // Admin quizás no hace tests, va a su home
-    }
     if (role === 2) {
-      return "/view()";
+      return "/viewO";
     }
     if (role === 3)
-    return "/login";
+    return "/listTest";
+    return"/login";
   };
 
   const getTestsText = () => {
-    if (role === 1) {
-      return "Gestionar Usuarios"; // Admin quizás no hace tests, va a su home
-    }
     if (role === 2) {
       return "Ver mis opticas";
     }
-    if (role === 3)
     return "Ir a Tests Visuales";
+  }
+
+  const getStartText = () =>{
+    if (role === 2 || role === 3) {
+      return "Ver Opticas";
+    }
+    return "Comenzar";
   }
 
   const startPath = getStartPath();
   const testsPath = getTestsPath();
   const testsText = getTestsText();
+  const startText = getStartText();
   return (
     <>
       <Navbar />
@@ -53,7 +55,7 @@ export default function Home() {
              SIVE Ponemos la tecnología a trabajar por tus ojos, asegurando tu acceso directo a ópticas de calidad
             </p>
 
-            <Link to ={startPath} className = "hero-btn">Comenzar Ahora</Link>
+            <Link to ={startPath} className = "hero-btn">{startText}</Link>
           </div>
         </section>
 
