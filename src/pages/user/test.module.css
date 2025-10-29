@@ -85,7 +85,7 @@
 
 .banner_container {
   width: 100%;
-  height: 200px;
+  height: 100px;
   background-color: #c7affd;
   display: flex;
   justify-content: center;
@@ -126,10 +126,14 @@
   color: #555;
 
 }
-
+.general_container{
+  margin: 3%;
+}
 
 .contenedor_preguntas{
   padding-top: 5%;
+  margin: 3%;
+ 
 }
 input.option_questionary{
   width: fit-content;
@@ -137,8 +141,7 @@ input.option_questionary{
 }
 div.test_container{
   padding-left: 10%;
-  display: grid;
-  grid-template-columns: 50% 50%;
+  
 }
 .grid_item2 img{
   height: 95%;
@@ -149,4 +152,44 @@ div.test_container{
 }
 .label_questionary{
   padding: 2%;
+  font-size: 25px;
+}
+.div_image_question  img{
+  display: block;      /* elimina comportamiento inline que genera margen extraño */
+  max-width: 2%;      /* ancho relativo al contenedor */
+  height: auto;        /* mantiene proporción de la imagen */
+  margin: 0 auto 1rem; /* centra y agrega espacio debajo */
+}
+.text{
+  letter-spacing: normal;
+}
+.test_info{
+  letter-spacing: 0.1;
+  font-size: 100%;
+  line-height: 1.8;
+  
+}
+.image_question{
+  width: 20%;
+  margin: 10%;
+  margin-left: 40%;
+}
+.div_question{
+
+  padding: 5%;
+  padding-bottom: 1%;
+  padding-top: 1%;
+   border:#7d5cc6 solid 2px;
+   border-radius: 30px;
+   margin: 2%;
+}
+
+.question_option{
+  text-align: center;
+}
+.question_option h5{
+  font-size: 25px;
+}
+.question{
+  font-size: 30px;
 }

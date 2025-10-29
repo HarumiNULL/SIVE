@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link }  from "react-router-dom";
+import { Link, Navigate, useNavigate }  from "react-router-dom";
 import { registerUser } from '../../services/api'
 import styles from "./register.module.css"
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 export default function Register() {
 
@@ -12,6 +14,7 @@ export default function Register() {
     password: "",
     confirm_password: "",
   });
+  const navigate= useNavigate();
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +26,12 @@ export default function Register() {
     console.log("Formulario enviado:", formData);
 
     if (formData.password !== formData.confirm_password) {
-      alert("Las contraseñas no coinciden");
+      Swal.fire({
+        icon: "error",
+        title: "Las contraseñas no coinciden ❌",
+        text: "No se a podido registrar el Usuario",
+        confirmButtonColor: "#2563eb",
+      });
       return;
     }
 
@@ -31,11 +39,22 @@ export default function Register() {
       const res = await registerUser(formData);
       console.log("Usuario registrado:", res.user);
       localStorage.setItem("token", res.token);
-      alert("Registro exitoso ✅");
+      Swal.fire({
+        icon: "success",
+        title: "Registro Correcto ✅",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     } catch (err: any) {
       console.error("Error al registrar:", err.response?.data || err.message);
-      alert("Error al registrar ❌");
+      Swal.fire({
+        icon: "error",
+        title: "Error al Registrar 🚫",
+        text: "No se a podido registrar el Usuario",
+        confirmButtonColor: "#d33",
+      });
     }
+    navigate("/login");
   };
 
     return(
@@ -63,6 +82,6 @@ export default function Register() {
                 <div className={styles.container_submit}><button type="submit">Registrar</button></div>
             </form>
             <p className={styles.foot}>¿Ya tienes una cuenta?</p> <Link to ="/login" className={styles.login_link}>Inicia sesion</Link>
-        </div> 
-    ) 
+        </div>
+    )
 }
