@@ -3,7 +3,7 @@ import axios from "axios";
 export const BASE_URL = "http://127.0.0.1:8000";
 
 // Configura la URL de tu backend (puede estar en otro servidor)
-const API = axios.create({
+export const API = axios.create({
   baseURL: "http://127.0.0.1:8000/api/"
 });
 
@@ -505,6 +505,95 @@ export const createSchedule = async (data: any) => {
     throw new Error("Error al crear el horario");
   }
 };
+export const getScheduleByOptical = async (id_optical: number) => {
+  try {
+    const response = await API.get(`/schedules/?id_optical=${id_optical}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error obteniendo horario:", error.response?.data || error);
+    throw new Error("Error al obtener el horario");
+  }
+};
+
+export const getAllSchedules = async () => {
+  try {
+    const response = await API.get("/schedules/");
+    return response.data;
+  } catch (error: any) {
+    console.error("Error obteniendo schedules:", error.response?.data || error);
+    throw new Error("No se pudieron obtener los horarios");
+  }
+};
+
+///actualizar optica
+
+export const updateOptical = async (id: number, data: FormData) => {
+  try {
+    const response = await API.patch(`/optical/${id}/`, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error actualizando óptica:", error.response?.data || error);
+    throw new Error("Error al actualizar la óptica");
+  }
+};
+
+//actualizar horario
+export const updateSchedule = async (id: number, data: {
+  day_id: number;
+  hour_aper_id: number;
+  hour_close_id: number;
+  optical_id: number;
+}) => {
+  try {
+    const response = await API.put(`/schedules/${id}/`, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error actualizando schedule:", error.response?.data || error);
+    throw new Error("Error al actualizar el horario");
+  }
+};
+
+export const createScheduleNew = async (data: {
+  day_id: number;
+  hour_aper_id: number;
+  hour_close_id: number;
+  optical_id: number;
+}) => {
+  try {
+    const response = await API.post("/schedules/", data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error creando schedule:", error.response?.data || error);
+    throw new Error("Error al crear el horario");
+  }
+};
+
+
+// POST para enviar el test
+export const postTest = async (testData: {
+  id_test?: number;
+  questionary: number;
+  date_test: string;
+  answer: string;
+}) => {
+  const userId = localStorage.getItem("user_id");
+
+  if (!userId) {
+    throw new Error("Usuario no autenticado");
+  }
+
+  const payload = {
+    ...testData,
+    user: Number(userId),
+  };
+
+  console.log("Datos que se envían al backend:", payload);
+
+  // Ya no es necesario enviar el token explícitamente
+  const res = await API.post(`test/`, payload);
+
+  return res.data;
+};
 
 export const getScheduleByOptical = async (id_optical: number) => {
   try {
@@ -557,6 +646,32 @@ export const getViewsByOpticalId = async (opticalId: number) => {
     throw new Error(error.response?.data?.message || "Error de conexión");
   }
 };
+// GET de una pregunta individual
+export const getOneQuestion = async (id_question: number) => {
+  const res = await API.get(`${BASE_URL}/api/question/${id_question}/`);
+  return res.data;
+};
 
 
+export interface Test {
+  id_test: number;
+  questionary: number;
+  user: number;
+  date_test: string;
+  answer: Option | number | null; // puede ser un solo objeto o array
+}
+
+// Traer tests del usuario logueado
+export const getTestsByUserAndQuestionary = async (questionaryId: number): Promise<Test[]> => {
+  const userId = localStorage.getItem("user_id");
+  if (!userId) throw new Error("Usuario no autenticado");
+
+  const res = await API.get<Test[]>(`test/`);
+  // filtrar por usuario y cuestionario
+  const filtered = res.data
+    .filter(t => t.user === Number(userId) && t.questionary === questionaryId)
+    .sort((a, b) => new Date(b.date_test).getTime() - new Date(a.date_test).getTime()); // ordenar por fecha descendente
+
+  return filtered;
+};
 export default API;

@@ -47,13 +47,18 @@ div.days{
   justify-content: center;
   padding-bottom:1% ;
 }
+.cities{
+  height: 10%;
+  padding-top: 8%;
+}
+
 .optical_title {
   font-family: "Jura", sans-serif;
   text-align: center;
   font-weight: 700;
-  font-size: 400%;
+  font-size: 200%;
   color: #3b2d70;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 label.option_day{
@@ -95,5 +100,5 @@ input#file-upload-button{
   padding-left: 6%;
 }
 .form_buttons{
-  margin-top: 20%;
+  margin-top: 20% ;
 }

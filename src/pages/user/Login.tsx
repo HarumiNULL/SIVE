@@ -31,7 +31,6 @@ export default function Login() {
       console.log("Login exitoso:", res);
       const role = res.user.role_id;
       let opticalId: number | null = null;
-
       // ✅ Verificamos que el backend haya devuelto el usuario
       if (res.user || !res.token) {
         if (role === 2) {

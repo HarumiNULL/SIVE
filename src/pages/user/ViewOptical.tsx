@@ -106,7 +106,6 @@ export default function View_optical() {
   return (
     <div className={styles.home_container}>
       <Navbar />
-
       {/* Banner */}
       <div className={styles.banner_container}>
         <img src={`${BASE_URL}${optic.logo}`} className={styles.banner} alt="banner" />
@@ -129,13 +128,12 @@ export default function View_optical() {
             {cities.find((c) => c.id_city === optic.city)?.name || "Sin ciudad"}
           </p>
         </div>
-
         {/* Horarios */}
         <div className={styles.week_calendar}>
           <h2 className={styles.calendar_title}>Horario de Atención</h2>
           {schedules.length > 0 ? (
             <div className={styles.calendar_grid}>
-              {["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"].map(day => {
+              {["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"].map(day => {
                 const schedule = schedules.find(s => s.day?.name_day === day);
                 return (
                   <div key={day} className={styles.calendar_cell}>

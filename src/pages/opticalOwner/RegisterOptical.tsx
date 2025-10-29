@@ -103,6 +103,7 @@ export default function EditOptical() {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("nameOp", formData.nameOp);
+      formDataToSend.append("descriptionOp",formData.descriptionOp)
       formDataToSend.append("address", formData.address);
       formDataToSend.append("tel", formData.tel);
       formDataToSend.append("city", formData.city);
@@ -180,7 +181,7 @@ export default function EditOptical() {
 
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement| HTMLTextAreaElement>) => {
     const { name, value, type, files } = e.target as HTMLInputElement;
 
     // Si es un archivo
@@ -229,6 +230,8 @@ export default function EditOptical() {
               <textarea className={styles.register_optical_input_description}
                 name="descriptionOp"
                 id="descriptionOp"
+                 value={formData.descriptionOp}
+                onChange={handleChange}
                 required />
 
               <label htmlFor="address">Dirección</label><br />
@@ -285,7 +288,7 @@ export default function EditOptical() {
 
             <div className={styles.grid_item2}>
 
-              <div className={styles.hours}>
+              <div className={styles.cities}>
                 <label htmlFor="city" className={styles.label_form_optical}>¿En que ciudad esta ubicada?</label>
                 <select required name="city" id="" className={styles.select_optical} onChange={(e) => setFormData({ ...formData, city: e.target.value })}>
                   <option value=""> seleccionar..</option>
@@ -325,7 +328,7 @@ export default function EditOptical() {
               </div>
               <br />
               <label htmlFor="logo">Logo (solo imágenes .jpg, .png)</label>
-              <div className={styles.register_optical_input}>
+              <div className="form-group">
                 <input
                   className={styles.input_file}
                   type="file"
@@ -344,7 +347,7 @@ export default function EditOptical() {
                     setOpenInfo({
                       title: "Certificado de Adecuación",
                       content: `Este certificado acredita que la óptica cumple con la normativa vigente.
-        
+
 Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/medicamentos_Opticas`,
                     })
                   }
@@ -371,7 +374,7 @@ Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/m
                     setOpenInfo({
                       title: "Certificado de Dispensación",
                       content: `Este certificado garantiza que la óptica está autorizada para dispensar medicamentos y productos ópticos.
-        
+
 Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/medicamentos_Opticas`,
                     })
                   }

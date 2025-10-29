@@ -90,7 +90,7 @@ export default function ListOptical() {
             <div className={styles.optical_cards}>
               {currentOpticals.map((opt) => (
                 <div key={opt.id_optical} className={styles.optical_card}>
-                  
+
                   <div className={styles.optical_image}>
                     <img src={`${BASE_URL}${opt.logo}` || defaultLogo} alt={opt.nameOp} />
                   </div>
@@ -99,10 +99,9 @@ export default function ListOptical() {
                     <h3>{opt.nameOp}</h3>
                     <p>
                       {opt.descriptionOp} <br />
-                      
+
                     </p>
                     <div className={styles.optical_buttons}>
-                    
                       <button className={styles.visit_btn}><Link to={`/viewO/${opt.id_optical}`} style={{color:"white"}}>Visitar Optica</Link></button>
                       {/*<a target="_blank" rel="noopener noreferrer">
                         Ver en el mapa
