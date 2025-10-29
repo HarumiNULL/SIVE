@@ -1,9 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
+import "sweetalert2/dist/sweetalert2.min.css";import { loginUser } from "../../services/api";
 import { useAuth } from "../../components/AuthContext";
-import { loginUser, getAllOpticals } from "../../services/api";
 import styles from "./login.module.css";
 
 
@@ -23,14 +22,13 @@ export default function Login() {
       [e.target.name]: e.target.value,
     });
   };
+
+  // Manejo del submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData);
     try {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
-      const role = res.user.role_id;
-      let opticalId: number | null = null;
 
       // ✅ Verificamos que el backend haya devuelto el usuario
       if (!res.user || !res.token) {
@@ -45,27 +43,13 @@ export default function Login() {
           text: backendError,
           confirmButtonColor: "#3085d6",
         });
-        if (role === 2) {
-        // Buscar óptica asociada al dueño
-        try {
-          const opticals = await getAllOpticals();
-          const myOptical = opticals.find((o: any) => o.user === res.user.id);
-
-          if (myOptical) {
-            opticalId = myOptical.id_optical;
-          } else {
-            alert("No se encontró una óptica asociada a este usuario ❌");
-          }
-
-        } catch (error) {
-          console.error("Error al buscar óptica:", error);
-          alert("Ocurrió un error al buscar la óptica asociada ❌");
-        }
         return;
       }
 
+      // ✅ Ahora sí, accedemos al role_id de forma segura
+      const role = res.user.role_id;
 
-      login(res.token, role,opticalId);
+      login(res.token, role);
 
       Swal.fire({
         icon: "success",
@@ -78,16 +62,15 @@ export default function Login() {
       if (role === 1) {
         navigate("/homeAdmin");
       } else if (role === 2) {
-        if (opticalId) {
-          navigate(`/viewO/${opticalId}`);
-        } else {
-          navigate("/"); // si no tiene óptica
-        }
+        navigate("/");
       } else if (role === 3) {
-        navigate("/listOptical");
+        navigate("/");
       } else {
         navigate("/");
       }
+    } catch (err: unknown) {
+      console.error("Error en login:", err);
+
       if (err instanceof Error) {
         const message = err.message.toLowerCase();
 
@@ -127,20 +110,8 @@ export default function Login() {
           text: "Ocurrió un error desconocido.",
         });
       }
-
-    } else {
-      alert("No se recibió token del servidor ❌");
-    }
-
-  } catch (err: any) {
-    console.error("Error en login:", err);
-    if (err instanceof Error) {
-      alert(`Error: ${err.message}`);
-    } else {
-      alert("Error al iniciar sesión ❌");
     }
   };
-  }
 
   return (
     <div id={styles.form_login} className={styles.forms_login}>

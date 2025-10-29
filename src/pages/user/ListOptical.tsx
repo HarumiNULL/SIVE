@@ -1,18 +1,16 @@
-import { useEffect, useState, } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { getAllOpticals, BASE_URL } from "../../services/api";
+import { getAllOpticals } from "../../services/api";
 import defaultLogo from "../../assets/288-FOTO-Requisitos-para-optica-oftalmica.jpg";
 import styles from "./listOptical.module.css";
 
 interface Optical {
-  id_optical: number;
+  id: number;
   nameOp: string;
   address: string;
   tel: string;
   email: string;
   logo?: string;
-  descriptionOp: string;
 }
 
 export default function ListOptical() {
@@ -26,9 +24,6 @@ export default function ListOptical() {
       try {
         const data = await getAllOpticals();
         console.log("Ópticas recibidas:", data);
-        if (Array.isArray(data) && data.length > 0) {
-          console.log("Primer id_optical:", data[0].id_optical);
-        }
         setOpticals(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error cargando ópticas:", error);
@@ -89,24 +84,24 @@ export default function ListOptical() {
             {/* Tarjetas */}
             <div className={styles.optical_cards}>
               {currentOpticals.map((opt) => (
-                <div key={opt.id_optical} className={styles.optical_card}>
+                <div key={opt.id} className={styles.optical_card}>
                   
                   <div className={styles.optical_image}>
-                    <img src={`${BASE_URL}${opt.logo}` || defaultLogo} alt={opt.nameOp} />
+                    <img src={opt.logo || defaultLogo} alt={opt.nameOp} />
                   </div>
 
                   <div className={styles.optical_info}>
                     <h3>{opt.nameOp}</h3>
                     <p>
-                      {opt.descriptionOp} <br />
-                      
+                      Dirección: {opt.address} <br />
+                      Teléfono: {opt.tel} <br />
+                      Correo: {opt.email}
                     </p>
                     <div className={styles.optical_buttons}>
-                    
-                      <button className={styles.visit_btn}><Link to={`/viewO/${opt.id_optical}`} style={{color:"white"}}>Visitar Optica</Link></button>
-                      {/*<a target="_blank" rel="noopener noreferrer">
+                      <button className={styles.visit_btn}>Visitar</button>
+                      <a target="_blank" rel="noopener noreferrer">
                         Ver en el mapa
-                      </a>*/}
+                      </a>
                     </div>
                   </div>
                 </div>

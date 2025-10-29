@@ -6,7 +6,7 @@
   border: #3b2d70;
  margin: 0 auto;
   background-color: #FFFFFF;
-  width: 85%;
+  width: 40%;
   border: 2px solid #4A376c;
   border-radius: 30px;
   shape-margin: 30px;
@@ -16,7 +16,7 @@
   font-weight: 600;
   color: #785AB0;
 }
-form.edit_form{
+form.edit-form{
   width: 100%;
 
 }
@@ -24,16 +24,6 @@ form.edit_form{
   width: 80%;
   margin-left: 10%;
 }
-.register_optical_input_description{
-  width: 80%;
-  height: 30%;
-  margin-left: 10%;
-  border:2px solid  #4A376c;
-  border-radius: 10px;
-   padding: 8px; 
-}
-
-
 div.days{
   display: flex; 
   justify-content: center;
@@ -45,7 +35,7 @@ div.days{
  display: flex;
   gap: 20px;
   justify-content: center;
-  padding-bottom:1% ;
+  padding-bottom: 5%;
 }
 .optical_title {
   font-family: "Jura", sans-serif;
@@ -69,7 +59,7 @@ input.option_check{
   margin:0;
 }
 .input_file{
-  width: 95%;
+  width: 80%;
 }
 
 input#file-upload-button{
@@ -86,14 +76,4 @@ input#file-upload-button{
 .label_form_optical{
   margin-bottom:0 ;
   padding-top: 2%;
-}
-.grid_container{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-.grid_item2{
-  padding-left: 6%;
-}
-.form_buttons{
-  margin-top: 20%;
 }

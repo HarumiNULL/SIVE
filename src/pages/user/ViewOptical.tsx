@@ -1,208 +1,128 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import {
-  getCities,
-  getOneOptical,
-  getScheduleByOptical,
-  deleteOptical,
-  BASE_URL,
-  getAllCatalogues,
-  getAllProducts,
-} from "../../services/api";
+import { useParams, useNavigate } from "react-router-dom";
+import { getOneOptical, deleteOptical } from "../../services/api";
+import { Link } from "react-router-dom";
 import LoadingView from "../LoadingView";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import L from "leaflet"; // 👈 Importa Leaflet correctamente
+import "leaflet/dist/leaflet.css"; // 👈 Importa los estilos CSS
 import Navbar from "../../components/Navbar";
-import styles from "./viewOptical.module.css";
-import { useAuth } from "../../components/AuthContext";
-
+import styles from "./viewOptical.module.css"
 export default function View_optical() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { role, opticalId, loading } = useAuth();
-  const ROL_DUENO = 2;
 
-  const [optic, setOptic] = useState<any>(null);
-  const [catalogue, setCatalogue] = useState<any[]>([]);
-  const [cities, setCities] = useState<any[]>([]);
-  const [product, setProducts] = useState<any[]>([]);
-  const [schedules, setSchedules] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  interface Optical {
+    id_optical: number;
+    nameOp: string;
+    address: string;
+    tel: string;
+    city: number;
+    email: string;
+    logo: string;
+    user: number;
+    certCadecuacion: string;
+    certDispensacion: string;
+    latitud: number;
+    longitud: number;
+  }
 
-  if (loading) return <LoadingView />;
+  const [optic, setOptic] = useState<Optical | null>(null);
 
-  // Obtener óptica
   useEffect(() => {
-    if (!id) return;
-    getOneOptical(Number(id))
-      .then((res) => setOptic(res))
-      .catch(() => setError("No se pudo cargar la óptica."));
-  }, [id]);
+    if (id) { // Asegúrate de que el id exista antes de hacer la llamada
+      getOneOptical(Number(id))
+        .then((res) => setOptic(res.data))
+        .catch((err) => console.error("Error al obtener la óptica:", err));
+    }
+  }, [id]); 
 
-  // Catálogos
-  useEffect(() => {
-    if (!id) return;
-    getAllCatalogues()
-      .then((res) => {
-        const data = res.data || res;
-        setCatalogue(data.filter((c: any) => c.optical === Number(id)));
-      })
-      .catch(console.error);
-  }, [id]);
-
-  // Productos
-  useEffect(() => {
-    getAllProducts().then(setProducts).catch(console.error);
-  }, []);
-
-  // Horarios
-  useEffect(() => {
-    if (!optic?.id_optical) return;
-    getScheduleByOptical(optic.id_optical)
-      .then(setSchedules)
-      .catch(console.error);
-  }, [optic]);
-
-  // Ciudades
-  useEffect(() => {
-    getCities().then(setCities).catch(console.error);
-  }, []);
-
-  // Eliminar
   const handleDelete = async () => {
     if (!optic?.id_optical) return;
-    if (!window.confirm("¿Eliminar esta óptica?")) return;
-    try {
-      await deleteOptical(optic.id_optical);
-      alert("Óptica eliminada ✅");
-      navigate("/");
-    } catch {
-      alert("Error al eliminar ❌");
+    const confirmDelete = window.confirm("¿Estás seguro de eliminar esta óptica?");
+    if (confirmDelete) {
+      try {
+        await deleteOptical(Number(optic?.id_optical));
+        alert("Óptica eliminada correctamente ✅");
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+        alert("Error al eliminar la óptica ❌");
+      }
     }
   };
 
-  // **Inicializar mapa solo si existe el div**
+  // Inicializar el mapa una vez que optic esté cargado
   useEffect(() => {
-    if (!optic?.latitud || !optic?.longitud) return;
+    if (!optic) return;
+    console.log("Datos recibidos de la API:", optic);
+    const lat = optic.latitud; // fallback Bogotá
+    const lng = optic.longitud;
+    console.log("Latitud:", optic.latitud, "Longitud:", optic.longitud);  
+    const map = L.map("map").setView([lat, lng], 20);
 
-    const mapContainer = document.getElementById("map");
-    if (!mapContainer) return;
-
-    const map = L.map(mapContainer).setView([optic.latitud, optic.longitud], 20);
     L.tileLayer(`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`, {
       attribution: "© OpenStreetMap contributors",
     }).addTo(map);
 
-    L.marker([optic.latitud, optic.longitud])
+    L.marker([lat, lng])
       .addTo(map)
       .bindPopup(optic.nameOp)
       .openPopup();
-
-    return () => map.remove();
+    return () => {
+      map.remove(); // limpia el mapa al desmontar
+    };
   }, [optic]);
-
+  
   if (!optic) return <LoadingView />;
 
   return (
     <div className={styles.home_container}>
-      <Navbar />
-
-      {/* Banner */}
-      <div className={styles.banner_container}>
-        <img src={`${BASE_URL}${optic.logo}`} className={styles.banner} alt="banner" />
-        <h1 className={styles.text_banner}>{optic.nameOp}</h1>
+      <Navbar/>
+    
+      {/* Contenido principal */}
+      <div>
+        <img src={optic?.logo} className={styles.banner} alt="" />
+        <h1 className={styles.text_banner}>{optic?.nameOp}</h1>
       </div>
 
-      {/* Info */}
-      <div className={styles.info_section}>
-        <div className={styles.description_box}>
-          <h2>Descripción</h2>
-          <p>{optic.descriptionOp || "No hay descripción disponible."}</p>
-        </div>
-        <div className={styles.details_box}>
-          <h2>Información de contacto</h2>
-          <p><strong>Dirección:</strong> {optic.address}</p>
-          <p><strong>Teléfono:</strong> {optic.tel}</p>
-          <p><strong>Correo:</strong> {optic.email}</p>
-          <p>
-            <strong>Ciudad:</strong>{" "}
-            {cities.find((c) => c.id_city === optic.city)?.name || "Sin ciudad"}
+      <div className={styles.grid_container}>
+        <div className={styles.grid_item1}>
+          <h1 className={styles.optic_title}>{optic?.nameOp}</h1>
+          <p className={styles.optic_description}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.
           </p>
+          <h3 className={styles.subtitle}>Servicios</h3>
+          <ul className={styles.services_list}>
+            <li>Examen de la vista</li>
+            <li>Venta de lentes</li>
+            <li>Venta de armazones</li>
+          </ul>
         </div>
 
-        {/* Horarios */}
-        <div className={styles.week_calendar}>
-          <h2 className={styles.calendar_title}>Horario de Atención</h2>
-          {schedules.length > 0 ? (
-            <div className={styles.calendar_grid}>
-              {["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"].map(day => {
-                const schedule = schedules.find(s => s.day?.name_day === day);
-                return (
-                  <div key={day} className={styles.calendar_cell}>
-                    <div className={styles.day_header}>{day}</div>
-                    <div className={styles.time_slot}>
-                      {schedule
-                        ? `${schedule.hour_aper?.hour.slice(0,5) || "N/A"} - ${schedule.hour_close?.hour.slice(0,5) || "N/A"}`
-                        : "Cerrado"}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <p className={styles.no_schedule}>No hay horarios disponibles.</p>
-          )}
+        {/* Mapa */}
+        <div className={styles.grid_item2}>
+          <div id={styles.map} style={{ height: "400px" }}></div>
+        </div>
+
+        <div className={styles.grid_item3}>
+          <div className={styles.button_div}>
+            <Link to="/editO">
+              <button className={styles.edit_optic}>Editar óptica</button>
+            </Link>
+            <button className={styles.delete} onClick={handleDelete}>
+              Eliminar
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.grid_item4}>
+          <h2 className={styles.h2_title}>Comentarios</h2>
+          <div className={styles.comments}>
+            <p className={styles.comments_p}>No hay comentarios aún.</p>
+          </div>
         </div>
       </div>
-
-      {/* Catálogo */}
-      <div className={styles.catalogue_section}>
-        <h2 className={styles.h2_title}>Catálogo de Productos y Servicios</h2>
-        <div className={styles.catalogue_grid}>
-          {catalogue.length > 0 ? (
-            catalogue.map(item => (
-              <div key={item.id_catalogue} className={styles.catalogue_card}>
-                {item.image ? (
-                  <img src={`http://127.0.0.1:8000${item.image}`} alt={item.description} className={styles.catalogue_img} />
-                ) : (
-                  <div className={styles.catalogue_placeholder}>Sin imagen</div>
-                )}
-                <div className={styles.catalogue_info}>
-                  <h4 className={styles.catalogue_name}>
-                    {product.find(p => p.id_product === item.nameP)?.nameProduct || "Producto desconocido"}
-                  </h4>
-                  <p className={styles.catalogue_desc}>{item.description}</p>
-                  <p className={styles.catalogue_price}>${item.price}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className={styles.no_products}>No hay productos en el catálogo.</p>
-          )}
-        </div>
-      </div>
-
-      {/* Mapa */}
-      {optic.latitud && optic.longitud ? (
-        <div className={styles.map_container}>
-          <div id="map" className={styles.map}></div>
-        </div>
-      ) : (
-        <p style={{ textAlign: "center", marginTop: "1rem" }}>📍 No hay ubicación registrada.</p>
-      )}
-
-      {/* Botones solo para dueño */}
-      {role === ROL_DUENO && (
-        <div className={styles.button_div}>
-          <Link to={`/addProduct/${optic.id_optical}`}>
-            <button className={styles.edit_optic}>Agregar Productos</button>
-          </Link>
-          <Link to={`/editO/${id}`}>
-            <button className={styles.edit_optic}>Editar óptica</button>
-          </Link>
-          <button className={styles.delete} onClick={handleDelete}>Eliminar</button>
-        </div>
-      )}
     </div>
   );
 }
