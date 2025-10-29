@@ -62,9 +62,9 @@ export default function Login() {
       if (role === 1) {
         navigate("/homeAdmin");
       } else if (role === 2) {
-        navigate("/viewO");
+        navigate("/");
       } else if (role === 3) {
-        navigate("/listOptical");
+        navigate("/");
       } else {
         navigate("/");
       }

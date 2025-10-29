@@ -1,8 +1,44 @@
 import Navbar from "../../components/Navbar";
 import "./Home.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../components/AuthContext";
 
 export default function Home() {
+  const{ role } = useAuth();
+  const getStartPath = () => {
+    if(role === 1){
+      return "/homeAdmin";
+    }
+    if(role === 3 || role === 2){
+      return"/listOptical";
+    }
+    return"/login";
+  }
+  const getTestsPath = () => {
+    if (role === 1) {
+      return "/gestionUser"; // Admin quizás no hace tests, va a su home
+    }
+    if (role === 2) {
+      return "/view()";
+    }
+    if (role === 3)
+    return "/login";
+  };
+
+  const getTestsText = () => {
+    if (role === 1) {
+      return "Gestionar Usuarios"; // Admin quizás no hace tests, va a su home
+    }
+    if (role === 2) {
+      return "Ver mis opticas";
+    }
+    if (role === 3)
+    return "Ir a Tests Visuales";
+  }
+
+  const startPath = getStartPath();
+  const testsPath = getTestsPath();
+  const testsText = getTestsText();
   return (
     <>
       <Navbar />
@@ -16,8 +52,8 @@ export default function Home() {
             <p className="hero-subtitle">
              SIVE Ponemos la tecnología a trabajar por tus ojos, asegurando tu acceso directo a ópticas de calidad
             </p>
- 
-            <Link to ="/login" className = "hero-btn">Comenzar Ahora</Link>
+
+            <Link to ={startPath} className = "hero-btn">Comenzar Ahora</Link>
           </div>
         </section>
 
@@ -42,7 +78,7 @@ export default function Home() {
         {/* ==== Sección final ==== */}
         <section className="cta-section">
           <h2>Empieza a cuidar tu visión hoy mismo</h2>
-          < Link to ="/login"className="cta-btn">Ir a Tests Visuales</Link>
+          <Link to ={testsPath} className="cta-btn">{testsText}</Link>
         </section>
       </div>
     </>
