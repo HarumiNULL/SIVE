@@ -6,7 +6,6 @@ import Navbar from "../../components/Navbar";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
-import { getOneOptical } from "../../services/api";
 import { HelpCircle } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import InfoModal from "../../components/InfoModal";
@@ -282,7 +281,7 @@ export default function EditOptical() {
 
 
       alert("Óptica y horarios actualizados correctamente");
-      navigate("/listOptical");
+      navigate(`/viewO/${formData.id_optical}`);
     } catch (error) {
       console.error("Error al actualizar óptica y horarios:", error);
       alert("Ocurrió un error al actualizar la óptica");
@@ -372,7 +371,7 @@ export default function EditOptical() {
                         checked={schedules.some((s) => s.day_id === days.id_day)}
                         onChange={() => toggleDay(days.id_day)}
                       />
-                      {day.name_day}
+                      {days.name_day}
                     </label>
                   ))}
               </div>

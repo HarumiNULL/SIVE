@@ -30,6 +30,7 @@ export default function Login() {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
       const role = res.user.role_id;
+      const idUser = res.user.id;
       let opticalId: number | null = null;
       // ✅ Verificamos que el backend haya devuelto el usuario
       if (res.user || !res.token) {
@@ -51,7 +52,7 @@ export default function Login() {
         }
         }
 
-        login(res.token, role, opticalId);
+        login(res.token, role, opticalId, idUser);
 
         Swal.fire({
           icon: "success",

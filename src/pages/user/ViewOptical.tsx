@@ -8,6 +8,7 @@ import {
   BASE_URL,
   getAllCatalogues,
   getAllProducts,
+  logoutUser,
 } from "../../services/api";
 import LoadingView from "../LoadingView";
 import L from "leaflet";
@@ -19,7 +20,7 @@ import { useAuth } from "../../components/AuthContext";
 export default function View_optical() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { role, opticalId, loading } = useAuth();
+  const { role, opticalId, loading, logout } = useAuth();
   const ROL_DUENO = 2;
 
   const [optic, setOptic] = useState<any>(null);
@@ -75,7 +76,14 @@ export default function View_optical() {
     try {
       await deleteOptical(optic.id_optical);
       alert("Óptica eliminada ✅");
-      navigate("/");
+      try {
+        await logoutUser();
+        navigate("/");
+      } catch (error) {
+        console.error("Error cerrando sesión en el servidor:", error);
+      } finally {
+        logout();
+      }
     } catch {
       alert("Error al eliminar ❌");
     }

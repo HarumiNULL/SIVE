@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuth } from "../components/AuthContext";
 /*import { Axios } from "axios";*/
 export const BASE_URL = "http://127.0.0.1:8000";
 
@@ -505,25 +506,6 @@ export const createSchedule = async (data: any) => {
     throw new Error("Error al crear el horario");
   }
 };
-export const getScheduleByOptical = async (id_optical: number) => {
-  try {
-    const response = await API.get(`/schedules/?id_optical=${id_optical}`);
-    return response.data;
-  } catch (error: any) {
-    console.error("Error obteniendo horario:", error.response?.data || error);
-    throw new Error("Error al obtener el horario");
-  }
-};
-
-export const getAllSchedules = async () => {
-  try {
-    const response = await API.get("/schedules/");
-    return response.data;
-  } catch (error: any) {
-    console.error("Error obteniendo schedules:", error.response?.data || error);
-    throw new Error("No se pudieron obtener los horarios");
-  }
-};
 
 ///actualizar optica
 
@@ -662,14 +644,13 @@ export interface Test {
 }
 
 // Traer tests del usuario logueado
-export const getTestsByUserAndQuestionary = async (questionaryId: number): Promise<Test[]> => {
-  const userId = localStorage.getItem("user_id");
-  if (!userId) throw new Error("Usuario no autenticado");
+export const getTestsByUserAndQuestionary = async (questionaryId: number, idUser: number|null): Promise<Test[]> => {
+  if (!idUser) throw new Error("Usuario no autenticado");
 
   const res = await API.get<Test[]>(`test/`);
   // filtrar por usuario y cuestionario
   const filtered = res.data
-    .filter(t => t.user === Number(userId) && t.questionary === questionaryId)
+    .filter(t => t.user === Number(idUser) && t.questionary === questionaryId)
     .sort((a, b) => new Date(b.date_test).getTime() - new Date(a.date_test).getTime()); // ordenar por fecha descendente
 
   return filtered;

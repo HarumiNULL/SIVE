@@ -1,5 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState,  } from "react";
+import { useAuth } from "../../components/AuthContext";
 import Navbar from "../../components/Navbar";
 import { getOneQuestionary, type Questionary, type Option, type Question, BASE_URL, API} from '../../services/api';
 import styles from "./test.module.css";
@@ -7,10 +8,11 @@ import styles from "./test.module.css";
 export default function Test() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const userId = localStorage.getItem("user_id");
+  const {idUser} = useAuth();
   const [test, setTest] = useState<Questionary | null>(null);
-  const [answers, setAnswers] = useState<Record<number, number>>({}); // question_id -> option_id          
+  const [answers, setAnswers] = useState<Record<number, number>>({}); // question_id -> option_id
   const [error, setError] = useState<string | null>(null);
+  console.log(idUser)
 
   useEffect(() => {
     if (id) {
@@ -29,13 +31,13 @@ export default function Test() {
   const handleSubmit = async () => {
   if (!test) return;
 
-  
+
   try {
     for (const [questionId, optionId] of Object.entries(answers)) {
       const payload = {
         questionary_id: Number(test.id_questionary), // convertir a número
         question_id: Number(questionId),             // convertir a número
-        user_id: Number(userId),
+        user_id: Number(idUser),
         answer_id: Number(optionId),                 // convertir a número
       };
 

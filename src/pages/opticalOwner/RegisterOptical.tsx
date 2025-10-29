@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDays, getHours, createOptical, getCities } from "../../services/api";
+import { getDays, getHours, createOptical, getCities,logoutUser } from "../../services/api";
 import { useAuth } from "../../components/AuthContext";
 import styles from "./registerOptical.module.css"
 import Navbar from "../../components/Navbar";
@@ -15,7 +15,7 @@ import InfoModal from "../../components/InfoModal";
 export default function EditOptical() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { role, userId } = useAuth();
+  const { role, idUser, logout } = useAuth();
   interface OpticalFormData {
     id_optical: number;
     nameOp: string;
@@ -165,7 +165,14 @@ export default function EditOptical() {
         }
       }
       alert("✅ Óptica y horarios registrados correctamente.");
-      navigate(`/viewO/${opticalId}`);
+      try {
+        await logoutUser();
+        navigate("/");
+      } catch (error) {
+        console.error("Error cerrando sesión en el servidor:", error);
+      } finally {
+        logout();
+      }
 
     } catch (error: any) {
       console.error("❌ Error en el registro de óptica:", error);

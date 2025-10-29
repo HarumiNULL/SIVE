@@ -3,11 +3,12 @@ import { useEffect, useState, } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { Pie } from "react-chartjs-2";
-import { getTestsByUserAndQuestionary, Test} from "../../services/api"; // importar funciones de api.ts
+import { getTestsByUserAndQuestionary, Test } from "../../services/api"; // importar funciones de api.ts
 import styles from "./listProbability.module.css";
 import { HelpCircle, X } from "lucide-react";
 import "chart.js/auto";
 import InfoModal from "../../components/InfoModal";
+import { useAuth } from "../../components/AuthContext";
 /*import Test from "./Test";*/
 
 interface ProbabilityResult {
@@ -22,79 +23,63 @@ interface ProbabilityResult {
 export default function ListProbability() {
   const [results, setResults] = useState<ProbabilityResult[]>([]);
   const [openInfo, setOpenInfo] = useState<ProbabilityResult | null>(null);
+  const {idUser} = useAuth();
 
   useEffect(() => {
-    const mockData: ProbabilityResult[] = [
-      {
-        id: 1,
-        testName: "Test de Snellen",
-        timesTaken: 3,
-        probability: 70,
-        route: "/test",
-        info: "Para mayor información respecto a este Test Visual ingresar a: https://clinicastecnovision.es/wp-content/uploads/2019/05/test-de-landolt.pdf",
-      },
-      {
-        id: 2,
-        testName: "Test de Ishihara",
-        timesTaken: 2,
-        probability: 45,
-        route: "/testIshi",
-        info: "Para mayor información respecto a este Test Visual ingresar a: https://apidspace.cordillera.edu.ec/server/api/core/bitstreams/64ee2017-b3b6-4e8f-af34-dc003039ad10/content",
-      },
-    ];
-    setResults(mockData);
-      const fetchResults = async () => {
-    try {
-      const questionaryIds = [1, 2]; // Ishihara=1, Snellen=2
-      const allResults: ProbabilityResult[] = [];
+    const fetchResults = async () => {
+      try {
+        const questionaryIds = [1, 2]; // Ishihara=1, Snellen=2
+        const allResults: ProbabilityResult[] = [];
 
-      for (const qId of questionaryIds) {
-        const tests = await getTestsByUserAndQuestionary(qId);
-        if (tests.length === 0) continue;
+        for (const qId of questionaryIds) {
+          const tests = await getTestsByUserAndQuestionary(qId, idUser);
+          if (tests.length === 0) continue;
 
-        console.log("Tests recibidos del backend:", tests);
+          console.log("Tests recibidos del backend:", tests);
 
-        // Agrupar por fecha
-        const groupedByDate: { [date: string]: Test[] } = {};
-        tests.forEach((t) => {
-          if (!groupedByDate[t.date_test]) groupedByDate[t.date_test] = [];
-          groupedByDate[t.date_test].push(t);
-        });
+          // Agrupar por fecha
+          const groupedByDate: { [date: string]: Test[] } = {};
+          tests.forEach((t) => {
+            if (!groupedByDate[t.date_test]) groupedByDate[t.date_test] = [];
+            groupedByDate[t.date_test].push(t);
+          });
 
-        // Tomar la fecha más reciente
-        const lastDate = Object.keys(groupedByDate).sort().reverse()[0];
-        const testsOfLastDate = groupedByDate[lastDate];
+          // Tomar la fecha más reciente
+          const lastDate = Object.keys(groupedByDate).sort().reverse()[0];
+          const testsOfLastDate = groupedByDate[lastDate];
 
-        // Sumar todos los answers de esa fecha
-        // ✅ Si cada test tiene un "puntaje total" (no respuestas individuales)
-const averageValue = testsOfLastDate.reduce(
-  (sum, t) => sum + (typeof t.answer === "number" ? t.answer : 0),
-  0
-) / testsOfLastDate.length;
+          // Sumar todos los answers de esa fecha
+          // ✅ Si cada test tiene un "puntaje total" (no respuestas individuales)
+          const averageValue = testsOfLastDate.reduce(
+            (sum, t) => sum + (typeof t.answer === "number" ? t.answer : 0),
+            0
+          ) / testsOfLastDate.length;
 
-// 🔹 Define el máximo esperado de ese test
-const maxScore = 35; // ejemplo: si Snellen tiene 7 preguntas de 5 puntos cada una
-const probability = Math.min(Math.round((averageValue / maxScore) * 100), 100);
-        allResults.push({
-          id: qId,
-          testName: qId === 1 ? "Test de Ishihara" : "Test de Snellen",
-          timesTaken: testsOfLastDate.length,
-          probability,
-          route: qId === 1 ? "/testIshi" : "/test",
-          info:
-            qId === 1
-              ? "https://apidspace.cordillera.edu.ec/server/api/core/bitstreams/64ee2017-b3b6-4e8f-af34-dc003039ad10/content"
-              : "https://clinicastecnovision.es/wp-content/uploads/2019/05/test-de-landolt.pdf",
-        });
+          // 🔹 Define el máximo esperado de ese test
+          const maxScore = 35; // ejemplo: si Snellen tiene 7 preguntas de 5 puntos cada una
+          const probability = Math.min(Math.round((averageValue / maxScore) * 100), 100);
+
+
+          allResults.push({
+            id: qId,
+            testName: qId === 1 ? "Test de Ishihara" : "Test de Snellen",
+            timesTaken: testsOfLastDate.length,
+            probability,
+            route: qId === 1 ? "/testIshi" : "/test",
+            info:
+              qId === 1
+                ? "https://apidspace.cordillera.edu.ec/server/api/core/bitstreams/64ee2017-b3b6-4e8f-af34-dc003039ad10/content"
+                : "https://clinicastecnovision.es/wp-content/uploads/2019/05/test-de-landolt.pdf",
+          });
+        }
+
+        setResults(allResults);
+      } catch (err) {
+        console.error("Error cargando resultados:", err);
       }
+    };
 
-      setResults(allResults);
-    } catch (err) {
-      console.error("Error cargando resultados:", err);
-    }
-  };
-
-  fetchResults();
+    fetchResults();
   }, []);
   return (
     <>
@@ -111,7 +96,7 @@ const probability = Math.min(Math.round((averageValue / maxScore) * 100), 100);
               </div>
 
               <p className={styles.test_times}>
-                Has tomado el test: <strong>{res.timesTaken/7}</strong> veces
+                Has tomado el test: <strong>{res.timesTaken / 7}</strong> veces
               </p>
 
               <div className={styles.probability_body}>
@@ -122,7 +107,7 @@ const probability = Math.min(Math.round((averageValue / maxScore) * 100), 100);
                         labels: ["Agudeza visual", "perdida de vision"],
                         datasets: [
                           {
-                            data: [ 100 - res.probability,res.probability],
+                            data: [100 - res.probability, res.probability],
                             backgroundColor: ["#8b5cf6", "#f3e8ff"],
                             borderWidth: 0,
                           },
@@ -136,7 +121,7 @@ const probability = Math.min(Math.round((averageValue / maxScore) * 100), 100);
 
                 <div className={styles.probability_info}>
                   <p className={styles.highlight}>
-                    Tu agudez visual esta en un <strong>{100-res.probability}%</strong>, por tanto tienes un  <strong>{res.probability}%</strong> probabilidad de tener un problema visual basado en tu último intento.
+                    Tu agudez visual esta en un <strong>{100 - res.probability}%</strong>, por tanto tienes un  <strong>{res.probability}%</strong> probabilidad de tener un problema visual basado en tu último intento.
                   </p>
                   <hr />
                   <p className={styles.recommendation}>
