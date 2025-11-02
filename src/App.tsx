@@ -18,8 +18,8 @@ import { ROL_DUENO, ROL_USUARIO } from "./config";
 import GestionUser from "./pages/Admin/GestionUser";
 import AddProduct from "./pages/opticalOwner/AddProduct";
 import ViewGraphics from "./pages/opticalOwner/ViewGraphics";
-
-
+import ResetPassword from "./pages/user/ResetPassword";
+import ConfirmResetPassword from './pages/user/ConfirmResetPassword';
 import { ROL_ADMIN } from "./config";
 import RedirectToMyOptical from "./pages/opticalOwner/RedirectToMyOptical";
 function App() {
@@ -36,6 +36,8 @@ function App() {
             </ProtectedRoute>} /><Route path="/HomeAdmin" element={<ProtectedRoute required_rol={ROL_ADMIN}><HomeAdmin /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/Reset_password" element={<ResetPassword />}/>
+             <Route path="/password_reset" element={<ConfirmResetPassword/>} />
             <Route path="/listOptical" element={<ProtectedRoute>
               <ListOptical/>
             </ProtectedRoute>}/>
