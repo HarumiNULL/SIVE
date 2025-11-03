@@ -178,7 +178,8 @@ export default function Login() {
       </form>
 
       <p className={styles.foot}>¿No tienes una cuenta?</p>
-      <Link to="/register" className={styles.register_link}>
+      <Link to="/Reset_password" className={styles.register_link} id="reset_password">¿Olvidaste tu contraseña?</Link>
+      <Link to="/register" className={styles.register_link} id="register_link">
         Regístrate
       </Link>
     </div>
