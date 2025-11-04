@@ -49,13 +49,18 @@
   width: 100%;
 }
 
-.description_box,
+div.description_box,
 .details_box {
   background: #f7f4fc;
   border-radius: 16px;
   padding: 1.5rem 2rem;
   box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-
+  font-size: 25px;
+}
+.text_description{
+   font-size: 20px;
+   letter-spacing: normal;
+   line-height: 1.8;
 }
 
 .description_box h2,

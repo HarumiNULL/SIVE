@@ -66,7 +66,7 @@ export default function Navbar() {
             <Link to="/listTest" className={styles.btn_ver}>Test Visuales</Link>
             <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
             <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
-            <Link to="/registerO" className={styles.btn_ver}>Trabaja con Nosotros</Link>
+            <Link to="/registerO" className={styles.btn_ver}>Unete a Nosotros</Link>
           </>
         );
         break;
