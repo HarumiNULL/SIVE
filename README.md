@@ -1,6 +1,5 @@
 # SIVE
 
----
 
 Una herramienta digital que busca solucionar la detección tardía de problemas oculares en ingenieros de sistemas, ofreciendo una herramienta que permita identificar de forma temprana el desgaste visual ocasionado por el uso prolongado de pantallas y mostrar centros oftalmológicos según su ubicación, calidad de atención, precios y servicios.
 
@@ -13,7 +12,7 @@ Una herramienta digital que busca solucionar la detección tardía de problemas 
 ● Aceptar y declinar opticas en base a su legalidad.
 # Home
 <img width="1567" height="734" alt="image" src="https://github.com/user-attachments/assets/d046d93c-a455-4c70-9fad-e63bf28f9de9" />
-# test
+# Test
 <img width="1552" height="689" alt="image" src="https://github.com/user-attachments/assets/8bbe823b-3f1a-48eb-838c-9868b859fab8" />
 <img width="1570" height="573" alt="image" src="https://github.com/user-attachments/assets/438d6327-26df-4818-aba0-6e5a2050701b" />
 
