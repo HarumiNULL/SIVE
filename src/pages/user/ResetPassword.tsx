@@ -1,4 +1,5 @@
 import { resetPassword } from '../../services/resetPassword';
+import styles from "./resetpassword.module.css";
 import { useState } from 'react';
 
 export default function ResetPassword() {
@@ -19,9 +20,11 @@ export default function ResetPassword() {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" }}>
-                <input
+        <div className={styles.divResetPassword} style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "60%" }}>
+                <h1 className={styles.titulo}>¿Olvidaste tu contraseña?</h1>
+                <p>A continuacion digita el correo asociado a tu cuenta, se enviara un enlace para que puedas cambiar tu contraseña </p>
+                <input className={styles.inputEmail}
                     type="email"
                     placeholder="Ingresa el correo para recuperar tu contraseña"
                     value={email}
