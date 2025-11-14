@@ -30,6 +30,7 @@ Una herramienta digital que busca solucionar la detección tardía de problemas 
 - Repositorio de backend: https://github.com/HarumiNULL/backSIVE.git
 - Docker
 - **Git** para el  control de versiones
+- node.js
 
 # inicio rapido
 
