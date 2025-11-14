@@ -57,6 +57,9 @@ python -m venv venv
 venv\Scripts\activate  # Windows
 # or
 source venv/bin/activate  # macOS/Linux
+#levantar la base de datos en docker
+docker compose up -d
+
 #haces las migraciones
 py manage.py makemigrations
 py manage.py migrate
