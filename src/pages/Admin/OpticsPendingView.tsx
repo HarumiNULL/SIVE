@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ModalOptical from "../../components/ModalOptical";
 import Navbar from "../../components/Navbar";
+import styles from "../../pages/Admin/opticsPendingView.module.css";
 
 interface PendingOptic {
     id_optical: number;
@@ -15,7 +16,6 @@ interface PendingOptic {
 }
 
 export default function OpticsPendingView() {
-    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [optics, setOptics] = useState<PendingOptic[]>([]);
     const [loading, setLoading] = useState(true);
@@ -84,6 +84,8 @@ export default function OpticsPendingView() {
     return (
         <>
             <Navbar />
+            <h2 className={styles.titleAbsolute}>Gestion de Opticas</h2>
+            <h4 className={styles.description}>En este panel podras aceptar o denegar las opticas que se registren en la plataforma</h4>
 
             {/* MODAL — SIEMPRE FUERA DE LA TABLA */}
             {selectedId !== null && (
@@ -94,17 +96,16 @@ export default function OpticsPendingView() {
                 />
             )}
 
-            <div className="p-6">
-                <h1 className="text-2xl font-bold mb-4">Ópticas pendientes de aprobación</h1>
+            <div className={styles.container}>
+                <h1 className={styles.title}>Ópticas pendientes de aprobación</h1>
 
                 {optics.length === 0 ? (
                     <p>No hay ópticas pendientes.</p>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
+                        <table className={styles.table}>
                             <thead className="bg-gray-100">
-                                <tr>
-                                    
+                                <tr className={styles.tableHeader}>
                                     <th className="px-4 py-2 text-left font-semibold">Nombre</th>
                                     <th className="px-4 py-2 text-left font-semibold">Correo dueño</th>
                                     <th className="px-4 py-2 text-center font-semibold">Acciones</th>
@@ -126,7 +127,7 @@ export default function OpticsPendingView() {
                                                     setSelectedId(opt.id_optical);
                                                     setOpen(true);
                                                 }}
-                                                className="px-3 py-1 bg-blue-600 text-white rounded text-sm"
+                                                className={styles.buttonVer}
                                             >
                                                 Ver
                                             </button>
@@ -134,7 +135,7 @@ export default function OpticsPendingView() {
                                             {/* Aprobar */}
                                             <button
                                                 onClick={() => handleApprove(opt.id_optical)}
-                                                className="px-3 py-1 bg-green-600 text-white rounded text-sm"
+                                                className={styles.buttonAprobar}
                                             >
                                                 Aprobar
                                             </button>
@@ -142,7 +143,7 @@ export default function OpticsPendingView() {
                                             {/* Rechazar */}
                                             <button
                                                 onClick={() => handleReject(opt.id_optical)}
-                                                className="px-3 py-1 bg-red-600 text-white rounded text-sm"
+                                                className={styles.buttonRechazar}
                                             >
                                                 Rechazar
                                             </button>

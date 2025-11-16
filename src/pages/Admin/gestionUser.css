@@ -2,13 +2,15 @@
 /* ======== Título ======== */
 .title {
   text-align: center;
-  color: #3a0ca3;
-  font-size: 1.8rem;
-  font-weight: 600;
+  color: #4a307c;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Jura', sans-serif;
   margin-bottom: 30px;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
 
 /* ======== Contenedor de la tabla ======== */
 .table-container {
