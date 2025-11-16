@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useAuth } from "../components/AuthContext";
+import { dataDecrypt } from "../utils/data-decrypt";
 /*import { Axios } from "axios";*/
 export const BASE_URL = "http://127.0.0.1:8000";
 
@@ -16,6 +17,7 @@ export interface User {
   first_name: string;
   last_name: string;
   state: number;
+  is_verified_owner: boolean; 
 }
 
 export interface QuestionaryItem {
@@ -111,7 +113,7 @@ export interface Schedule {
 
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = dataDecrypt( localStorage.getItem("token"));
     if (token) {
       config.headers!.Authorization = `Token ${token}`;
     }

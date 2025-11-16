@@ -15,6 +15,8 @@ export default function Login() {
 
   const navigate = useNavigate();
   const { login } = useAuth();
+  
+
 
   // Manejo de cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,12 +27,13 @@ export default function Login() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData.email);
+    //console.log("Datos enviados:", formData.email);
     try {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
       const role = res.user.role_id;
       const idUser = res.user.id;
+      const verifiedOwner = res.user.is_verified_owner;
       const emailUser = res.user.email;
       let opticalId: number | null = null;
       // ✅ Verificamos que el backend haya devuelto el usuario
@@ -53,7 +56,7 @@ export default function Login() {
         }
         }
 
-        login(res.token, role, opticalId, idUser, emailUser);
+        login(res.token, role, opticalId, idUser, emailUser, verifiedOwner);
 
         Swal.fire({
           icon: "success",
