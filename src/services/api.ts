@@ -458,18 +458,21 @@ export const deleteUser = async (userId: number) => { // <--- Función necesaria
 };
 
 // 3. BLOQUEAR/DESBLOQUEAR USUARIO
-export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { // <--- Función necesaria
+export const toggleBlockUser = async (userId: number, newState: number) => {
     try {
-        // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
-        const response = await API.put(`users/${userId}/block/`, { is_blocked: isBlocked });
-
-        // Retorna el usuario actualizado (idealmente)
+        const response = await API.patch(
+            `users/${userId}/`,
+            { state: newState },
+            { headers: { "Content-Type": "application/json" } }
+        );
         return response.data;
     } catch (error) {
-        console.error(`Error al cambiar estado de bloqueo ${userId}:`, error);
-        throw new Error("No se pudo cambiar el estado de bloqueo.");
+        console.error(`PATCH ERROR:`, error);
+        throw new Error("No se pudo cambiar el estado.");
     }
 };
+
+
 // Obtener catálogo de una óptica
 export async function getAllCatalogues() {
   const response = await API.get("/catalogue/");
@@ -656,3 +659,18 @@ export const getTestsByUserAndQuestionary = async (questionaryId: number, idUser
   return filtered;
 };
 export default API;
+
+export async function getPendingOptical(){
+  const res = await API.get('admin/pending-owners/');
+  return res.data;
+}
+
+export async function approveOptical(opticalId: number){
+  const res = await API.post(`admin/approve-owner/${opticalId}/`);
+  return res.data;
+}
+
+export async function rejectOptical(opticalId: number){
+  const res = await API.post(`admin/reject-owner/${opticalId}/`);
+  return res.data;
+}

@@ -64,7 +64,7 @@ function UserList() {
     const newState = user.state === 2 ? 1 : 2; // alterna entre bloqueado y activo
 
     try {
-      const updatedUser = await toggleBlockUser(userId, newState);
+      const updatedUser = await toggleBlockUser(userId,newState);
       setUsers((prev) =>
         prev.map((u) => (u.id === userId ? { ...u, state: updatedUser.state } : u))
       );
