@@ -1,7 +1,7 @@
 import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getQuestionaries, QuestionaryItem } from "../../services/api";
+import { getQuestionaries, type QuestionaryItem } from "../../services/api";
 import './listTest.css'
 
 export default function ListTest() {
@@ -24,7 +24,7 @@ export default function ListTest() {
         switch (testName.toLowerCase()) {
             case "test de daltonismo(ishihara)":
                 return `/test/${id}`;
-            case "tabla de snellen ":
+            case "test de snellen":
                 return `/test/${id}`;
             default:
                 return "/testGenerico"; // ruta por defecto

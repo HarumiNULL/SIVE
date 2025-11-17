@@ -6,7 +6,7 @@ import styles from "./registerOptical.module.css"
 import Navbar from "../../components/Navbar";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
+
 import { getOneOptical, createSchedule, createScheduleByUrl } from "../../services/api";
 import { HelpCircle } from "lucide-react";
 import InfoModal from "../../components/InfoModal";

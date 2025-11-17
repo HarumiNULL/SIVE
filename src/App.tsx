@@ -14,20 +14,18 @@ import ListOptical from "./pages/user/ListOptical";
 import ListProbability from "./pages/user/ListProbability";
 import RegisterOptical from "./pages/opticalOwner/RegisterOptical";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
-import { ROL_DUENO, ROL_USUARIO } from "./config";
+import { ROL_DUENO, ROL_USUARIO, ROL_ADMIN  } from "./config";
 import GestionUser from "./pages/Admin/GestionUser";
 import AddProduct from "./pages/opticalOwner/AddProduct";
 import ViewGraphics from "./pages/opticalOwner/ViewGraphics";
 import ResetPassword from "./pages/user/ResetPassword";
 import ConfirmResetPassword from './pages/user/ConfirmResetPassword';
-import { ROL_ADMIN } from "./config";
 import RedirectToMyOptical from "./pages/opticalOwner/RedirectToMyOptical";
 import OpticsPendingView from "./pages/Admin/OpticsPendingView";
 function App() {
 
   return (
-    <>
-
+    
       <AuthProvider>
         <Router>
           <Routes>
@@ -66,13 +64,13 @@ function App() {
             <Route path="/addProduct/:id" element={<ProtectedRoute required_rol={ROL_DUENO}><AddProduct /></ProtectedRoute>} />
             <Route path="/test/:id" element={<ProtectedRoute required_rol={ROL_USUARIO}><Test /></ProtectedRoute>} />
             <Route path="/test/:id" element={<ProtectedRoute><Test /></ProtectedRoute>} />
-            <Route path="/GestionUser" element={<ProtectedRoute><GestionUser /></ProtectedRoute>} />
+            <Route path="/GestionUser" element={<ProtectedRoute><GestionUser/></ProtectedRoute>} />
             <Route path="/regisO" element={<ProtectedRoute required_rol={ROL_USUARIO}><RegisterOptical /></ProtectedRoute>} />
           </Routes>
 
         </Router>
       </AuthProvider>
-    </>
+    
   );
 }
 
