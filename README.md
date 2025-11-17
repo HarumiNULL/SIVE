@@ -11,8 +11,10 @@ Una herramienta digital que busca solucionar la detección tardía de problemas 
 ● Registro de opticas(nombre, ubicación, catalogo de servicios, productos)
 ● Aceptar y declinar opticas en base a su legalidad.
 # Home
+
 <img width="1567" height="734" alt="image" src="https://github.com/user-attachments/assets/d046d93c-a455-4c70-9fad-e63bf28f9de9" />
 # Test
+
 <img width="1552" height="689" alt="image" src="https://github.com/user-attachments/assets/8bbe823b-3f1a-48eb-838c-9868b859fab8" />
 <img width="1570" height="573" alt="image" src="https://github.com/user-attachments/assets/438d6327-26df-4818-aba0-6e5a2050701b" />
 
