@@ -461,7 +461,7 @@ export const deleteUser = async (userId: number) => { // <--- Función necesaria
 export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { // <--- Función necesaria
     try {
         // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
-        const response = await API.put(`users/${userId}/block/`, { is_blocked: isBlocked });
+        const response = await API.put(`users/${userId}/`, { is_blocked: isBlocked });
 
         // Retorna el usuario actualizado (idealmente)
         return response.data;
