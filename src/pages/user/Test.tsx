@@ -1,14 +1,16 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useEffect, useState,  } from "react";
+import { useEffect, useState, } from "react";
 import { useAuth } from "../../components/AuthContext";
 import Navbar from "../../components/Navbar";
-import { getOneQuestionary, type Questionary, type Option, type Question, BASE_URL, API} from '../../services/api';
+import { getOneQuestionary, type Questionary, type Option, type Question, BASE_URL, API } from '../../services/api';
 import styles from "./test.module.css";
+import Swal from "sweetalert2";
+
 
 export default function Test() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const {idUser} = useAuth();
+  const { idUser } = useAuth();
   const [test, setTest] = useState<Questionary | null>(null);
   const [answers, setAnswers] = useState<Record<number, number>>({}); // question_id -> option_id
   const [error, setError] = useState<string | null>(null);
@@ -29,29 +31,41 @@ export default function Test() {
   };
 
   const handleSubmit = async () => {
-  if (!test) return;
+    if (!test) return;
 
+    try {
+      for (const [questionId, optionId] of Object.entries(answers)) {
+        const payload = {
+          questionary_id: Number(test.id_questionary),
+          question_id: Number(questionId),
+          user_id: Number(idUser),
+          answer_id: Number(optionId),
+        };
 
-  try {
-    for (const [questionId, optionId] of Object.entries(answers)) {
-      const payload = {
-        questionary_id: Number(test.id_questionary), // convertir a número
-        question_id: Number(questionId),             // convertir a número
-        user_id: Number(idUser),
-        answer_id: Number(optionId),                 // convertir a número
-      };
+        await API.post(`${BASE_URL}api/test/`, payload);
+      }
 
-      // Aquí usamos Axios correctamente
-      const res = await API.post(`${BASE_URL}/api/test/`, payload);
-      console.log("Respuesta backend:", res.data);
+      await Swal.fire({
+        icon: "success",
+        title: "Respuestas enviadas",
+        text: "Tu test ha sido registrado correctamente.",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      navigate("/listProb");
+
+    } catch (err: any) {
+      console.error("Error del backend:", err.response?.data);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudieron enviar tus respuestas. Intenta nuevamente.",
+      });
     }
-    alert("Respuestas enviadas correctamente 🎉");
-    navigate("/listProb"); // navega a la ruta indicada
-  } catch (err: any) {
-    console.error("Error del backend:", err.response?.data);
-    alert("Ocurrió un error al enviar las respuestas");
-  }
-};
+  };
+
 
 
   if (!test) return <div>Cargando cuestionario...</div>;
@@ -86,7 +100,7 @@ export default function Test() {
                   {question.options.map((op: Option) => (
                     <label key={op.id_option} className={styles.label_questionary}>
                       <input
-                      className={styles.option_questionary}
+                        className={styles.option_questionary}
                         type="radio"
                         name={`question-${question.id_question}`}
                         value={op.id_option}

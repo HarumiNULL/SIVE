@@ -25,9 +25,9 @@ export default function ListOptical() {
     const fetchAllOptics = async () => {
       try {
         const data = await getAllOpticals();
-        console.log("Ópticas recibidas:", data);
+        //console.log("Ópticas recibidas:", data);
         if (Array.isArray(data) && data.length > 0) {
-          console.log("Primer id_optical:", data[0].id_optical);
+          //console.log("Primer id_optical:", data[0].id_optical);
         }
         setOpticals(Array.isArray(data) ? data : []);
       } catch (error) {

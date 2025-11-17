@@ -34,7 +34,7 @@ export default function ListTest() {
         switch (testName.toLowerCase()) {
             case "ishihara":
                 return "src\\assets\\IshiharaSample.png";
-            case "tabla de snellen ":
+            case "tabla de snellen":
                 return "src\\assets\\snellen_2daOpcion.svg";
             default:
                 return "src\\assets\\IshiharaSample.png"; // ruta por defecto

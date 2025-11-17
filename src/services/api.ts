@@ -207,7 +207,7 @@ export const getAllOpticals = async () => {
 export const getCities = async () => {
   try {
     const res = await API.get(`city/`);
-    console.log("📡 Datos recibidos de cities:", res.data);
+    //console.log("📡 Datos recibidos de cities:", res.data);
     return res.data;
   } catch (error: any) {
     console.error("Error al obtener ciudades:", error);
@@ -218,7 +218,7 @@ export const getCities = async () => {
 export const getDays = async () => {
   try {
     const res = await API.get(`days/`);
-    console.log("📡 Datos recibidos de days:", res.data);
+    //console.log("📡 Datos recibidos de days:", res.data);
     return res.data;
   } catch (error) {
     console.error("❌ Error en getDays:", error);
@@ -229,7 +229,7 @@ export const getDays = async () => {
 export const getHours = async () => {
   try {
     const res = await API.get(`hours/`);
-    console.log("📡 Datos recibidos de hours:", res.data);
+    //console.log("📡 Datos recibidos de hours:", res.data);
     return res.data;
   } catch (error) {
     console.error("❌ Error en getHours:", error);
@@ -572,7 +572,7 @@ export const postTest = async (testData: {
     user: Number(userId),
   };
 
-  console.log("Datos que se envían al backend:", payload);
+ // console.log("Datos que se envían al backend:", payload);
 
   // Ya no es necesario enviar el token explícitamente
   const res = await API.post(`test/`, payload);
@@ -583,7 +583,7 @@ export const postTest = async (testData: {
 export const getScheduleByOptical = async (id_optical: number) => {
   try {
     const response = await API.get(`/schedules/?optical=${id_optical}`);
-    console.log("📅 Horarios recibidos para óptica", id_optical, ":", response.data);
+    //console.log("Horarios recibidos para óptica", id_optical, ":", response.data);
     return response.data;
   } catch (error: any) {
     console.error("Error obteniendo horario:", error.response?.data || error);
@@ -621,7 +621,7 @@ export async function createCatalogue(data: FormData) {
   return response.data;
 };
 
-// 📊 Obtener las vistas de una óptica específica
+// Obtener las vistas de una óptica específica
 export const getViewsByOpticalId = async (opticalId: number) => {
   try {
     const res = await API.get(`/optical/${opticalId}/views`);

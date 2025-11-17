@@ -7,7 +7,7 @@ export default function ResetPassword() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Formulario enviado:", email);
+        //console.log("Formulario enviado:", email);
 
         try {
             const res = await resetPassword(email);
