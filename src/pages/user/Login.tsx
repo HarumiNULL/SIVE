@@ -15,6 +15,8 @@ export default function Login() {
 
   const navigate = useNavigate();
   const { login } = useAuth();
+  
+
 
   // Manejo de cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,12 +27,14 @@ export default function Login() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData.email);
+    //console.log("Datos enviados:", formData.email);
     try {
       const res = await loginUser(formData);
       console.log("Login exitoso:", res);
       const role = res.user.role_id;
       const idUser = res.user.id;
+      const verifiedOwner = res.user.is_verified_owner;
+      const emailUser = res.user.email;
       let opticalId: number | null = null;
       // ✅ Verificamos que el backend haya devuelto el usuario
       if (res.user || !res.token) {
@@ -52,7 +56,7 @@ export default function Login() {
         }
         }
 
-        login(res.token, role, opticalId, idUser);
+        login(res.token, role, opticalId, idUser, emailUser, verifiedOwner);
 
         Swal.fire({
           icon: "success",
@@ -177,7 +181,8 @@ export default function Login() {
       </form>
 
       <p className={styles.foot}>¿No tienes una cuenta?</p>
-      <Link to="/register" className={styles.register_link}>
+      <Link to="/Reset_password" className={styles.register_link} id="reset_password">¿Olvidaste tu contraseña?</Link>
+      <Link to="/register" className={styles.register_link} id="register_link">
         Regístrate
       </Link>
     </div>

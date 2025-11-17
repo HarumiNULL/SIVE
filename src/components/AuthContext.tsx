@@ -1,11 +1,21 @@
 import React, { createContext, useState, useContext, type ReactNode, useEffect } from "react";
+import { dataEncrypt } from "../utils/data-encrypt";
+import { dataDecrypt } from "../utils/data-decrypt";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   role: number | null;
-  opticalId: number | null; // 👈 nuevo
+  verifiedOwner: boolean | null;
+  opticalId: number | null;
   idUser: number | null;
-  login: (token: string, role: number, opticalId?: number | null) => void;
+  login: (
+    token: string,
+    role: number,
+    opticalId?: number | null,
+    idUser?: number | null,
+    emailUser?: string | null,
+    verifiedOwner?: boolean | null,
+  ) => void;
   logout: () => void;
   loading: boolean;
 }
@@ -13,47 +23,55 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<number | null>(null);
   const [opticalId, setOpticalId] = useState<number | null>(null);
+  const [idUser, setIdUser] = useState<number | null>(null);
+  const [verifiedOwner, setVerifiedOwner] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
-  const [idUser, setIdUser] = useState<number|null>(null)
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const roleStr = localStorage.getItem("role");
-    const idUserStr = localStorage.getItem("idUser");
-    const opticalStr = localStorage.getItem("opticalId");
+    const token = dataDecrypt(localStorage.getItem("token"));
+    const roleStr = dataDecrypt(localStorage.getItem("role"));
+    const idUserStr = dataDecrypt(localStorage.getItem("idUser"));
+    const opticalStr = dataDecrypt(localStorage.getItem("opticalId"));
+    const verifiedOwnerStr = dataDecrypt(localStorage.getItem("verifiedOwner"));
 
-    const parsedRole = parseInt(roleStr || "");
-    const parsedIdUser = parseInt(idUserStr || "");
-    const parsedOptical = opticalStr ? parseInt(opticalStr) : null;
+    const parsedRole = Number.parseInt(roleStr || "");
+    const parsedIdUser = Number.parseInt(idUserStr || "");
+    const parsedOptical = opticalStr ? Number.parseInt(opticalStr) : null;
 
-    if (token && !isNaN(parsedRole)) {
+    if (token && !Number.isNaN(parsedRole)) {
       setIsAuthenticated(true);
       setUserRole(parsedRole);
-      setOpticalId(parsedOptical);
       setIdUser(parsedIdUser);
+      setOpticalId(parsedOptical);
+      setVerifiedOwner(verifiedOwnerStr === "true");
     } else {
-      setIsAuthenticated(false);
-      setUserRole(null);
-      setOpticalId(null);
-      setIdUser(null);
       localStorage.clear();
     }
+
     setLoading(false);
   }, []);
 
-  const login = (token: string, role: number, opticalId?: number | null, idUser?: number | null) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", String(role));
-    localStorage.setItem("idUser", String(idUser));
-    if (opticalId !== null && opticalId !== undefined) localStorage.setItem("opticalId", String(opticalId));
-    console.log("eSTE ES EL ID OPTICA",opticalId)
+  const login = (
+    token: string,
+    role: number,
+    opticalId?: number | null,
+    idUser?: number | null,
+    verifiedOwner?: boolean | null
+  ) => {
+    localStorage.setItem("token", dataEncrypt(token));
+    localStorage.setItem("role", dataEncrypt(String(role)));
+    localStorage.setItem("idUser", dataEncrypt(String(idUser)));
+    localStorage.setItem("opticalId", dataEncrypt(String(opticalId)));
+    localStorage.setItem("verifiedOwner", dataEncrypt(String(verifiedOwner)));
+
     setIsAuthenticated(true);
     setUserRole(role);
     setIdUser(idUser ?? null);
     setOpticalId(opticalId ?? null);
+    setVerifiedOwner(verifiedOwner ?? null);
   };
 
   const logout = () => {
@@ -62,11 +80,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUserRole(null);
     setOpticalId(null);
     setIdUser(null);
+    setVerifiedOwner(null);
     window.location.href = "/";
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, role: userRole, opticalId, login, logout, loading, idUser }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        role: userRole,
+        verifiedOwner,
+        opticalId,
+        idUser,
+        login,
+        logout,
+        loading
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -74,6 +104,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth debe usarse dentro de un AuthProvider");
+  if (!context)
+    throw new Error("useAuth debe usarse dentro de un AuthProvider");
   return context;
 };
