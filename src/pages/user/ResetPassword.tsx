@@ -1,5 +1,5 @@
 import { resetPassword } from '../../services/resetPassword';
-import styles from "./resetpassword.module.css";
+import styles from "./resetPassword.module.css";
 import { useState } from 'react';
 
 export default function ResetPassword() {
