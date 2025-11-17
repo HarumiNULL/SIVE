@@ -2,13 +2,15 @@ import axios from "axios";
 import { useAuth } from "../components/AuthContext";
 import { dataDecrypt } from "../utils/data-decrypt";
 /*import { Axios } from "axios";*/
-export const BASE_URL = "http://127.0.0.1:8000";
-
+//export const BASE_URL = "http://127.0.0.1:8000";
+export const BASE_URL = "https://backsivedeploy-production-4511.up.railway.app/";
 // Configura la URL de tu backend (puede estar en otro servidor)
-export const API = axios.create({
+/*export const API = axios.create({
   baseURL: "http://127.0.0.1:8000/api/"
+});*/
+export const API = axios.create({
+  baseURL: "https://backsivedeploy-production-4511.up.railway.app/api/"
 });
-
 
 export interface User {
   id: number;
