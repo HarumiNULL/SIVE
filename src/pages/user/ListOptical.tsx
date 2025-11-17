@@ -13,6 +13,7 @@ interface Optical {
   email: string;
   logo?: string;
   descriptionOp: string;
+  is_verified: boolean;
 }
 
 export default function ListOptical() {
@@ -40,12 +41,13 @@ export default function ListOptical() {
 
     fetchAllOptics();
   }, []);
-
+  const approvedOptics = opticals.filter(opt => opt.is_verified === true);
   // Paginación
-  const totalPages = Math.ceil(opticals.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(approvedOptics.length / ITEMS_PER_PAGE);
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentOpticals = opticals.slice(indexOfFirstItem, indexOfLastItem);
+  //const currentOpticals = opticals.slice(indexOfFirstItem, indexOfLastItem);
+  const currentOpticals = approvedOptics.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
@@ -82,7 +84,7 @@ export default function ListOptical() {
 
         {loading ? (
           <p>Cargando ópticas...</p>
-        ) : opticals.length === 0 ? (
+        ) : approvedOptics.length === 0 ? (
           <p>No se encontraron ópticas.</p>
         ) : (
           <>

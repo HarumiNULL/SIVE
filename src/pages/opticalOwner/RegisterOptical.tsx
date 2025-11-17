@@ -6,16 +6,21 @@ import styles from "./registerOptical.module.css"
 import Navbar from "../../components/Navbar";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
-import { getOneOptical, createSchedule, createScheduleByUrl } from "../../services/api";
+import {  createSchedule, getUserStatus } from "../../services/api";
 import { HelpCircle } from "lucide-react";
 import InfoModal from "../../components/InfoModal";
+import { useLocation } from "react-router-dom";
+import StatusOptica from "./StatusOptical"
 
 
 export default function EditOptical() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { role, idUser, logout } = useAuth();
+  // 🔹 Estado del usuario (loading, none, pending, rejected?, approved)
+const [statusOwner, setStatusOwner] = useState<
+  "loading" | "none" | "pending" | "approved" | "rejected"
+>("loading");
   interface OpticalFormData {
     id_optical: number;
     nameOp: string;
@@ -50,12 +55,16 @@ export default function EditOptical() {
     longitud: "",
   });
 
+
+
+const [userStatus, setUserStatus] = useState(null);
   const [days, setDays] = useState([]);
   const [hours, setHours] = useState([]);
   const [cities, setCities] = useState([]);
   const [openInfo, setOpenInfo] = useState<{ title: string; content: string } | null>(null);
 
-
+const location = useLocation();
+const fromRejected = location.state?.fromRejected || false;
 
   // 🧭 Función para actualizar lat/lng al hacer clic en el mapa
   const LocationMarker = () => {
@@ -212,10 +221,65 @@ export default function EditOptical() {
       ? [parseFloat(formData.latitud), parseFloat(formData.longitud)]
       : [4.8166, -74.3545]; // fallback a Facatativá
 
+useEffect(() => {
+  const fetchStatus = async () => {
+    try {
+      const status = await getUserStatus(); // { is_verified_owner, optic }
+
+      if (status.is_verified_owner === true && status.optic?.is_verified === true) {
+        setStatusOwner("approved");
+      } else if (status.is_verified_owner === false && status.optic?.is_verified === false) {
+        setStatusOwner("pending");
+      } else if (status.is_verified_owner === false && !status.optic) {
+        setStatusOwner("rejected");
+      } else {
+        setStatusOwner("none");
+      }
+
+      setUserStatus(status);
+    } catch (error) {
+      console.error(error);
+      setStatusOwner("none");
+    }
+  };
+
+  fetchStatus();
+}, []);
+
+// 💥 NUEVO EFECTO: If user comes from rejected → open form
+useEffect(() => {
+  if (fromRejected) {
+    setStatusOwner("none");
+  }
+}, [fromRejected]);
 
 
+// ============================
+// RENDER SEGÚN ESTADO DEL USUARIO
+// ============================
+
+if (statusOwner === "loading") return <p>Cargando...</p>;
+
+// mostrar estado APROBADO
+if (statusOwner === "approved")
+  return <StatusOptica is_verified_owner={userStatus.is_verified_owner} optic={userStatus.optic} />;
+
+// mostrar estado PENDIENTE
+if (statusOwner === "pending")
+  return <StatusOptica is_verified_owner={userStatus.is_verified_owner} optic={userStatus.optic} />;
+
+// mostrar estado RECHAZADO
+// ❗ PERO solo si NO viene de fromRejected
+if (statusOwner === "rejected" && !fromRejected)
+  return <StatusOptica is_verified_owner={userStatus.is_verified_owner} optic={userStatus.optic} />;
+
+// ============================
+// NONE → formulario (cuando viene de fromRejected o nunca registró)
+// ============================
+// NONE → formulario
   return (
     <div className="edit-container">
+
       <Navbar />
 
       <h2 className={styles.optical_title}>Registrar Óptica</h2><br />
@@ -443,3 +507,4 @@ Para mayor información ingresar a: https://saludambiental.saludcapital.gov.co/m
 
   );
 }
+

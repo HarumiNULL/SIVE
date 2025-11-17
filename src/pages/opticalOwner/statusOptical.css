@@ -1,0 +1,95 @@
+/* Contenedor centrado */
+.status-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Tarjeta */
+.status-card {
+  width: 100%;
+  max-width: 550px;
+  background: white;
+  padding: 35px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.5s ease;
+}
+
+/* Icono */
+.status-card .icon {
+  font-size: 55px;
+  margin-bottom: 15px;
+}
+
+/* Título */
+.status-card h2 {
+  font-size: 26px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+/* Texto */
+.status-card p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+
+/* Botones */
+.main-btn,
+.retry-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.25s;
+  color: white;
+}
+
+.main-btn {
+  background: #7a27ff;
+}
+
+.main-btn:hover {
+  background: #5d1bc0;
+}
+
+.retry-btn {
+  background: #ff4d6d;
+}
+
+.retry-btn:hover {
+  background: #d93a55;
+}
+
+/* Colores de estado */
+.approved {
+  border-left: 6px solid #4caf50;
+}
+
+.pending {
+  border-left: 6px solid #fbc02d;
+}
+
+.rejected {
+  border-left: 6px solid #e63946;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
