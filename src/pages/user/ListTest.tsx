@@ -24,7 +24,7 @@ export default function ListTest() {
         switch (testName.toLowerCase()) {
             case "test de daltonismo(ishihara)":
                 return `/test/${id}`;
-            case "test de snellen":
+            case "tabla de snellen":
                 return `/test/${id}`;
             default:
                 return "/testGenerico"; // ruta por defecto
