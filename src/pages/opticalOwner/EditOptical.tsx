@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDays, getHours, getCities, getOneOptical, createOptical, Schedule, getAllSchedules, BASE_URL, updateOptical, updateSchedule, createScheduleNew } from "../../services/api";
+import { getDays, getHours, getCities, getOneOptical, type Schedule, getAllSchedules, BASE_URL, updateOptical, updateSchedule, createScheduleNew } from "../../services/api";
 import styles from "./editOptical.module.css"
 import Navbar from "../../components/Navbar";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
 import { HelpCircle } from "lucide-react";
-import "leaflet/dist/leaflet.css";
 import InfoModal from "../../components/InfoModal";
 
 export default function EditOptical() {

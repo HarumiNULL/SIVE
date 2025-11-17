@@ -3,9 +3,8 @@ import { useEffect, useState, } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { Pie } from "react-chartjs-2";
-import { getTestsByUserAndQuestionary, Test } from "../../services/api"; // importar funciones de api.ts
+import { getTestsByUserAndQuestionary, type Test } from "../../services/api"; // importar funciones de api.ts
 import styles from "./listProbability.module.css";
-import { HelpCircle, X } from "lucide-react";
 import "chart.js/auto";
 import InfoModal from "../../components/InfoModal";
 import { useAuth } from "../../components/AuthContext";
