@@ -2,7 +2,7 @@ import { useEffect, useState, } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { getAllOpticals, BASE_URL } from "../../services/api";
-import defaultLogo from "../../assets/288-FOTO-Requisitos-para-optica-oftalmica.jpg";
+import defaultLogo from "../../../public/288-FOTO-Requisitos-para-optica-oftalmica.jpg";
 import styles from "./listOptical.module.css";
 
 interface Optical {
