@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React,  { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllOpticals } from "../../services/api"; // o import { findOpticalForUser } if añadiste helper
 import Navbar from "../../components/Navbar";

@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getPendingOptics, approveOptic, rejectOptic } from "../../services/acceptOwner";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ModalOptical from "../../components/ModalOptical";
 import Navbar from "../../components/Navbar";

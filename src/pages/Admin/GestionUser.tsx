@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar";
 import "./gestionUser.css";
-import { useEffect, useState } from "react";
+import React,  { useEffect, useState } from "react";
 import { getUsers, deleteUser, toggleBlockUser } from "../../services/api";
 import Swal from "sweetalert2";
 

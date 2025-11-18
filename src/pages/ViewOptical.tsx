@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { getOneOptical, deleteOptical } from "../services/api";
 import LoadingView from "./LoadingView";

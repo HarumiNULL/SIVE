@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate }  from "react-router-dom";
-import { registerUser } from '../../services/api'
+import { Link, useNavigate }  from "react-router-dom";
+import React,  { registerUser } from '../../services/api'
 import styles from "./register.module.css"
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
