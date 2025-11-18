@@ -14,13 +14,15 @@ import styles from "./test.module.css";
 import Swal from "sweetalert2";
 
 // Importa las imágenes desde src/assets
-import fila1 from "/src/assets/fila1.png";
-import fila2 from "/src/assets/fila2.png";
-import fila3 from "/src/assets/fila3.png";
-import fila4 from "/src/assets/fila4.png";
-import fila5 from "/src/assets/fila5.png";
-import fila6 from "/src/assets/fila6.png";
-import fila7 from "/src/assets/fila7.png";
+// Variables apuntando a la ruta en public
+const fila1 = "/fila1.png";
+const fila2 = "/fila2.png";
+const fila3 = "/fila3.png";
+const fila4 = "/fila4.png";
+const fila5 = "/fila5.png";
+const fila6 = "/fila6.png";
+const fila7 = "/fila7.png";
+
 
 export default function Test() {
   const { id } = useParams();
