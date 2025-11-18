@@ -453,7 +453,7 @@ export const getUsers = async () => {
 // 2. ELIMINAR USUARIO
 export const deleteUser = async (userId: number) => { // <--- Función necesaria
     try {
-        await API.delete(`users/${userId}/`);
+        await API.patch(`users/${userId}/`);
         return true; // Éxito en la eliminación
     } catch (error) {
         console.error(`Error al eliminar usuario ${userId}:`, error);
@@ -465,7 +465,7 @@ export const deleteUser = async (userId: number) => { // <--- Función necesaria
 export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { // <--- Función necesaria
     try {
         // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
-        const response = await API.put(`users/${userId}/`, { is_blocked: isBlocked });
+        const response = await API.patch(`users/${userId}/`, { is_blocked: isBlocked });
 
         // Retorna el usuario actualizado (idealmente)
         return response.data;

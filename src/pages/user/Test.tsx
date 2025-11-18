@@ -71,7 +71,7 @@ export default function Test() {
           answer_id: Number(optionId),
         };
 
-        await API.post(`${BASE_URL}api/test/`, payload);
+        await API.post(`${BASE_URL}/api/test/`, payload);
       }
 
       await Swal.fire({
