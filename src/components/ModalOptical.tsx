@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getOneOptical, BASE_URL } from "../services/api";
 import styles from "./ModalOptical.module.css";
 
