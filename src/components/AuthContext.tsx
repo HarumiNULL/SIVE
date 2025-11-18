@@ -1,4 +1,4 @@
-import React, { createContext, type ReactNode, useEffect } from "react";
+import { createContext, useState, useEffect, useContext, type ReactNode } from "react";
 import { dataEncrypt } from "../utils/data-encrypt";
 import { dataDecrypt } from "../utils/data-decrypt";
 
@@ -108,5 +108,3 @@ export const useAuth = (): AuthContextType => {
     throw new Error("useAuth debe usarse dentro de un AuthProvider");
   return context;
 };
-
-
