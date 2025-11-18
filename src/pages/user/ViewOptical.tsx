@@ -165,14 +165,14 @@ export default function View_optical() {
       <div className={styles.info_section}>
         <div className={styles.description_box}>
           <h2>Descripción</h2>
-          <p>{optic.descriptionOp || "No hay descripción disponible."}</p>
+          <p className={styles.text_description}>{optic.descriptionOp || "No hay descripción disponible."}</p>
         </div>
         <div className={styles.details_box}>
           <h2>Información de contacto</h2>
-          <p><strong>Dirección:</strong> {optic.address}</p>
-          <p><strong>Teléfono:</strong> {optic.tel}</p>
-          <p><strong>Correo:</strong> {optic.email}</p>
-          <p>
+          <p className={styles.text_description}><strong className={styles.strong1}>Dirección:</strong> {optic.address}</p>
+          <p className={styles.text_description}><strong className={styles.strong1}>Teléfono:</strong> {optic.tel}</p>
+          <p className={styles.text_description}><strong className={styles.strong1}>Correo:</strong> {optic.email}</p>
+          <p className={styles.text_description}>
             <strong>Ciudad:</strong>{" "}
             {cities.find((c) => c.id_city === optic.city)?.name || "Sin ciudad"}
           </p>
