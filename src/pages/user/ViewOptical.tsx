@@ -1,28 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import {
-  getCities,
-  getOneOptical,
-  getScheduleByOptical,
-  deleteOptical,
-  BASE_URL,
-  getAllCatalogues,
-  getAllProducts,
-  logoutUser,
-} from "../../services/api";
+import {getCities, getOneOptical, getScheduleByOptical, deleteOptical, BASE_URL, getAllCatalogues, getAllProducts, logoutUser,} from "../../services/api";
 import LoadingView from "../LoadingView";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 import Navbar from "../../components/Navbar";
 import styles from "./viewOptical.module.css";
 import { useAuth } from "../../components/AuthContext";
 
 export default function View_optical() {
+  const { isAuthenticated, verifiedOwner } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
   const { role, opticalId, loading, logout } = useAuth();
   const ROL_DUENO = 2;
-
   const [optic, setOptic] = useState<any>(null);
   const [catalogue, setCatalogue] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
@@ -71,23 +64,56 @@ export default function View_optical() {
 
   // Eliminar
   const handleDelete = async () => {
-    if (!optic?.id_optical) return;
-    if (!window.confirm("¿Eliminar esta óptica?")) return;
+  if (!optic?.id_optical) return;
+
+  // Confirmación con SweetAlert2
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción eliminará tu óptica permanentemente.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteOptical(optic.id_optical);
+
+    // Mensaje de éxito 🟢
+    await Swal.fire({
+      icon: "success",
+      title: "Óptica eliminada",
+      text: "Se ha eliminado correctamente.",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+
+    // Cerrar sesión backend
     try {
-      await deleteOptical(optic.id_optical);
-      alert("Óptica eliminada ✅");
-      try {
-        await logoutUser();
-        navigate("/");
-      } catch (error) {
-        console.error("Error cerrando sesión en el servidor:", error);
-      } finally {
-        logout();
-      }
-    } catch {
-      alert("Error al eliminar ❌");
+      await logoutUser();
+    } catch (error) {
+      console.error("Error cerrando sesión en backend:", error);
     }
-  };
+
+    logout();   // cerrar sesión frontend
+    navigate("/");
+
+  } catch (error) {
+    console.error("Error al eliminar:", error);
+
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Ocurrió un error al eliminar la óptica.",
+      confirmButtonColor: "#3085d6",
+    });
+  }
+};
+
 
   // **Inicializar mapa solo si existe el div**
   useEffect(() => {
@@ -114,24 +140,39 @@ export default function View_optical() {
   return (
     <div className={styles.home_container}>
       <Navbar />
+
       {/* Banner */}
       <div className={styles.banner_container}>
         <img src={`${BASE_URL}${optic.logo}`} className={styles.banner} alt="banner" />
         <h1 className={styles.text_banner}>{optic.nameOp}</h1>
       </div>
+      {/* Mensaje de verificación */}
+      {role === ROL_DUENO && (
+        <div className={styles.verification_message}>
+          {isAuthenticated ? (
+            verifiedOwner ? (
+              <p className={styles.verified}>✅ Tu óptica ha sido aceptada correctamente.</p>
+            ) : (
+              <p className={styles.not_verified}>⚠️ Tu óptica aún no ha sido verificada.</p>
+            )
+          ) : (
+            <p className={styles.not_verified}>⚠️ Debes iniciar sesión para ver el estado de tu óptica.</p>
+          )}
+        </div>
+      )}
 
       {/* Info */}
       <div className={styles.info_section}>
         <div className={styles.description_box}>
           <h2>Descripción</h2>
-          <p>{optic.descriptionOp || "No hay descripción disponible."}</p>
+          <p className={styles.text_description}>{optic.descriptionOp || "No hay descripción disponible."}</p>
         </div>
         <div className={styles.details_box}>
           <h2>Información de contacto</h2>
-          <p><strong>Dirección:</strong> {optic.address}</p>
-          <p><strong>Teléfono:</strong> {optic.tel}</p>
-          <p><strong>Correo:</strong> {optic.email}</p>
-          <p>
+          <p className={styles.text_description}><strong className={styles.strong1}>Dirección:</strong> {optic.address}</p>
+          <p className={styles.text_description}><strong className={styles.strong1}>Teléfono:</strong> {optic.tel}</p>
+          <p className={styles.text_description}><strong className={styles.strong1}>Correo:</strong> {optic.email}</p>
+          <p className={styles.text_description}>
             <strong>Ciudad:</strong>{" "}
             {cities.find((c) => c.id_city === optic.city)?.name || "Sin ciudad"}
           </p>
@@ -141,14 +182,14 @@ export default function View_optical() {
           <h2 className={styles.calendar_title}>Horario de Atención</h2>
           {schedules.length > 0 ? (
             <div className={styles.calendar_grid}>
-              {["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"].map(day => {
+              {["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"].map(day => {
                 const schedule = schedules.find(s => s.day?.name_day === day);
                 return (
                   <div key={day} className={styles.calendar_cell}>
                     <div className={styles.day_header}>{day}</div>
                     <div className={styles.time_slot}>
                       {schedule
-                        ? `${schedule.hour_aper?.hour.slice(0,5) || "N/A"} - ${schedule.hour_close?.hour.slice(0,5) || "N/A"}`
+                        ? `${schedule.hour_aper?.hour.slice(0, 5) || "N/A"} - ${schedule.hour_close?.hour.slice(0, 5) || "N/A"}`
                         : "Cerrado"}
                     </div>
                   </div>
@@ -169,7 +210,7 @@ export default function View_optical() {
             catalogue.map(item => (
               <div key={item.id_catalogue} className={styles.catalogue_card}>
                 {item.image ? (
-                  <img src={`http://127.0.0.1:8000${item.image}`} alt={item.description} className={styles.catalogue_img} />
+                  <img src={`${BASE_URL}${item.image}`} alt={item.description} className={styles.catalogue_img} />
                 ) : (
                   <div className={styles.catalogue_placeholder}>Sin imagen</div>
                 )}

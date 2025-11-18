@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDays, getHours, createOptical, getCities,logoutUser } from "../../services/api";
+import { getDays, getHours, createOptical, getCities, logoutUser } from "../../services/api";
 import { useAuth } from "../../components/AuthContext";
 import styles from "./registerOptical.module.css"
 import Navbar from "../../components/Navbar";
+import Swal from "sweetalert2";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
+
 import { getOneOptical, createSchedule, createScheduleByUrl } from "../../services/api";
 import { HelpCircle } from "lucide-react";
 import InfoModal from "../../components/InfoModal";
@@ -103,7 +104,7 @@ export default function EditOptical() {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("nameOp", formData.nameOp);
-      formDataToSend.append("descriptionOp",formData.descriptionOp)
+      formDataToSend.append("descriptionOp", formData.descriptionOp)
       formDataToSend.append("address", formData.address);
       formDataToSend.append("tel", formData.tel);
       formDataToSend.append("city", formData.city);
@@ -118,13 +119,13 @@ export default function EditOptical() {
 
       // 🔹 Verifica los datos antes de enviar
       for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}:`, value);
+        //console.log(`${key}:`, value);
       }
 
       // ✅ Envía al backend
       const opticalCreated = (await createOptical(formDataToSend)) as OpticalFormData;
       const opticalId = opticalCreated.id_optical;
-      console.log("🆔 Óptica creada con ID:", opticalId);
+      //console.log("🆔 Óptica creada con ID:", opticalId);
 
       // 🧭 2️⃣ Crear schedules por cada día seleccionado
       for (const day of formData.day) {
@@ -136,9 +137,9 @@ export default function EditOptical() {
         };
         try {
           await createSchedule(scheduleData);
-          console.log(`✅ Horario creado para el día ${day}`);
+          //console.log(`✅ Horario creado para el día ${day}`);
         } catch (err) {
-          console.error(`❌ Error creando horario del día ${day}:`, err);
+          //console.error(`❌ Error creando horario del día ${day}:`, err);
         }
 
         /*console.log("📅 Creando horario:", scheduleData);
@@ -159,12 +160,19 @@ export default function EditOptical() {
               state: 1,       // activo
             }),
           });
-          console.log("✅ Rol actualizado a dueño");
+          //console.log("✅ Rol actualizado a dueño");
         } catch (err) {
           console.error("❌ Error actualizando rol:", err);
         }
       }
-      alert("✅ Óptica y horarios registrados correctamente.");
+      Swal.fire({
+        icon: "success",
+        title: "Registro exitoso ✅",
+        text: "Óptica y horarios registrados correctamente.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
       try {
         await logoutUser();
         navigate("/");
@@ -175,20 +183,33 @@ export default function EditOptical() {
       }
 
     } catch (error: any) {
-      console.error("❌ Error en el registro de óptica:", error);
+       Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error al registrar la óptica.',
+      });
 
       // 🧠 Manejo de error específico si el correo ya existe
       if (error.response && error.response.data.email) {
-        alert("⚠️ El correo ya está registrado. Usa otro distinto.");
+        
+        Swal.fire({
+        icon: 'warning',
+        title: 'Error',
+        text: 'El correo ya está registrado. Usa otro distinto.',
+      });
       } else {
-        alert("Ocurrió un error al registrar la óptica. Intenta nuevamente.");
+        Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error al registrar la óptica.',
+      });
       }
     }
   };
 
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement| HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type, files } = e.target as HTMLInputElement;
 
     // Si es un archivo
@@ -237,7 +258,7 @@ export default function EditOptical() {
               <textarea className={styles.register_optical_input_description}
                 name="descriptionOp"
                 id="descriptionOp"
-                 value={formData.descriptionOp}
+                value={formData.descriptionOp}
                 onChange={handleChange}
                 required />
 

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDays, getHours, getCities, getOneOptical, createOptical, Schedule, getAllSchedules, BASE_URL, updateOptical, updateSchedule, createScheduleNew } from "../../services/api";
+import { getDays, getHours, getCities, getOneOptical, type Schedule, getAllSchedules, BASE_URL, updateOptical, updateSchedule, createScheduleNew } from "../../services/api";
 import styles from "./editOptical.module.css"
 import Navbar from "../../components/Navbar";
+import Swal from "sweetalert2";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
 import { HelpCircle } from "lucide-react";
-import "leaflet/dist/leaflet.css";
 import InfoModal from "../../components/InfoModal";
 
 export default function EditOptical() {
@@ -137,11 +136,11 @@ export default function EditOptical() {
 
 
 
-        console.log("📦 Todos los schedules:", allSchedules);
+        //console.log("📦 Todos los schedules:", allSchedules);
         //console.log("PRIMER SCHEDULE: ", firstSchedule)
-        console.log("🧩 IDs de ópticas con horarios:", allSchedules.map((s: any) => s.optical_id));
+        //console.log("🧩 IDs de ópticas con horarios:", allSchedules.map((s: any) => s.optical_id));
 
-        console.log("🧿 ID de la óptica actual:", id);
+        //console.log("🧿 ID de la óptica actual:", id);
 
         // 🟢 Llenar datos del formulario
         setFormData((prev) => ({
@@ -166,7 +165,7 @@ export default function EditOptical() {
           longitud: opticalData.longitud ? String(opticalData.longitud) : "",
         }));
 
-        console.log("✅ Horarios de la óptica filtrados:", schedulesOptical);
+        //console.log("✅ Horarios de la óptica filtrados:", schedulesOptical);
         setSchedules(schedulesOptical);
         setInitialData({
           ...opticalData,
@@ -227,7 +226,7 @@ export default function EditOptical() {
       const data = new FormData();
 
       // ✅ Comparar y enviar solo campos que cambiaron (texto)
-      ["nameOp","descriptionOp", "address", "tel", "city", "email", "latitud", "longitud"].forEach((key) => {
+      ["nameOp", "descriptionOp", "address", "tel", "city", "email", "latitud", "longitud"].forEach((key) => {
         const current = formData[key as keyof OpticalFormData];
         const original = initialData[key as keyof OpticalFormData];
         if (current !== original && current !== "") {
@@ -280,11 +279,24 @@ export default function EditOptical() {
 
 
 
-      alert("Óptica y horarios actualizados correctamente");
+      await Swal.fire({
+        icon: "success",
+        title: "Cambios guardados",
+        text: "La óptica y los horarios fueron actualizados correctamente.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
       navigate(`/viewO/${formData.id_optical}`);
+
     } catch (error) {
       console.error("Error al actualizar óptica y horarios:", error);
-      alert("Ocurrió un error al actualizar la óptica");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al actualizar la óptica.",
+      });
+
     }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 export default function Navbar() {
   const { isAuthenticated, logout, role, opticalId } = useAuth();
   const navigate = useNavigate();
-  console.log("el id de optica",opticalId)
-  console.log(isAuthenticated)
-  console.log(role)
+  //console.log("el id de optica",opticalId)
+  //console.log(isAuthenticated)
+  //console.log(role)
   const location = useLocation();
 
   const ROL_ADMIN = 1;
@@ -39,6 +39,7 @@ export default function Navbar() {
           <Link to="/homeAdmin" className={styles.btn_ver}>Inicio</Link>
           {/* <Link to="/listOptical" className={styles.btn_ver}>Gestión Ópticas</Link> */}
           <Link to="/GestionUser" className={styles.btn_ver}>Gestión Usuarios</Link>
+          <Link to="/pendingOptics" className={styles.btn_ver}>Gestion Opticas</Link>
         </>
       );
       break;
@@ -66,7 +67,7 @@ export default function Navbar() {
             <Link to="/listTest" className={styles.btn_ver}>Test Visuales</Link>
             <Link to="/listProb" className={styles.btn_ver}>Recomendaciones</Link>
             <Link to="/listOptical" className={styles.btn_ver}>Ópticas</Link>
-            <Link to="/registerO" className={styles.btn_ver}>Trabaja con Nosotros</Link>
+            <Link to="/registerO" className={styles.btn_ver}>Unete a Nosotros</Link>
           </>
         );
         break;
@@ -86,7 +87,7 @@ export default function Navbar() {
     <nav>
       <header className={styles.home_header}>
         <div className={styles.home_logo}>
-          <img src="/src/assets/sunglasses.png" alt="Logo" className={styles.logo_img} />
+          <img src="/sunglasses.png" alt="Logo" className={styles.logo_img} />
           <span>S I V E</span>
         </div>
 

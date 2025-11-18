@@ -1,5 +1,5 @@
-import { X } from "lucide-react";
-import styles from "./InfoModal.module.css";
+
+import styles from "./infoModal.module.css";
 
 interface InfoModalProps {
     isOpen: boolean;

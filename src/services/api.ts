@@ -1,14 +1,17 @@
 import axios from "axios";
-import { useAuth } from "../components/AuthContext";
-/*import { Axios } from "axios";*/
-export const BASE_URL = "http://127.0.0.1:8000";
+import { dataDecrypt } from "../utils/data-decrypt";
 
-// Configura la URL de tu backend (puede estar en otro servidor)
+/*import { Axios } from "axios";*/
+/*export const BASE_URL = "http://127.0.0.1:8000";
+
 export const API = axios.create({
   baseURL: "http://127.0.0.1:8000/api/"
+});*/
+
+export const BASE_URL = "https://backsive.onrender.com/";
+export const API = axios.create({
+  baseURL: "https://backsive.onrender.com/api/"
 });
-
-
 export interface User {
   id: number;
   email: string;
@@ -16,6 +19,7 @@ export interface User {
   first_name: string;
   last_name: string;
   state: number;
+  is_verified_owner: boolean; 
 }
 
 export interface QuestionaryItem {
@@ -111,7 +115,7 @@ export interface Schedule {
 
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = dataDecrypt( localStorage.getItem("token"));
     if (token) {
       config.headers!.Authorization = `Token ${token}`;
     }
@@ -204,7 +208,7 @@ export const getAllOpticals = async () => {
 export const getCities = async () => {
   try {
     const res = await API.get(`city/`);
-    console.log("📡 Datos recibidos de cities:", res.data);
+    //console.log("📡 Datos recibidos de cities:", res.data);
     return res.data;
   } catch (error: any) {
     console.error("Error al obtener ciudades:", error);
@@ -215,7 +219,7 @@ export const getCities = async () => {
 export const getDays = async () => {
   try {
     const res = await API.get(`days/`);
-    console.log("📡 Datos recibidos de days:", res.data);
+    //console.log("📡 Datos recibidos de days:", res.data);
     return res.data;
   } catch (error) {
     console.error("❌ Error en getDays:", error);
@@ -226,7 +230,7 @@ export const getDays = async () => {
 export const getHours = async () => {
   try {
     const res = await API.get(`hours/`);
-    console.log("📡 Datos recibidos de hours:", res.data);
+    //console.log("📡 Datos recibidos de hours:", res.data);
     return res.data;
   } catch (error) {
     console.error("❌ Error en getHours:", error);
@@ -461,7 +465,7 @@ export const deleteUser = async (userId: number) => { // <--- Función necesaria
 export const toggleBlockUser = async (userId: number, isBlocked: boolean) => { // <--- Función necesaria
     try {
         // Asumiendo que tu endpoint es /users/{id}/block y acepta PUT/PATCH con el estado
-        const response = await API.put(`users/${userId}/block/`, { is_blocked: isBlocked });
+        const response = await API.put(`users/${userId}/`, { is_blocked: isBlocked });
 
         // Retorna el usuario actualizado (idealmente)
         return response.data;
@@ -569,7 +573,7 @@ export const postTest = async (testData: {
     user: Number(userId),
   };
 
-  console.log("Datos que se envían al backend:", payload);
+ // console.log("Datos que se envían al backend:", payload);
 
   // Ya no es necesario enviar el token explícitamente
   const res = await API.post(`test/`, payload);
@@ -580,7 +584,7 @@ export const postTest = async (testData: {
 export const getScheduleByOptical = async (id_optical: number) => {
   try {
     const response = await API.get(`/schedules/?optical=${id_optical}`);
-    console.log("📅 Horarios recibidos para óptica", id_optical, ":", response.data);
+    //console.log("Horarios recibidos para óptica", id_optical, ":", response.data);
     return response.data;
   } catch (error: any) {
     console.error("Error obteniendo horario:", error.response?.data || error);
@@ -618,7 +622,7 @@ export async function createCatalogue(data: FormData) {
   return response.data;
 };
 
-// 📊 Obtener las vistas de una óptica específica
+// Obtener las vistas de una óptica específica
 export const getViewsByOpticalId = async (opticalId: number) => {
   try {
     const res = await API.get(`/optical/${opticalId}/views`);

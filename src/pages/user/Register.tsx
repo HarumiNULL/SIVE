@@ -23,7 +23,7 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Formulario enviado:", formData);
+    //console.log("Formulario enviado:", formData);
 
     if (formData.password !== formData.confirm_password) {
       Swal.fire({
@@ -37,7 +37,7 @@ export default function Register() {
 
     try {
       const res = await registerUser(formData);
-      console.log("Usuario registrado:", res.user);
+      //console.log("Usuario registrado:", res.user);
       localStorage.setItem("token", res.token);
       Swal.fire({
         icon: "success",
