@@ -2,12 +2,13 @@ import Navbar from "../../components/Navbar";
 import "./gestionUser.css";
 import { useEffect, useState } from "react";
 import { getUsers, deleteUser, toggleBlockUser } from "../../services/api";
+import Swal from "sweetalert2";
 
 const STATE_MAP: Record<number, string> = {
-  1: "Activo ✅",
-  2: "Bloqueado 🔒",
-  3: "Inactivo ⏸️",
-  4: "Eliminado 🗑️",
+  1: "Activo ",
+  2: "Bloqueado ",
+  3: "Inactivo ",
+  4: "Eliminado ",
 };
 
 function UserList() {
@@ -44,17 +45,39 @@ function UserList() {
     const user = users.find((u) => u.id === userId);
     if (!user || user.state === 4) return;
 
-    if (!window.confirm(`¿Seguro que quieres eliminar al usuario ${user.first_name}?`))
-      return;
+    const result = await Swal.fire({
+      title: `¿Está seguro de eliminar a ${user.first_name}?`,
+      text: "¡Esta acción no se puede revertir!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    });
 
-    try {
-      await deleteUser(userId);
-      setUsers((prev) => prev.filter((u) => u.id !== userId));
-      alert(`Usuario ${user.first_name} eliminado 🗑️`);
-    } catch (err) {
-      alert("Error al eliminar el usuario.");
+    if (result.isConfirmed) {
+      try {
+        await deleteUser(userId);
+        setUsers((prev) => prev.filter((u) => u.id !== userId));
+
+        Swal.fire({
+          icon: "success",
+          title: "Usuario eliminado",
+          text: `El usuario ${user.first_name} ha sido eliminado.`,
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo eliminar el usuario.",
+        });
+      }
     }
   };
+
 
   // --- Bloquear / Desbloquear usuario ---
   const handleToggleBlock = async (userId: number) => {
@@ -68,13 +91,21 @@ function UserList() {
       setUsers((prev) =>
         prev.map((u) => (u.id === userId ? { ...u, state: updatedUser.state } : u))
       );
-      alert(
-        `Usuario ${user.first_name} ${
-          newState === 2 ? "bloqueado 🔒" : "desbloqueado ✅"
-        }`
-      );
+      Swal.fire({
+        icon: "success",
+        title: `Usuario ${newState === 2 ? "bloqueado 🔒" : "desbloqueado "}`,
+        text: `El usuario ${user.first_name} ahora está ${newState === 2 ? "bloqueado" : "activo"}.`,
+        timer: 2000,
+        showConfirmButton: false
+      });
+
     } catch {
-      alert("Error al cambiar el estado del usuario.");
+      Swal.fire({
+        icon: "error",
+        title: "Error ",
+        text: "No se pudo cambiar el estado del usuario.",
+      });
+
     }
   };
 
@@ -143,32 +174,32 @@ function UserList() {
                 <td>{ROLE_MAP[user.role] || "Desconocido"}</td>
                 <td>{user.first_name}</td>
                 <td>{user.last_name}</td>
-              <td className="state-cell">
-                <span className={`state state-${user.state}`}>
-                  {STATE_MAP[user.state] || "Desconocido"}
-                </span>
-              </td>
+                <td className="state-cell">
+                  <span className={`state state-${user.state}`}>
+                    {STATE_MAP[user.state] || "Desconocido"}
+                  </span>
+                </td>
 
-              <td>
-                {user.state !== 4 ? (
-                  <div className="action-buttons">
-                    <button
-                      className={user.state === 2 ? "btn-unlock" : "btn-lock"}
-                      onClick={() => handleToggleBlock(user.id)}
-                    >
-                      {user.state === 2 ? "Desbloquear" : "Bloquear"}
-                    </button>
-                    <button
-                      className="btn-delete"
-                      onClick={() => handleDeleteUser(user.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                ) : (
-                  <span>❌ Eliminado</span>
-                )}
-              </td>
+                <td>
+                  {user.state !== 4 ? (
+                    <div className="action-buttons">
+                      <button
+                        className={user.state === 2 ? "btn-unlock" : "btn-lock"}
+                        onClick={() => handleToggleBlock(user.id)}
+                      >
+                        {user.state === 2 ? "Desbloquear" : "Bloquear"}
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDeleteUser(user.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  ) : (
+                    <span>❌ Eliminado</span>
+                  )}
+                </td>
 
               </tr>
             ))}

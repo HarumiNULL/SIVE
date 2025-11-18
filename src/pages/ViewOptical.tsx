@@ -53,7 +53,7 @@ export default function View_optical() {
   // Inicializar el mapa una vez que optic esté cargado
   useEffect(() => {
     if (!optic) return;
-    console.log("Datos recibidos de la API:", optic);
+    //console.log("Datos recibidos de la API:", optic);
     const lat = optic.latitud; // fallback Bogotá
     const lng = optic.longitud;
 

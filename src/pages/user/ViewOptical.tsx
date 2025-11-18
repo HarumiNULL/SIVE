@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import {
-  getCities,
-  getOneOptical,
-  getScheduleByOptical,
-  deleteOptical,
-  BASE_URL,
-  getAllCatalogues,
-  getAllProducts,
-  logoutUser,
-} from "../../services/api";
+import {getCities, getOneOptical, getScheduleByOptical, deleteOptical, BASE_URL, getAllCatalogues, getAllProducts, logoutUser,} from "../../services/api";
 import LoadingView from "../LoadingView";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 import Navbar from "../../components/Navbar";
 import styles from "./viewOptical.module.css";
 import { useAuth } from "../../components/AuthContext";
@@ -71,23 +64,56 @@ export default function View_optical() {
 
   // Eliminar
   const handleDelete = async () => {
-    if (!optic?.id_optical) return;
-    if (!window.confirm("¿Eliminar esta óptica?")) return;
+  if (!optic?.id_optical) return;
+
+  // Confirmación con SweetAlert2
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción eliminará tu óptica permanentemente.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteOptical(optic.id_optical);
+
+    // Mensaje de éxito 🟢
+    await Swal.fire({
+      icon: "success",
+      title: "Óptica eliminada",
+      text: "Se ha eliminado correctamente.",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+
+    // Cerrar sesión backend
     try {
-      await deleteOptical(optic.id_optical);
-      alert("Óptica eliminada ✅");
-      try {
-        await logoutUser();
-        navigate("/");
-      } catch (error) {
-        console.error("Error cerrando sesión en el servidor:", error);
-      } finally {
-        logout();
-      }
-    } catch {
-      alert("Error al eliminar ❌");
+      await logoutUser();
+    } catch (error) {
+      console.error("Error cerrando sesión en backend:", error);
     }
-  };
+
+    logout();   // cerrar sesión frontend
+    navigate("/");
+
+  } catch (error) {
+    console.error("Error al eliminar:", error);
+
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Ocurrió un error al eliminar la óptica.",
+      confirmButtonColor: "#3085d6",
+    });
+  }
+};
+
 
   // **Inicializar mapa solo si existe el div**
   useEffect(() => {

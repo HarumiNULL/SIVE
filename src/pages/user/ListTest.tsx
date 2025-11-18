@@ -33,9 +33,15 @@ export default function ListTest() {
     const getImgForTest = (testName: string) => {
         switch (testName.toLowerCase()) {
             case "ishihara":
+<<<<<<< HEAD
                 return "IshiharaSample.png";
             case "tabla de snellen ":
                 return "snellen_2daOpcion.svg";
+=======
+                return "src\\assets\\IshiharaSample.png";
+            case "tabla de snellen":
+                return "src\\assets\\snellen_2daOpcion.svg";
+>>>>>>> 0c6288a5d623b74b9be2e8473dc85dbd482a777b
             default:
                 return "IshiharaSample.png"; // ruta por defecto
         }

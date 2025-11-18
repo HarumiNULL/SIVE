@@ -30,7 +30,7 @@ export default function Login() {
     //console.log("Datos enviados:", formData.email);
     try {
       const res = await loginUser(formData);
-      console.log("Login exitoso:", res);
+      //console.log("Login exitoso:", res);
       const role = res.user.role_id;
       const idUser = res.user.id;
       const verifiedOwner = res.user.is_verified_owner;

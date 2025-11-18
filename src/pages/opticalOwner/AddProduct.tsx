@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getOneOptical, getAllProducts, createCatalogue } from "../../services/api"; 
+import { getOneOptical, getAllProducts, createCatalogue } from "../../services/api";
 import Navbar from "../../components/Navbar";
+import Swal from "sweetalert2";
 import styles from "./addProduct.module.css";
 
 export default function AddProduct() {
   const { id } = useParams(); // id de la óptica
   const navigate = useNavigate();
-
   const [opticName, setOpticName] = useState("");
   const [products, setProducts] = useState<{ id_product: number; nameProduct: string }[]>([]);
   const [formData, setFormData] = useState({
@@ -37,6 +37,7 @@ export default function AddProduct() {
         setProducts(data);
       } catch (err) {
         console.error("Error cargando productos:", err);
+        console.log("Error data:", err.response?.data);
       }
     };
     fetchProducts();
@@ -57,19 +58,36 @@ export default function AddProduct() {
   if (!id) return;
 
   try {
+
     const data = new FormData();
-    data.append("optical", id); // 👈 backend espera "optical"
-    data.append("nameP", formData.id_product); // 👈 backend espera "nameP"
+    data.append("optical", id); 
+    data.append("nameP", formData.id_product);
     data.append("description", formData.description);
     data.append("price", formData.price);
     if (formData.image) data.append("image", formData.image);
 
     await createCatalogue(data);
-    alert("Producto agregado al catálogo correctamente ✅");
+
+    // 🟢 Mensaje de éxito
+    await Swal.fire({
+      icon: "success",
+      title: "Producto agregado",
+      text: "El producto se agregó correctamente al catálogo.",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+
     navigate(`/viewO/${id}`);
+
   } catch (err) {
     console.error("Error registrando producto:", err);
-    alert("Ocurrió un error al registrar el producto ❌");
+
+    // 🔴 Mensaje de error
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Ocurrió un error al registrar el producto.",
+    });
   }
 };
 
