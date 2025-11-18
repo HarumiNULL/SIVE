@@ -1,13 +1,12 @@
-import React, { useState, useEffect,  useContext } from "react";
+import React, { useState, useEffect} from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDays, getHours, createOptical, getCities, logoutUser } from "../../services/api";
+import { getDays, getHours, createOptical, getCities, logoutUser, createSchedule } from "../../services/api";
 import { useAuth } from "../../components/AuthContext";
 import styles from "./registerOptical.module.css"
 import Navbar from "../../components/Navbar";
 import Swal from "sweetalert2";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import { getOneOptical, createSchedule, createScheduleByUrl } from "../../services/api";
 import { HelpCircle } from "lucide-react";
 import InfoModal from "../../components/InfoModal";
 
