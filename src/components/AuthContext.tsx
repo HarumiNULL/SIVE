@@ -101,21 +101,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-/*
+
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context)
     throw new Error("useAuth debe usarse dentro de un AuthProvider");
   return context;
-};*/
-import { useMemo } from "react";
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  // Memoriza el valor del contexto
-  const value = useMemo(() => ({ user, setUser }), [user]);
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
 
