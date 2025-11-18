@@ -2,5 +2,5 @@ projectKey=Sive
 serverUrl=http://localhost:9000
 serverVersion=25.10.0.114319
 dashboardUrl=http://localhost:9000/dashboard?id=Sive
-ceTaskId=28f66720-ea4c-42a7-8c36-8de82ef81d1e
-ceTaskUrl=http://localhost:9000/api/ce/task?id=28f66720-ea4c-42a7-8c36-8de82ef81d1e
+ceTaskId=9c2685dc-5759-4dd8-ad25-50dd82f1519d
+ceTaskUrl=http://localhost:9000/api/ce/task?id=9c2685dc-5759-4dd8-ad25-50dd82f1519d

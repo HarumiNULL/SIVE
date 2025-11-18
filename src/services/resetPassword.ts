@@ -2,7 +2,7 @@ import API from '../services/api';
 
 export const resetPassword = async (email: string): Promise<void> => {
   try {
-    await API.post('/password_reset/', { email },
+    await API.post('password_reset/', { email },
       { headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
@@ -12,7 +12,7 @@ export const resetPassword = async (email: string): Promise<void> => {
 };
 export const confirmResetPassword = async (token: string, newPassword: string) => {
   try {
-    const response= await API.post('/password_reset/confirm/', { token, password: newPassword },
+    const response= await API.post('password_reset/confirm/', { token, password: newPassword },
       { headers: { 'Content-Type': 'application/json' } }
     );
     return response.data;

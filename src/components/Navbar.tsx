@@ -87,7 +87,7 @@ export default function Navbar() {
     <nav>
       <header className={styles.home_header}>
         <div className={styles.home_logo}>
-          <img src="sunglasses.png" alt="Logo" className={styles.logo_img} />
+          <img src="/sunglasses.png" alt="Logo" className={styles.logo_img} />
           <span>S I V E</span>
         </div>
 
